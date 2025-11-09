@@ -79,19 +79,17 @@
 			<FilterChips activeFilter={$activeFilter} onFilterChange={handleFilterChange} />
 
 			<!-- Sort Options & Count -->
-			<div class="header-row">
+			<div class="flex items-center justify-between gap-3 mb-4 flex-wrap">
 				<SectionTitle icon="🎯" title={`${intentionsCount} Intentions`} />
-				<div class="sort-dropdown">
-					<select bind:value={$activeSortOption} class="sort-select">
-						{#each sortOptions as option}
-							<option value={option.value}>{option.label}</option>
-						{/each}
-					</select>
-				</div>
+				<select bind:value={$activeSortOption} class="sort-select">
+					{#each sortOptions as option}
+						<option value={option.value}>{option.label}</option>
+					{/each}
+				</select>
 			</div>
 
 			<!-- Intentions List -->
-			<div class="intentions-list">
+			<div class="flex flex-col gap-4">
 				{#if $filteredIntentions.length > 0}
 					{#each $filteredIntentions as intention (intention.intentionId)}
 						<div class="animate-fade-in">
@@ -120,79 +118,27 @@
 </div>
 
 <style>
-	.intentions-list {
-		display: flex;
-		flex-direction: column;
-		gap: 1rem;
-		width: 100%;
-		overflow: hidden;
-	}
-
-	.header-row {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		gap: 0.75rem;
-		margin-bottom: 1rem;
-		flex-wrap: wrap;
-		width: 100%;
-	}
-
-	.sort-dropdown {
-		position: relative;
-		flex-shrink: 0;
-	}
-
 	.sort-select {
 		background: rgba(0, 0, 0, 0.3);
-		border: 1px solid theme('colors.cyan.border');
-		color: theme('colors.cyan.DEFAULT');
+		border: 1px solid #00ffd1;
+		color: #00ffd1;
 		border-radius: 0.5rem;
 		padding: 0.5rem 0.75rem;
-		font-family: theme('fontFamily.exo');
 		font-size: 0.75rem;
 		font-weight: 500;
 		cursor: pointer;
 		outline: none;
 		transition: all 0.2s ease;
-		min-width: 120px;
-		max-width: 100%;
 	}
 
 	.sort-select:hover,
 	.sort-select:focus {
-		border-color: theme('colors.cyan.DEFAULT');
-		box-shadow: 0 0 10px theme('colors.cyan.glow');
+		border-color: #00ffd1;
+		box-shadow: 0 0 10px rgba(0, 255, 209, 0.4);
 	}
 
 	.sort-select option {
-		background: theme('colors.bg.front');
-		color: theme('colors.cream.DEFAULT');
-	}
-
-	@media (max-width: 480px) {
-		.header-row {
-			flex-direction: column;
-			align-items: flex-start;
-			gap: 0.5rem;
-		}
-
-		.sort-dropdown {
-			width: 100%;
-		}
-
-		.sort-select {
-			width: 100%;
-			font-size: 0.7rem;
-			padding: 0.5rem;
-			min-width: auto;
-		}
-	}
-
-	@media (max-width: 360px) {
-		.sort-select {
-			font-size: 0.65rem;
-			padding: 0.4rem 0.5rem;
-		}
+		background: #1a1a1a;
+		color: #f5f5dc;
 	}
 </style>
