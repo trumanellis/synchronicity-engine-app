@@ -19,5 +19,10 @@
 		display: flex;
 		align-items: center;
 		gap: 0.5rem;
+		flex: 1;
+		min-width: 0;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 	}
 </style>

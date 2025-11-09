@@ -43,6 +43,9 @@
 		padding: 0.75rem 1rem;
 		margin-bottom: 1rem;
 		transition: all 0.2s ease;
+		width: 100%;
+		max-width: 100%;
+		box-sizing: border-box;
 	}
 
 	.search-bar:focus-within {
@@ -63,6 +66,8 @@
 		font-family: theme('fontFamily.exo');
 		font-size: 0.9rem;
 		outline: none;
+		min-width: 0;
+		max-width: 100%;
 	}
 
 	.search-input::placeholder {

@@ -43,6 +43,9 @@
 		margin-bottom: 1rem;
 		-webkit-overflow-scrolling: touch;
 		scrollbar-width: thin;
+		width: 100%;
+		max-width: 100%;
+		box-sizing: border-box;
 	}
 
 	.filter-chips::-webkit-scrollbar {

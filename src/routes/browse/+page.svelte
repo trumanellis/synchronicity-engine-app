@@ -124,12 +124,18 @@
 		justify-content: space-between;
 		gap: 0.75rem;
 		flex-wrap: wrap;
+		width: 100%;
+		max-width: 100%;
+		box-sizing: border-box;
 	}
 
 	.intentions-list {
 		display: flex;
 		flex-direction: column;
 		gap: 0.75rem;
+		width: 100%;
+		max-width: 100%;
+		box-sizing: border-box;
 	}
 
 	.sort-select {
@@ -144,6 +150,8 @@
 		outline: none;
 		transition: all 0.2s ease;
 		font-family: theme('fontFamily.exo');
+		flex-shrink: 0;
+		max-width: 50%;
 	}
 
 	.sort-select:hover,
