@@ -1,0 +1,236 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Synchronicity Engine Global Styles */
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	@apply bg-bg-deep text-cream font-exo;
+	min-height: 100vh;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+	width: 6px;
+	height: 6px;
+}
+
+::-webkit-scrollbar-track {
+	background: rgba(0, 0, 0, 0.3);
+	border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+	background: rgba(0, 255, 209, 0.4);
+	border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: rgba(0, 255, 209, 0.6);
+}
+
+/* Animation Utilities */
+@keyframes pulse-glow {
+	0%,
+	100% {
+		opacity: 1;
+		box-shadow: 0 0 10px rgba(0, 255, 209, 0.8);
+	}
+	50% {
+		opacity: 0.5;
+		box-shadow: 0 0 5px rgba(0, 255, 209, 0.4);
+	}
+}
+
+.animate-pulse-glow {
+	animation: pulse-glow 2s infinite;
+}
+
+@keyframes fade-in {
+	from {
+		opacity: 0;
+		transform: translateY(10px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+.animate-fade-in {
+	animation: fade-in 0.3s ease-out;
+}
+
+/* App Container with Neon Frame */
+.app-container {
+	min-height: 100vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 1rem;
+	position: relative;
+}
+
+.app-container::before {
+	content: '';
+	position: fixed;
+	top: 0.75rem;
+	left: 0.75rem;
+	right: 0.75rem;
+	bottom: 0.75rem;
+	border: 3px solid rgba(0, 255, 209, 0.6);
+	border-radius: 2rem;
+	pointer-events: none;
+	box-shadow:
+		0 0 20px rgba(0, 255, 209, 0.4),
+		0 0 40px rgba(0, 255, 209, 0.2),
+		inset 0 0 20px rgba(0, 255, 209, 0.1);
+	animation: neon-glow 3s ease-in-out infinite;
+	z-index: 9999;
+}
+
+@keyframes neon-glow {
+	0%, 100% {
+		box-shadow:
+			0 0 20px rgba(0, 255, 209, 0.4),
+			0 0 40px rgba(0, 255, 209, 0.2),
+			inset 0 0 20px rgba(0, 255, 209, 0.1);
+	}
+	50% {
+		box-shadow:
+			0 0 30px rgba(0, 255, 209, 0.6),
+			0 0 60px rgba(0, 255, 209, 0.3),
+			inset 0 0 30px rgba(0, 255, 209, 0.15);
+	}
+}
+
+/* Phone Mockup Pattern - Responsive */
+.phone-mockup {
+	@apply bg-bg-front rounded-[1.5rem];
+	width: 100%;
+	max-width: 1200px;
+	min-height: calc(100vh - 3rem);
+	margin: 0 auto;
+	position: relative;
+}
+
+.screen-content {
+	@apply px-3 py-4;
+	min-height: 600px;
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+}
+
+/* Component Utilities */
+@layer components {
+	.stat-card {
+		@apply bg-black/40 border border-cyan-border rounded-xl p-4 text-center transition-all duration-200 cursor-pointer;
+	}
+
+	.stat-card:hover {
+		@apply border-cyan shadow-glow-cyan transform -translate-y-0.5;
+	}
+
+	.button-primary {
+		@apply bg-cyan/90 text-bg-deep border-0 rounded-xl px-8 py-4 font-semibold text-base cursor-pointer transition-all duration-300 shadow-glow-cyan;
+	}
+
+	.button-primary:hover {
+		@apply bg-cyan shadow-glow-cyan-lg transform -translate-y-0.5;
+	}
+
+	.button-secondary {
+		@apply bg-gold-bg text-gold border-2 border-gold rounded-xl px-8 py-4 font-semibold text-base cursor-pointer transition-all duration-300;
+	}
+
+	.button-secondary:hover {
+		@apply bg-gold/30 shadow-glow-gold transform -translate-y-0.5;
+	}
+
+	.section-title {
+		@apply text-cyan text-sm font-semibold uppercase tracking-wider flex items-center gap-2;
+	}
+
+	.content-box {
+		@apply bg-cyan-bg border-2 border-cyan-border rounded-2xl p-5;
+	}
+
+	.info-box {
+		@apply bg-gold-bg border-2 border-gold-border rounded-2xl p-5;
+	}
+
+	.activity-item {
+		@apply bg-black/30 border-l-[3px] border-cyan rounded-lg p-4 transition-all duration-200;
+	}
+
+	.activity-item:hover {
+		@apply bg-black/40;
+	}
+}
+
+/* Responsive Utilities */
+@media (max-width: 768px) {
+	.app-container {
+		padding: 0;
+	}
+
+	.app-container::before {
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		border-radius: 0;
+		border-width: 2px;
+	}
+
+	.phone-mockup {
+		@apply rounded-none border-0;
+		min-height: 100vh;
+		max-width: 100%;
+		box-shadow: none;
+	}
+
+	.screen-content {
+		@apply px-2 py-3;
+		min-height: 100vh;
+	}
+}
+
+@media (max-width: 480px) {
+	.text-2xl {
+		font-size: 1.25rem !important;
+	}
+
+	.text-xl {
+		font-size: 1.125rem !important;
+	}
+}
+
+@media (max-width: 360px) {
+	.text-2xl {
+		font-size: 1.125rem !important;
+	}
+
+	.text-xl {
+		font-size: 1rem !important;
+	}
+
+	.text-sm {
+		font-size: 0.75rem !important;
+	}
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+	.phone-mockup {
+		max-width: 700px;
+	}
+}
