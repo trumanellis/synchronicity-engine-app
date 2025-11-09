@@ -42,7 +42,13 @@ export const filteredIntentions = derived(
 					(a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
 				);
 			case 'high-impact':
-				return filtered.filter((i) => i.stats.impactLevel === 'high');
+				// Sort by impact level priority (high > medium > low), then by attention hours
+				const impactPriority = { high: 3, medium: 2, low: 1 };
+				return filtered.sort((a, b) => {
+					const priorityDiff = impactPriority[b.stats.impactLevel] - impactPriority[a.stats.impactLevel];
+					if (priorityDiff !== 0) return priorityDiff;
+					return b.stats.totalAttentionHours - a.stats.totalAttentionHours;
+				});
 			default:
 				return filtered;
 		}
