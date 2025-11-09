@@ -129,13 +129,13 @@
 	.intentions-list {
 		display: flex;
 		flex-direction: column;
-		gap: 1rem;
+		gap: 0.75rem;
 	}
 
 	.sort-select {
 		background: rgba(0, 0, 0, 0.3);
-		border: 1px solid #00ffd1;
-		color: #00ffd1;
+		border: 1px solid theme('colors.cyan.border');
+		color: theme('colors.cyan.DEFAULT');
 		border-radius: 0.5rem;
 		padding: 0.5rem 0.75rem;
 		font-size: 0.75rem;
@@ -143,16 +143,17 @@
 		cursor: pointer;
 		outline: none;
 		transition: all 0.2s ease;
+		font-family: theme('fontFamily.exo');
 	}
 
 	.sort-select:hover,
 	.sort-select:focus {
-		border-color: #00ffd1;
-		box-shadow: 0 0 10px rgba(0, 255, 209, 0.4);
+		border-color: theme('colors.cyan.DEFAULT');
+		box-shadow: 0 0 10px theme('colors.cyan.glow');
 	}
 
 	.sort-select option {
-		background: #1a1a1a;
-		color: #f5f5dc;
+		background: theme('colors.bg.front');
+		color: theme('colors.cream.DEFAULT');
 	}
 </style>
