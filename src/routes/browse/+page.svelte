@@ -79,7 +79,7 @@
 			<FilterChips activeFilter={$activeFilter} onFilterChange={handleFilterChange} />
 
 			<!-- Sort Options & Count -->
-			<div class="flex items-center justify-between gap-3 mb-4 flex-wrap">
+			<div class="header-row mb-4">
 				<SectionTitle icon="🎯" title={`${intentionsCount} Intentions`} />
 				<select bind:value={$activeSortOption} class="sort-select">
 					{#each sortOptions as option}
@@ -89,7 +89,7 @@
 			</div>
 
 			<!-- Intentions List -->
-			<div class="flex flex-col gap-4">
+			<div class="intentions-list">
 				{#if $filteredIntentions.length > 0}
 					{#each $filteredIntentions as intention (intention.intentionId)}
 						<div class="animate-fade-in">
@@ -118,6 +118,20 @@
 </div>
 
 <style>
+	.header-row {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 0.75rem;
+		flex-wrap: wrap;
+	}
+
+	.intentions-list {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+	}
+
 	.sort-select {
 		background: rgba(0, 0, 0, 0.3);
 		border: 1px solid #00ffd1;
