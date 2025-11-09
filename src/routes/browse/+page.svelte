@@ -124,6 +124,8 @@
 		display: flex;
 		flex-direction: column;
 		gap: 1rem;
+		width: 100%;
+		overflow: hidden;
 	}
 
 	.header-row {
@@ -133,6 +135,7 @@
 		gap: 0.75rem;
 		margin-bottom: 1rem;
 		flex-wrap: wrap;
+		width: 100%;
 	}
 
 	.sort-dropdown {
@@ -171,6 +174,7 @@
 		.header-row {
 			flex-direction: column;
 			align-items: flex-start;
+			gap: 0.5rem;
 		}
 
 		.sort-dropdown {
@@ -180,6 +184,15 @@
 		.sort-select {
 			width: 100%;
 			font-size: 0.7rem;
+			padding: 0.5rem;
+			min-width: auto;
+		}
+	}
+
+	@media (max-width: 360px) {
+		.sort-select {
+			font-size: 0.65rem;
+			padding: 0.4rem 0.5rem;
 		}
 	}
 </style>

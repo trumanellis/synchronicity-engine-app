@@ -33,7 +33,7 @@
 		<div class="intention-card-content">
 			<div class="intention-card-title">{intention.title}</div>
 			<div class="intention-card-desc">
-				{intention.description.slice(0, 100)}...
+				{intention.description.length > 80 ? intention.description.slice(0, 80) + '...' : intention.description}
 			</div>
 		</div>
 	</div>
@@ -61,6 +61,9 @@
 		padding: 1rem;
 		cursor: pointer;
 		transition: all 0.3s ease;
+		width: 100%;
+		max-width: 100%;
+		overflow: hidden;
 	}
 
 	.intention-card:hover {
