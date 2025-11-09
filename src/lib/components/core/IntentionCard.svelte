@@ -61,6 +61,9 @@
 		padding: 1rem;
 		cursor: pointer;
 		transition: all 0.3s ease;
+		width: 100%;
+		max-width: 100%;
+		overflow: hidden;
 	}
 
 	.intention-card:hover {
@@ -83,6 +86,8 @@
 
 	.intention-card-content {
 		flex: 1;
+		min-width: 0;
+		max-width: 100%;
 	}
 
 	.intention-card-title {
@@ -92,6 +97,8 @@
 		margin-bottom: 0.25rem;
 		word-wrap: break-word;
 		overflow-wrap: break-word;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
 
 	.intention-card-desc {
@@ -100,6 +107,8 @@
 		line-height: 1.4;
 		word-wrap: break-word;
 		overflow-wrap: break-word;
+		overflow: hidden;
+		max-width: 100%;
 	}
 
 	.intention-card-stats {
