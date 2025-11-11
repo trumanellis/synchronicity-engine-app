@@ -23,10 +23,8 @@
 	<title>Layout Primitives Test - Synchronicity Engine</title>
 </svelte:head>
 
-<div class="min-h-screen pb-24">
-	<div class="phone-mockup">
-		<div class="screen-content">
-			<PageContainer maxWidth="xl">
+<div class="test-page">
+	<PageContainer maxWidth="xl">
 				<Stack gap="xl">
 					<!-- Header -->
 					<Section>
@@ -240,14 +238,22 @@
 						</Card>
 					</Section>
 				</Stack>
-			</PageContainer>
-		</div>
-	</div>
+		</PageContainer>
 
-	<BottomNav />
+		<BottomNav />
 </div>
 
 <style>
+	.test-page {
+		min-height: 100vh;
+		padding-bottom: 5rem;
+		background: theme('colors.bg.deep');
+		width: 100%;
+		max-width: 100%;
+		overflow-x: hidden;
+		box-sizing: border-box;
+	}
+
 	.card-icon {
 		font-size: 1.75rem;
 		flex-shrink: 0;
