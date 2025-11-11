@@ -1,4 +1,9 @@
 <script lang="ts">
+	/**
+	 * ResponsiveNav - Adaptive navigation component
+	 * Mobile (< 768px): Top bar with horizontal layout
+	 * Desktop (>= 768px): Left sidebar with vertical layout
+	 */
 	import { activeTab } from '$stores/navigationStore';
 	import { userTokenCount } from '$stores/userStore';
 	import { goto } from '$app/navigation';
@@ -32,8 +37,10 @@
 	}
 </script>
 
-<nav class="fixed bottom-0 left-0 right-0 bg-bg-mid border-t-2 border-cyan px-4 py-3 z-50">
-	<div class="flex justify-around items-center max-w-md mx-auto">
+<!-- Mobile: Top bar -->
+<!-- Desktop: Left sidebar -->
+<nav class="responsive-nav">
+	<div class="nav-container">
 		{#each tabs as tab}
 			<button
 				class="nav-button"
@@ -42,31 +49,108 @@
 				aria-label={tab.label}
 			>
 				<div class="relative">
-					<span class="text-2xl">{tab.icon}</span>
+					<span class="nav-icon">{tab.icon}</span>
 					{#if tab.badge}
 						<span class="nav-badge">{tab.badge}</span>
 					{/if}
 				</div>
-				<span class="text-xs font-medium mt-1">{tab.label}</span>
+				<span class="nav-label">{tab.label}</span>
 			</button>
 		{/each}
 	</div>
 </nav>
 
 <style>
+	/* Base navigation styles */
+	.responsive-nav {
+		position: fixed;
+		background: theme('colors.bg.mid');
+		z-index: 50;
+	}
+
+	/* Mobile: Top bar */
+	@media (max-width: 767px) {
+		.responsive-nav {
+			top: 0;
+			left: 0;
+			right: 0;
+			border-bottom: 2px solid theme('colors.cyan.DEFAULT');
+			padding: 0.75rem 1rem;
+		}
+
+		.nav-container {
+			display: flex;
+			justify-content: space-around;
+			align-items: center;
+			max-width: 100%;
+			gap: 0.5rem;
+		}
+
+		.nav-button {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			gap: 0.25rem;
+			min-width: 60px;
+		}
+
+		.nav-icon {
+			font-size: 1.5rem;
+		}
+
+		.nav-label {
+			font-size: 0.65rem;
+			font-weight: 500;
+		}
+	}
+
+	/* Desktop: Left sidebar */
+	@media (min-width: 768px) {
+		.responsive-nav {
+			top: 0;
+			left: 0;
+			bottom: 0;
+			width: 5rem;
+			border-right: 2px solid theme('colors.cyan.DEFAULT');
+			padding: 1.5rem 0.5rem;
+		}
+
+		.nav-container {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			gap: 2rem;
+			height: 100%;
+		}
+
+		.nav-button {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			gap: 0.5rem;
+			width: 100%;
+		}
+
+		.nav-icon {
+			font-size: 2rem;
+		}
+
+		.nav-label {
+			font-size: 0.7rem;
+			font-weight: 500;
+			text-align: center;
+		}
+	}
+
+	/* Common button styles */
 	.nav-button {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: 0.25rem;
 		background: none;
 		border: none;
 		color: theme('colors.sage.DEFAULT');
 		font-family: theme('fontFamily.exo');
 		cursor: pointer;
 		transition: all 0.2s ease;
-		padding: 0.5rem 1rem;
-		min-width: 60px;
+		padding: 0.5rem;
 	}
 
 	.nav-button:hover,
@@ -74,14 +158,14 @@
 		color: theme('colors.cyan.DEFAULT');
 	}
 
-	.nav-button.active span:first-child {
+	.nav-button.active .nav-icon {
 		filter: drop-shadow(0 0 8px rgba(0, 255, 209, 0.8));
 	}
 
 	.nav-badge {
 		position: absolute;
 		top: -4px;
-		right: -4px;
+		right: -8px;
 		background: theme('colors.gold.DEFAULT');
 		color: theme('colors.bg.deep');
 		border-radius: 10px;

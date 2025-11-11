@@ -149,11 +149,20 @@
 <style>
 	.home-page {
 		min-height: 100vh;
-		padding-bottom: 5rem;
+		padding-top: 5rem; /* Mobile: top bar */
+		padding-bottom: 1rem;
 		background: theme('colors.bg.deep');
 		width: 100%;
 		max-width: 100%;
 		box-sizing: border-box;
+	}
+
+	/* Desktop: sidebar */
+	@media (min-width: 768px) {
+		.home-page {
+			margin-left: 5rem;
+			padding-top: 0;
+		}
 	}
 
 	.stats-grid {
