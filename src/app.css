@@ -184,16 +184,17 @@ body {
 	}
 
 	.app-container::before {
-		top: 0;
-		left: 0;
-		right: 0;
-		bottom: 0;
-		border-radius: 0;
+		top: 0.5rem;
+		left: 0.5rem;
+		right: 0.5rem;
+		bottom: 0.5rem;
+		border-radius: 1rem;
 		border-width: 2px;
 	}
 
 	.phone-mockup {
-		@apply rounded-none border-0;
+		border-radius: 1rem;
+		border: 0;
 		min-height: 100vh;
 		max-width: 100%;
 		box-shadow: none;
