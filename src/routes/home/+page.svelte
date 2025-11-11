@@ -1,18 +1,29 @@
 <script lang="ts">
+	/**
+	 * Home Page - Iteration 1
+	 * Uses PageContainer and v1 components built with layout primitives
+	 */
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { activeTab } from '$stores/navigationStore';
 	import { userStats } from '$stores/userStore';
 	import { recentActivity, intentions } from '$data/mockData';
 
-	// Components
+	// Layout Primitives
+	import PageContainer from '$lib/components/layout/PageContainer.svelte';
+	import Stack from '$lib/components/layout/Stack.svelte';
+	import Section from '$lib/components/layout/Section.svelte';
+
+	// V1 Components
+	import SectionTitle from '$lib/components/v1/SectionTitle.svelte';
+	import IntentionCard from '$lib/components/v1/IntentionCard.svelte';
+
+	// V0 Components (not yet rebuilt)
 	import TempleHeader from '$components/core/TempleHeader.svelte';
 	import CountdownCard from '$components/core/CountdownCard.svelte';
 	import StatCard from '$components/core/StatCard.svelte';
 	import ActionButton from '$components/core/ActionButton.svelte';
-	import SectionTitle from '$components/core/SectionTitle.svelte';
 	import ActivityItem from '$components/core/ActivityItem.svelte';
-	import IntentionCard from '$components/core/IntentionCard.svelte';
 	import BottomNav from '$components/core/BottomNav.svelte';
 
 	// Set active tab
@@ -46,103 +57,117 @@
 	<title>Home - Synchronicity Engine</title>
 </svelte:head>
 
-<div class="min-h-screen pb-24">
-	<div class="phone-mockup">
-		<div class="screen-content">
+<div class="home-page">
+	<PageContainer maxWidth="xl">
+		<Stack gap="lg">
 			<TempleHeader />
 
 			<CountdownCard />
 
 			<!-- Personal Stats -->
-			<div class="stats-grid mb-6">
-				<StatCard
-					icon="💎"
-					value={$userStats.tokensHeld}
-					label="Tokens"
-					onClick={() => goto('/tokens')}
-				/>
-				<StatCard
-					icon="🎯"
-					value={$userStats.activeIntentions}
-					label="Active"
-					onClick={() => goto('/browse')}
-				/>
-				<StatCard
-					icon="🤝"
-					value={$userStats.connections}
-					label="Connects"
-					onClick={() => goto('/profile')}
-				/>
-			</div>
+			<Section spacing="sm">
+				<div class="stats-grid">
+					<StatCard
+						icon="💎"
+						value={$userStats.tokensHeld}
+						label="Tokens"
+						onClick={() => goto('/tokens')}
+					/>
+					<StatCard
+						icon="🎯"
+						value={$userStats.activeIntentions}
+						label="Active"
+						onClick={() => goto('/browse')}
+					/>
+					<StatCard
+						icon="🤝"
+						value={$userStats.connections}
+						label="Connects"
+						onClick={() => goto('/profile')}
+					/>
+				</div>
+			</Section>
 
 			<!-- Quick Actions -->
-			<div class="quick-actions mb-6">
-				<ActionButton variant="primary" icon="✨" onClick={handleCreateIntention}>
-					Create Intention
-				</ActionButton>
-				<ActionButton variant="secondary" icon="🏆" onClick={handleBidTokens}>
-					Bid Tokens
-				</ActionButton>
-			</div>
+			<Section spacing="sm">
+				<div class="quick-actions">
+					<ActionButton variant="primary" icon="✨" onClick={handleCreateIntention}>
+						Create Intention
+					</ActionButton>
+					<ActionButton variant="secondary" icon="🏆" onClick={handleBidTokens}>
+						Bid Tokens
+					</ActionButton>
+				</div>
+			</Section>
 
 			<!-- Recent Activity -->
-			<SectionTitle icon="⚡" title="Recent Activity" />
+			<Section spacing="md">
+				<Stack gap="md">
+					<SectionTitle icon="⚡" title="Recent Activity" />
 
-			<div class="activity-feed mb-4">
-				{#each recentActivity as activity}
-					<ActivityItem {activity} />
-				{/each}
-			</div>
+					<Stack gap="md">
+						{#each recentActivity as activity}
+							<ActivityItem {activity} />
+						{/each}
+					</Stack>
 
-			<div class="view-more mb-6">
-				<button class="view-more-link" on:click={handleViewAllActivity}>
-					View all activity →
-				</button>
-			</div>
+					<div class="view-more">
+						<button class="view-more-link" on:click={handleViewAllActivity}>
+							View all activity →
+						</button>
+					</div>
+				</Stack>
+			</Section>
 
 			<!-- Featured Intentions -->
-			<SectionTitle icon="🔥" title="Trending Intentions" />
+			<Section spacing="lg">
+				<Stack gap="md">
+					<SectionTitle icon="🔥" title="Trending Intentions" />
 
-			<div class="intentions-preview mb-4">
-				{#each featuredIntentions as intention}
-					<IntentionCard {intention} onClick={() => handleViewIntention(intention.intentionId)} />
-				{/each}
-			</div>
+					<Stack gap="md">
+						{#each featuredIntentions as intention}
+							<IntentionCard
+								{intention}
+								onClick={() => handleViewIntention(intention.intentionId)}
+							/>
+						{/each}
+					</Stack>
 
-			<div class="view-more">
-				<button class="view-more-link" on:click={() => goto('/browse')}>
-					Browse all intentions →
-				</button>
-			</div>
-		</div>
-	</div>
+					<div class="view-more">
+						<button class="view-more-link" on:click={() => goto('/browse')}>
+							Browse all intentions →
+						</button>
+					</div>
+				</Stack>
+			</Section>
+		</Stack>
+	</PageContainer>
 
 	<BottomNav />
 </div>
 
 <style>
+	.home-page {
+		min-height: 100vh;
+		padding-bottom: 5rem;
+		background: theme('colors.bg.deep');
+		width: 100%;
+		max-width: 100%;
+		box-sizing: border-box;
+	}
+
 	.stats-grid {
 		display: grid;
 		grid-template-columns: repeat(3, 1fr);
 		gap: 0.75rem;
+		width: 100%;
 	}
 
 	.quick-actions {
 		display: grid;
 		grid-template-columns: 1fr 1fr;
 		gap: 0.75rem;
-	}
-
-	.activity-feed {
-		display: flex;
-		flex-direction: column;
-		gap: 0.75rem;
-	}
-
-	.intentions-preview {
-		display: flex;
-		flex-direction: column;
-		gap: 0.75rem;
+		width: 100%;
 	}
 
 	.view-more {

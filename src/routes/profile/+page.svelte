@@ -1,4 +1,8 @@
 <script lang="ts">
+	/**
+	 * Profile Page - Iteration 1
+	 * Uses PageContainer and v1 components built with layout primitives
+	 */
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { activeTab } from '$stores/navigationStore';
@@ -7,13 +11,20 @@
 	import { tokens } from '$stores/tokensStore';
 	import type { ProfileTab } from '$types';
 
-	// Components
+	// Layout Primitives
+	import PageContainer from '$lib/components/layout/PageContainer.svelte';
+	import Stack from '$lib/components/layout/Stack.svelte';
+	import Section from '$lib/components/layout/Section.svelte';
+
+	// V1 Components
+	import SectionTitle from '$lib/components/v1/SectionTitle.svelte';
+
+	// V0 Components (not yet rebuilt)
 	import ProfileHeader from '$components/core/ProfileHeader.svelte';
 	import ProfileTabs from '$components/core/ProfileTabs.svelte';
 	import StatCard from '$components/core/StatCard.svelte';
 	import TokenCard from '$components/core/TokenCard.svelte';
 	import ConnectionCard from '$components/core/ConnectionCard.svelte';
-	import SectionTitle from '$components/core/SectionTitle.svelte';
 	import ActionButton from '$components/core/ActionButton.svelte';
 	import EmptyState from '$components/core/EmptyState.svelte';
 	import BottomNav from '$components/core/BottomNav.svelte';
@@ -41,39 +52,41 @@
 	<title>{currentUser.name} - Synchronicity Engine</title>
 </svelte:head>
 
-<div class="min-h-screen pb-24">
-	<div class="phone-mockup">
-		<div class="screen-content">
+<div class="profile-page">
+	<PageContainer maxWidth="xl">
+		<Stack gap="lg">
 			<!-- Profile Header -->
 			<ProfileHeader user={currentUser} />
 
 			<!-- Stats Grid -->
-			<div class="stats-grid">
-				<StatCard
-					icon="💎"
-					value={currentUser.stats.tokensHeld}
-					label="Tokens"
-					onClick={() => (currentProfileTab = 'tokens')}
-				/>
-				<StatCard
-					icon="⏱️"
-					value={`${currentUser.stats.totalHoursEarned}h`}
-					label="Hours"
-					onClick={() => (currentProfileTab = 'tokens')}
-				/>
-				<StatCard
-					icon="✓"
-					value={currentUser.stats.fulfillmentsCompleted}
-					label="Fulfilled"
-					onClick={() => (currentProfileTab = 'fulfillments')}
-				/>
-				<StatCard
-					icon="🤝"
-					value={currentUser.stats.connections}
-					label="Connections"
-					onClick={() => (currentProfileTab = 'connections')}
-				/>
-			</div>
+			<Section spacing="sm">
+				<div class="stats-grid">
+					<StatCard
+						icon="💎"
+						value={currentUser.stats.tokensHeld}
+						label="Tokens"
+						onClick={() => (currentProfileTab = 'tokens')}
+					/>
+					<StatCard
+						icon="⏱️"
+						value={`${currentUser.stats.totalHoursEarned}h`}
+						label="Hours"
+						onClick={() => (currentProfileTab = 'tokens')}
+					/>
+					<StatCard
+						icon="✓"
+						value={currentUser.stats.fulfillmentsCompleted}
+						label="Fulfilled"
+						onClick={() => (currentProfileTab = 'fulfillments')}
+					/>
+					<StatCard
+						icon="🤝"
+						value={currentUser.stats.connections}
+						label="Connections"
+						onClick={() => (currentProfileTab = 'connections')}
+					/>
+				</div>
+			</Section>
 
 			<!-- Profile Tabs -->
 			<ProfileTabs activeTab={currentProfileTab} onTabChange={handleTabChange} />
@@ -81,19 +94,25 @@
 			<!-- Tab Content -->
 			{#if currentProfileTab === 'tokens'}
 				<!-- Tokens Tab -->
-				<SectionTitle icon="💎" title="My Tokens" />
-				<div class="tokens-list">
-					{#each $tokens.slice(0, 3) as token (token.tokenId)}
-						<TokenCard {token} onClick={() => goto('/tokens')} />
-					{/each}
-				</div>
-				<ActionButton variant="secondary" fullWidth={true} onClick={() => goto('/tokens')}>
-					View All Tokens
-				</ActionButton>
+				<Section spacing="md">
+					<Stack gap="md">
+						<SectionTitle icon="💎" title="My Tokens" />
+						<Stack gap="md">
+							{#each $tokens.slice(0, 3) as token (token.tokenId)}
+								<TokenCard {token} onClick={() => goto('/tokens')} />
+							{/each}
+						</Stack>
+						<ActionButton variant="secondary" fullWidth={true} onClick={() => goto('/tokens')}>
+							View All Tokens
+						</ActionButton>
+					</Stack>
+				</Section>
 			{:else if currentProfileTab === 'fulfillments'}
 				<!-- Fulfillments Tab -->
-				<SectionTitle icon="✓" title="Fulfillments" />
-				<div class="fulfillments-list">
+				<Section spacing="md">
+					<Stack gap="md">
+						<SectionTitle icon="✓" title="Fulfillments" />
+						<Stack gap="md">
 					<div class="fulfillment-item">
 						<div class="fulfillment-icon">✓</div>
 						<div class="fulfillment-content">
@@ -115,19 +134,27 @@
 							<p class="fulfillment-meta">Off-Grid Living • In Progress</p>
 						</div>
 					</div>
-				</div>
+						</Stack>
+					</Stack>
+				</Section>
 			{:else if currentProfileTab === 'connections'}
 				<!-- Connections Tab -->
-				<SectionTitle icon="🤝" title="Connections" />
-				<div class="connections-list">
-					{#each connections as connection (connection.userId)}
-						<ConnectionCard {connection} onClick={() => alert(`View ${connection.name}'s profile`)} />
-					{/each}
-				</div>
+				<Section spacing="md">
+					<Stack gap="md">
+						<SectionTitle icon="🤝" title="Connections" />
+						<Stack gap="md">
+							{#each connections as connection (connection.userId)}
+								<ConnectionCard {connection} onClick={() => alert(`View ${connection.name}'s profile`)} />
+							{/each}
+						</Stack>
+					</Stack>
+				</Section>
 			{:else if currentProfileTab === 'settings'}
 				<!-- Settings Tab -->
-				<SectionTitle icon="⚙️" title="Settings" />
-				<div class="settings-list">
+				<Section spacing="md">
+					<Stack gap="md">
+						<SectionTitle icon="⚙️" title="Settings" />
+						<Stack gap="sm">
 					<button class="setting-item" on:click={handleEditProfile}>
 						<span class="setting-icon">✏️</span>
 						<span class="setting-label">Edit Profile</span>
@@ -163,34 +190,31 @@
 						<span class="setting-label">Logout</span>
 						<span class="setting-arrow">›</span>
 					</button>
-				</div>
+						</Stack>
+					</Stack>
+				</Section>
 			{/if}
-		</div>
-	</div>
+		</Stack>
+	</PageContainer>
 
 	<BottomNav />
 </div>
 
 <style>
+	.profile-page {
+		min-height: 100vh;
+		padding-bottom: 5rem;
+		background: theme('colors.bg.deep');
+		width: 100%;
+		max-width: 100%;
+		box-sizing: border-box;
+	}
+
 	.stats-grid {
 		display: grid;
 		grid-template-columns: repeat(2, 1fr);
 		gap: 0.75rem;
-		margin-bottom: 1.5rem;
-	}
-
-	.tokens-list {
-		display: flex;
-		flex-direction: column;
-		gap: 1rem;
-		margin-bottom: 1rem;
-	}
-
-	.fulfillments-list {
-		display: flex;
-		flex-direction: column;
-		gap: 0.75rem;
-		margin-bottom: 1.5rem;
+		width: 100%;
 	}
 
 	.fulfillment-item {
@@ -236,19 +260,6 @@
 	.fulfillment-meta {
 		color: theme('colors.sage.DEFAULT');
 		font-size: 0.75rem;
-	}
-
-	.connections-list {
-		display: flex;
-		flex-direction: column;
-		gap: 0.75rem;
-		margin-bottom: 1.5rem;
-	}
-
-	.settings-list {
-		display: flex;
-		flex-direction: column;
-		gap: 0.5rem;
 	}
 
 	.setting-item {

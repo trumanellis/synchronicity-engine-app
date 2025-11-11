@@ -1,10 +1,19 @@
 <script lang="ts">
+	/**
+	 * Create Page - Iteration 1
+	 * Uses PageContainer and layout primitives
+	 */
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { activeTab } from '$stores/navigationStore';
 	import type { FilterCategory } from '$types';
 
-	// Components
+	// Layout Primitives
+	import PageContainer from '$lib/components/layout/PageContainer.svelte';
+	import Stack from '$lib/components/layout/Stack.svelte';
+	import Section from '$lib/components/layout/Section.svelte';
+
+	// V0 Components (form components not yet rebuilt)
 	import FormField from '$components/core/FormField.svelte';
 	import CategorySelector from '$components/core/CategorySelector.svelte';
 	import MediaUploader from '$components/core/MediaUploader.svelte';
@@ -86,26 +95,29 @@
 	<title>Create Intention - Synchronicity Engine</title>
 </svelte:head>
 
-<div class="min-h-screen pb-24">
-	<div class="phone-mockup">
-		<div class="screen-content">
-			{#if showSuccess}
-				<!-- Success State -->
-				<div class="success-container">
-					<div class="success-icon">✓</div>
-					<h2 class="success-title">Intention Created!</h2>
-					<p class="success-message">Your intention has been shared with the community</p>
-					<div class="success-spinner">Redirecting to Browse...</div>
-				</div>
-			{:else}
+<div class="create-page">
+	<PageContainer maxWidth="xl">
+		{#if showSuccess}
+			<!-- Success State -->
+			<div class="success-container">
+				<div class="success-icon">✓</div>
+				<h2 class="success-title">Intention Created!</h2>
+				<p class="success-message">Your intention has been shared with the community</p>
+				<div class="success-spinner">Redirecting to Browse...</div>
+			</div>
+		{:else}
+			<Stack gap="lg">
 				<!-- Page Header -->
-				<div class="mb-4">
-					<h1 class="text-gold text-2xl font-bold mb-2">Create Intention</h1>
-					<p class="text-sage text-sm">Share what you need or what you can offer</p>
-				</div>
+				<Section spacing="sm">
+					<Stack gap="sm">
+						<h1 class="page-title">Create Intention</h1>
+						<p class="page-subtitle">Share what you need or what you can offer</p>
+					</Stack>
+				</Section>
 
 				<!-- Form -->
 				<form on:submit={handleSubmit} class="create-form">
+					<Stack gap="lg">
 					<!-- Title -->
 					<FormField
 						label="Title"
@@ -177,17 +189,40 @@
 							{isSubmitting ? 'Publishing...' : 'Publish Intention'}
 						</ActionButton>
 					</div>
+					</Stack>
 				</form>
-			{/if}
-		</div>
-	</div>
+			</Stack>
+		{/if}
+	</PageContainer>
 
 	<BottomNav />
 </div>
 
 <style>
+	.create-page {
+		min-height: 100vh;
+		padding-bottom: 5rem;
+		background: theme('colors.bg.deep');
+		width: 100%;
+		max-width: 100%;
+		box-sizing: border-box;
+	}
+
+	.page-title {
+		color: theme('colors.gold.DEFAULT');
+		font-size: 1.5rem;
+		font-weight: bold;
+		margin: 0;
+	}
+
+	.page-subtitle {
+		color: theme('colors.sage.DEFAULT');
+		font-size: 0.875rem;
+		margin: 0;
+	}
+
 	.create-form {
-		padding-bottom: 1rem;
+		width: 100%;
 	}
 
 	.action-buttons {
