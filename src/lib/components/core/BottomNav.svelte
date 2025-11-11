@@ -64,7 +64,6 @@
 	/* Base navigation styles */
 	.responsive-nav {
 		position: fixed;
-		background: theme('colors.bg.mid');
 		z-index: 50;
 	}
 
@@ -74,7 +73,6 @@
 			top: 0;
 			left: 0;
 			right: 0;
-			border-bottom: 2px solid theme('colors.cyan.DEFAULT');
 			padding: 0.75rem 1rem;
 		}
 
@@ -111,7 +109,6 @@
 			left: 0;
 			bottom: 0;
 			width: 5rem;
-			border-right: 2px solid theme('colors.cyan.DEFAULT');
 			padding: 1.5rem 0.5rem;
 		}
 
