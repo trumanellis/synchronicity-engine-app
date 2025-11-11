@@ -4,39 +4,39 @@ export default {
 	theme: {
 		extend: {
 			colors: {
-				// Lila Gold Color Scheme
+				// Synchronicity Engine Design System
 				cyan: {
-					DEFAULT: '#c38017', // Warm gold (primary accent)
-					glow: 'rgba(195, 128, 23, 0.4)',
-					bg: 'rgba(195, 128, 23, 0.08)',
-					border: 'rgba(195, 128, 23, 0.3)'
+					DEFAULT: '#00FFD1',
+					glow: 'rgba(0, 255, 209, 0.3)',
+					bg: 'rgba(0, 255, 209, 0.05)',
+					border: 'rgba(0, 255, 209, 0.3)'
 				},
 				gold: {
-					DEFAULT: '#bf96b7', // Dusty rose/mauve (secondary accent)
-					glow: 'rgba(191, 150, 183, 0.5)',
-					bg: 'rgba(191, 150, 183, 0.1)',
-					border: 'rgba(191, 150, 183, 0.4)'
+					DEFAULT: '#D4AF37',
+					glow: 'rgba(212, 175, 55, 0.6)',
+					bg: 'rgba(212, 175, 55, 0.1)',
+					border: 'rgba(212, 175, 55, 0.5)'
 				},
 				sage: {
-					DEFAULT: '#266087' // Deep blue (tertiary)
+					DEFAULT: '#84A98C'
 				},
 				cream: {
-					DEFAULT: '#c0846a' // Warm terracotta (text)
+					DEFAULT: '#F7F3E9'
 				},
 				bg: {
-					deep: '#20422d', // Dark forest green
-					mid: '#5a6b2e', // Olive green
-					front: '#2d5a3a' // Medium forest green
+					deep: '#0a0e0f',
+					mid: '#1a2e2e',
+					front: '#0f1f1f'
 				}
 			},
 			fontFamily: {
 				exo: ['Exo', 'sans-serif']
 			},
 			boxShadow: {
-				'glow-cyan': '0 0 40px rgba(195, 128, 23, 0.4)', // Warm gold glow
-				'glow-gold': '0 0 20px rgba(191, 150, 183, 0.5)', // Dusty rose glow
-				'glow-cyan-lg': '0 0 60px rgba(195, 128, 23, 0.5)',
-				'glow-gold-lg': '0 0 30px rgba(191, 150, 183, 0.6)'
+				'glow-cyan': '0 0 40px rgba(0, 255, 209, 0.3)',
+				'glow-gold': '0 0 20px rgba(212, 175, 55, 0.6)',
+				'glow-cyan-lg': '0 0 60px rgba(0, 255, 209, 0.4)',
+				'glow-gold-lg': '0 0 30px rgba(212, 175, 55, 0.8)'
 			}
 		}
 	},
