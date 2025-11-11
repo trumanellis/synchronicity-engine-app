@@ -29,12 +29,12 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-	background: rgba(0, 255, 209, 0.4);
+	background: rgba(195, 128, 23, 0.4); /* Warm gold */
 	border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-	background: rgba(0, 255, 209, 0.6);
+	background: rgba(195, 128, 23, 0.6);
 }
 
 /* Animation Utilities */
@@ -42,11 +42,11 @@ body {
 	0%,
 	100% {
 		opacity: 1;
-		box-shadow: 0 0 10px rgba(0, 255, 209, 0.8);
+		box-shadow: 0 0 10px rgba(195, 128, 23, 0.8); /* Warm gold */
 	}
 	50% {
 		opacity: 0.5;
-		box-shadow: 0 0 5px rgba(0, 255, 209, 0.4);
+		box-shadow: 0 0 5px rgba(195, 128, 23, 0.4);
 	}
 }
 
@@ -86,13 +86,13 @@ body {
 	left: 0.75rem;
 	right: 0.75rem;
 	bottom: 0.75rem;
-	border: 3px solid rgba(0, 255, 209, 0.6);
+	border: 3px solid rgba(195, 128, 23, 0.6); /* Warm gold border */
 	border-radius: 2rem;
 	pointer-events: none;
 	box-shadow:
-		0 0 20px rgba(0, 255, 209, 0.4),
-		0 0 40px rgba(0, 255, 209, 0.2),
-		inset 0 0 20px rgba(0, 255, 209, 0.1);
+		0 0 20px rgba(195, 128, 23, 0.4),
+		0 0 40px rgba(195, 128, 23, 0.2),
+		inset 0 0 20px rgba(195, 128, 23, 0.1);
 	animation: neon-glow 3s ease-in-out infinite;
 	z-index: 9999;
 }
@@ -100,15 +100,15 @@ body {
 @keyframes neon-glow {
 	0%, 100% {
 		box-shadow:
-			0 0 20px rgba(0, 255, 209, 0.4),
-			0 0 40px rgba(0, 255, 209, 0.2),
-			inset 0 0 20px rgba(0, 255, 209, 0.1);
+			0 0 20px rgba(195, 128, 23, 0.4),
+			0 0 40px rgba(195, 128, 23, 0.2),
+			inset 0 0 20px rgba(195, 128, 23, 0.1);
 	}
 	50% {
 		box-shadow:
-			0 0 30px rgba(0, 255, 209, 0.6),
-			0 0 60px rgba(0, 255, 209, 0.3),
-			inset 0 0 30px rgba(0, 255, 209, 0.15);
+			0 0 30px rgba(195, 128, 23, 0.6),
+			0 0 60px rgba(195, 128, 23, 0.3),
+			inset 0 0 30px rgba(195, 128, 23, 0.15);
 	}
 }
 
