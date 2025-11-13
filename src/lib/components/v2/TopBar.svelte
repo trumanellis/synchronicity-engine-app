@@ -13,7 +13,7 @@
 		left: 0;
 		right: 0;
 		height: 90px;
-		background: transparent;
+		background: theme('colors.bg.deep');
 		border-bottom: none;
 		display: flex;
 		align-items: center;
