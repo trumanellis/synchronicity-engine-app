@@ -21,24 +21,24 @@
 		box-sizing: border-box;
 	}
 
-	/* Gap Variants */
+	/* Gap Variants - Golden Ratio (φ) Based */
 	.stack[data-gap='xs'] {
-		gap: 0.25rem; /* 4px */
+		gap: var(--spacing-4); /* 8px - Level 4 φ-based */
 	}
 	.stack[data-gap='sm'] {
-		gap: 0.5rem; /* 8px */
+		gap: var(--spacing-3); /* 12px - Level 3 φ-based */
 	}
 	.stack[data-gap='md'] {
-		gap: 0.75rem; /* 12px */
+		gap: var(--spacing-2); /* 18px - Level 2 φ-based */
 	}
 	.stack[data-gap='lg'] {
-		gap: 1rem; /* 16px */
+		gap: var(--spacing-1); /* 30px - Level 1 φ-based */
 	}
 	.stack[data-gap='xl'] {
-		gap: 1.5rem; /* 24px */
+		gap: var(--spacing-0); /* 48px - Level 0 φ-based */
 	}
 	.stack[data-gap='2xl'] {
-		gap: 2rem; /* 32px */
+		gap: calc(var(--spacing-0) * var(--phi)); /* 48px × 1.618 ≈ 78px */
 	}
 
 	/* Alignment Variants */

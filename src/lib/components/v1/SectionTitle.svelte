@@ -17,7 +17,7 @@
 <style>
 	/* Icon */
 	.icon {
-		font-size: 1rem;
+		font-size: var(--font-size-2); /* 12.2px Level 2 φ-based */
 		line-height: 1;
 		flex-shrink: 0;
 	}
@@ -25,7 +25,7 @@
 	/* Title */
 	.title {
 		color: theme('colors.cyan.DEFAULT');
-		font-size: 0.9rem;
+		font-size: var(--font-size-1); /* 19.8px Level 1 φ-based */
 		font-weight: 600;
 		text-transform: uppercase;
 		letter-spacing: 0.05em;
@@ -39,6 +39,6 @@
 
 	/* Global class for container spacing */
 	:global(.section-title-wrapper) {
-		margin-bottom: 1rem;
+		margin-bottom: var(--spacing-2); /* 18px φ-based */
 	}
 </style>

@@ -18,15 +18,15 @@
 		box-sizing: border-box;
 	}
 
-	/* Vertical spacing between sections */
+	/* Vertical spacing between sections - Golden Ratio (φ) Based */
 	.section[data-spacing='sm'] {
-		margin-bottom: 1rem;
+		margin-bottom: var(--spacing-2); /* 18px - Level 2 φ-based */
 	}
 	.section[data-spacing='md'] {
-		margin-bottom: 1.5rem;
+		margin-bottom: var(--spacing-1); /* 30px - Level 1 φ-based */
 	}
 	.section[data-spacing='lg'] {
-		margin-bottom: 2rem;
+		margin-bottom: var(--spacing-0); /* 48px - Level 0 φ-based */
 	}
 
 	/* Remove margin from last section */

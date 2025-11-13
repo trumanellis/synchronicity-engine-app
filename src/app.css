@@ -1,8 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Exo:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 /* Synchronicity Engine Global Styles */
+
+:root {
+	/* Golden Ratio Constants */
+	--phi: 1.618;
+	--phi-inverse: 0.618;
+	--small-ratio: 0.382;
+
+	/* Typography Scale (φ^-n from 32px) */
+	--font-size-0: 32px;
+	--font-size-1: 19.8px;
+	--font-size-2: 12.2px;
+	--font-size-3: 8px;
+
+	/* Spacing Scale (φ^-n from 48px) */
+	--spacing-0: 48px;
+	--spacing-1: 30px;
+	--spacing-2: 18px;
+	--spacing-3: 12px;
+	--spacing-4: 8px;
+
+	/* Animation Durations (φ^-n from 3s) */
+	--duration-0: 3s;
+	--duration-1: 1.85s;
+	--duration-2: 1.15s;
+
+	/* Layout Proportions */
+	--golden-small: 38.2%;
+	--golden-large: 61.8%;
+}
 
 * {
 	margin: 0;
@@ -69,46 +100,77 @@ body {
 	animation: fade-in 0.3s ease-out;
 }
 
-/* App Container with Neon Frame */
+/* App Container with Glowing Side Lines */
 .app-container {
 	min-height: 100vh;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	padding: 1rem;
-	position: relative;
 }
 
+/* Left glowing line */
 .app-container::before {
 	content: '';
 	position: fixed;
-	top: 0.75rem;
-	left: 0.75rem;
-	right: 0.75rem;
-	bottom: 0.75rem;
-	border: 3px solid rgba(195, 128, 23, 0.6); /* Warm gold border */
-	border-radius: 2rem;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	width: 3px;
+	background: linear-gradient(180deg,
+		transparent 0%,
+		rgba(195, 128, 23, 0.8) 10%,
+		rgba(195, 128, 23, 1) 50%,
+		rgba(195, 128, 23, 0.8) 90%,
+		transparent 100%
+	);
 	pointer-events: none;
 	box-shadow:
-		0 0 20px rgba(195, 128, 23, 0.4),
-		0 0 40px rgba(195, 128, 23, 0.2),
-		inset 0 0 20px rgba(195, 128, 23, 0.1);
-	animation: neon-glow 3s ease-in-out infinite;
+		0 0 40px rgba(195, 128, 23, 0.9),
+		0 0 80px rgba(195, 128, 23, 0.6),
+		0 0 120px rgba(195, 128, 23, 0.3);
+	animation: side-glow 2s ease-in-out infinite;
 	z-index: 9999;
 }
 
-@keyframes neon-glow {
+/* Right glowing line */
+.app-container::after {
+	content: '';
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	width: 3px;
+	background: linear-gradient(180deg,
+		transparent 0%,
+		rgba(195, 128, 23, 0.8) 10%,
+		rgba(195, 128, 23, 1) 50%,
+		rgba(195, 128, 23, 0.8) 90%,
+		transparent 100%
+	);
+	pointer-events: none;
+	box-shadow:
+		0 0 40px rgba(195, 128, 23, 0.9),
+		0 0 80px rgba(195, 128, 23, 0.6),
+		0 0 120px rgba(195, 128, 23, 0.3);
+	animation: side-glow 2s ease-in-out infinite;
+	z-index: 9999;
+}
+
+@keyframes side-glow {
 	0%, 100% {
+		opacity: 0.7;
 		box-shadow:
-			0 0 20px rgba(195, 128, 23, 0.4),
-			0 0 40px rgba(195, 128, 23, 0.2),
-			inset 0 0 20px rgba(195, 128, 23, 0.1);
+			0 0 40px rgba(195, 128, 23, 0.9),
+			0 0 80px rgba(195, 128, 23, 0.6),
+			0 0 120px rgba(195, 128, 23, 0.3);
 	}
 	50% {
+		opacity: 1;
 		box-shadow:
-			0 0 30px rgba(195, 128, 23, 0.6),
-			0 0 60px rgba(195, 128, 23, 0.3),
-			inset 0 0 30px rgba(195, 128, 23, 0.15);
+			0 0 60px rgba(195, 128, 23, 1),
+			0 0 120px rgba(195, 128, 23, 0.8),
+			0 0 180px rgba(195, 128, 23, 0.5);
 	}
 }
 

@@ -46,6 +46,20 @@ export const currentUser: User = {
 	]
 };
 
+// User's active intention (most recent joined)
+export const activeIntentionId = 'int-garden-001';
+
+// User's unreleased attention hours per intention
+export const unreleasedAttention: Record<string, number> = {
+	'int-garden-001': 187,
+	'int-eucalyptus-001': 124,
+	'int-mushroom-001': 89,
+	'int-solar-001': 45
+};
+
+// Notification count
+export const notificationCount = 3;
+
 // Temple Data
 export const temple: Temple = {
 	templeId: 'temple-agua-lila',
@@ -293,6 +307,60 @@ export const userTokens: Token[] = [
 			hours: 6
 		},
 		status: 'available'
+	},
+	{
+		tokenId: 'tok-planting-001',
+		intentionId: 'int-garden-001',
+		submittedBy: 'user-marcus-001',
+		steward: 'user-marcus-001',
+		parent: null,
+		title: 'Seed Planting Token',
+		description: 'Planted heirloom vegetables across 12 raised beds',
+		timestamp: '2024-11-05T08:00:00Z',
+		computed: {
+			totalDurationMs: 28800000,
+			totalValueMs: 28800000,
+			supporters: 6,
+			challengers: 0,
+			hours: 8
+		},
+		status: 'available'
+	},
+	{
+		tokenId: 'tok-compost-001',
+		intentionId: 'int-garden-001',
+		submittedBy: 'user-aisha-001',
+		steward: 'user-aisha-001',
+		parent: null,
+		title: 'Composting System Token',
+		description: 'Built three-bin composting system with worm castings',
+		timestamp: '2024-11-03T10:30:00Z',
+		computed: {
+			totalDurationMs: 43200000,
+			totalValueMs: 43200000,
+			supporters: 9,
+			challengers: 0,
+			hours: 12
+		},
+		status: 'available'
+	},
+	{
+		tokenId: 'tok-fence-001',
+		intentionId: 'int-garden-001',
+		submittedBy: 'user-james-001',
+		steward: 'user-james-001',
+		parent: null,
+		title: 'Garden Fencing Token',
+		description: 'Installed deer fencing around perimeter with natural materials',
+		timestamp: '2024-11-01T07:00:00Z',
+		computed: {
+			totalDurationMs: 14400000,
+			totalValueMs: 14400000,
+			supporters: 4,
+			challengers: 0,
+			hours: 4
+		},
+		status: 'available'
 	}
 ];
 
@@ -462,4 +530,34 @@ export function formatCurrency(amount: number): string {
 		minimumFractionDigits: 0,
 		maximumFractionDigits: 0
 	}).format(amount);
+}
+
+// Get recommended intentions for user
+export function getRecommendedIntentions(): Array<
+	Intention & { recommendationReason: string }
+> {
+	return [
+		{
+			...intentions.find((i) => i.intentionId === 'int-mushroom-001')!,
+			recommendationReason: '3 connections already joined'
+		},
+		{
+			...intentions.find((i) => i.intentionId === 'int-eucalyptus-001')!,
+			recommendationReason: '🔥 TRENDING'
+		}
+	];
+}
+
+// Get recent intentions sorted by unreleased attention
+export function getRecentIntentionsByUnreleased(): Array<{
+	intention: Intention;
+	unreleasedHours: number;
+}> {
+	return Object.entries(unreleasedAttention)
+		.map(([intentionId, hours]) => ({
+			intention: intentions.find((i) => i.intentionId === intentionId)!,
+			unreleasedHours: hours
+		}))
+		.filter((item) => item.intention)
+		.sort((a, b) => b.unreleasedHours - a.unreleasedHours);
 }
