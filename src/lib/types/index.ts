@@ -220,6 +220,26 @@ export interface GroupChat {
 	unreadCount: number;
 }
 
+export interface ProofOfService {
+	proofId: string;
+	intentionId: string;
+	userId: string;
+	userName: string;
+	userAvatar: string;
+	title: string;
+	description: string;
+	hoursWorked: number;
+	media?: string[];
+	timestamp: string;
+	status: 'pending' | 'approved' | 'token_created';
+	witnessIds?: string[];
+	tokenId?: string;
+	location?: {
+		name: string;
+		coords?: [number, number];
+	};
+}
+
 // UI State Types
 export type NavTab = 'home' | 'browse' | 'create' | 'tokens' | 'profile';
 

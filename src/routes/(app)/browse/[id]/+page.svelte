@@ -6,26 +6,39 @@
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
-	import { getIntentionById } from '$data/mockData';
-	import type { Intention, ViewMode } from '$types';
+	import { getIntentionById, getProofsByIntention, currentUser } from '$data/mockData';
+	import type { Intention, ViewMode, ProofOfService } from '$types';
 
 	// Components
 	import SectionTitle from '$components/core/SectionTitle.svelte';
 	import ActionButton from '$components/core/ActionButton.svelte';
 	import ActivityItem from '$components/core/ActivityItem.svelte';
+	import ProofGallery from '$lib/components/v2/ProofGallery.svelte';
 
 	let currentView: ViewMode = 'discovery';
 	let intention: Intention | undefined;
+	let allProofs: ProofOfService[] = [];
+	let userProofs: ProofOfService[] = [];
 
 	onMount(() => {
 		const intentionId = $page.params.id;
 		if (intentionId) {
 			intention = getIntentionById(intentionId);
+			if (intention) {
+				allProofs = getProofsByIntention(intentionId);
+				userProofs = allProofs.filter((p) => p.userId === currentUser.userId);
+			}
 		}
 	});
 
 	function switchView(view: ViewMode) {
 		currentView = view;
+	}
+
+	function handleSubmitProof() {
+		if (intention) {
+			goto(`/browse/${intention.intentionId}/submit-proof`);
+		}
 	}
 </script>
 
@@ -79,7 +92,9 @@
 		</div>
 
 		<div class="action-buttons mt-6">
-			<ActionButton variant="primary" fullWidth={true}>Offer Help</ActionButton>
+			<ActionButton variant="primary" fullWidth={true} onClick={handleSubmitProof}
+				>Submit Proof of Service</ActionButton
+			>
 			<ActionButton variant="secondary" fullWidth={true}>Join Chat</ActionButton>
 		</div>
 	{:else if currentView === 'details'}
@@ -104,13 +119,36 @@
 				<ActivityItem {activity} />
 			{/each}
 		</div>
+
+		<!-- All Proofs for this Intention -->
+		{#if allProofs.length > 0}
+			<SectionTitle icon="✓" title="Community Proofs" />
+			<ProofGallery proofs={allProofs} />
+		{/if}
 	{:else if currentView === 'participation'}
 		<!-- Your Impact View -->
 		<h2 class="page-title">Your Journey</h2>
-		<p class="page-subtitle">You haven't participated in this intention yet.</p>
-		<ActionButton variant="primary" fullWidth={true} onClick={() => switchView('discovery')}
-			>Get Started</ActionButton
-		>
+
+		{#if userProofs.length > 0}
+			<p class="page-subtitle">
+				You've submitted {userProofs.length} proof{userProofs.length !== 1 ? 's' : ''} of service for
+				this intention.
+			</p>
+
+			<SectionTitle icon="✓" title="Your Proofs" />
+			<ProofGallery proofs={userProofs} />
+
+			<div class="action-buttons mt-6">
+				<ActionButton variant="primary" fullWidth={true} onClick={handleSubmitProof}
+					>Submit Another Proof</ActionButton
+				>
+			</div>
+		{:else}
+			<p class="page-subtitle">You haven't participated in this intention yet.</p>
+			<ActionButton variant="primary" fullWidth={true} onClick={handleSubmitProof}
+				>Submit Proof of Service</ActionButton
+			>
+		{/if}
 	{/if}
 
 	<!-- View Tabs -->

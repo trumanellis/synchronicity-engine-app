@@ -9,7 +9,8 @@ import type {
 	Distribution,
 	Activity,
 	Connection,
-	GroupChat
+	GroupChat,
+	ProofOfService
 } from '$types';
 
 // Current User Profile
@@ -560,4 +561,138 @@ export function getRecentIntentionsByPotential(): Array<{
 		}))
 		.filter((item) => item.intention)
 		.sort((a, b) => b.potentialHours - a.potentialHours);
+}
+
+// Proof of Service Data
+export const proofsOfService: ProofOfService[] = [
+	{
+		proofId: 'proof-001',
+		intentionId: 'int-garden-001',
+		userId: 'user-marcus-001',
+		userName: 'Marcus Chen',
+		userAvatar: '🔨',
+		title: 'Completed 6 Raised Beds at Maple Grove',
+		description:
+			'Built 6 raised beds using reclaimed cedar lumber. Each bed is 4x8 feet with hugelkultur base layers for water retention. Installed drip irrigation lines and filled with compost-rich soil mix.',
+		hoursWorked: 12,
+		media: ['ipfs://Qm...raised-bed-1', 'ipfs://Qm...raised-bed-2', 'ipfs://Qm...raised-bed-3'],
+		timestamp: '2025-11-09T14:30:00Z',
+		status: 'token_created',
+		tokenId: 'tok-raised-beds-001',
+		location: {
+			name: 'Maple Grove Garden',
+			coords: [40.2055, -8.4125]
+		}
+	},
+	{
+		proofId: 'proof-002',
+		intentionId: 'int-garden-001',
+		userId: 'user-truman-001',
+		userName: 'Dr. Truman Ellis',
+		userAvatar: '👨‍🔬',
+		title: 'Irrigation System Design & Installation',
+		description:
+			'Designed and installed gravity-fed irrigation system for Riverside Garden. Calculated optimal pipe sizing, installed 200ft of mainline, and set up 8 zone valves with pressure regulators.',
+		hoursWorked: 8,
+		media: ['ipfs://Qm...irrigation-plan', 'ipfs://Qm...irrigation-installed'],
+		timestamp: '2025-11-08T16:00:00Z',
+		status: 'approved',
+		witnessIds: ['user-marcus-001', 'user-james-001'],
+		location: {
+			name: 'Riverside Garden'
+		}
+	},
+	{
+		proofId: 'proof-003',
+		intentionId: 'int-garden-001',
+		userId: 'user-aisha-001',
+		userName: 'Aisha Patel',
+		userAvatar: '🌿',
+		title: 'Three-Bin Composting System',
+		description:
+			'Built professional-grade three-bin composting system with worm casting integration. Designed for optimal airflow and easy turning. Includes chicken wire sides and removable front panels.',
+		hoursWorked: 10,
+		media: ['ipfs://Qm...compost-1', 'ipfs://Qm...compost-2'],
+		timestamp: '2025-11-07T11:20:00Z',
+		status: 'token_created',
+		tokenId: 'tok-compost-001'
+	},
+	{
+		proofId: 'proof-004',
+		intentionId: 'int-eucalyptus-001',
+		userId: 'user-miguel-001',
+		userName: 'Miguel Santos',
+		userAvatar: '🪓',
+		title: 'Cleared 2 Acres of Eucalyptus',
+		description:
+			'Safely felled and processed 47 eucalyptus trees from valley restoration zone. Used chainsaw milling to create lumber for community projects. Chipped branches for mulch.',
+		hoursWorked: 20,
+		media: [
+			'ipfs://Qm...eucalyptus-before',
+			'ipfs://Qm...eucalyptus-during',
+			'ipfs://Qm...eucalyptus-after'
+		],
+		timestamp: '2025-11-06T09:00:00Z',
+		status: 'approved',
+		witnessIds: ['user-elena-001', 'user-truman-001']
+	},
+	{
+		proofId: 'proof-005',
+		intentionId: 'int-garden-001',
+		userId: 'user-truman-001',
+		userName: 'Dr. Truman Ellis',
+		userAvatar: '👨‍🔬',
+		title: 'Tool Shed Construction',
+		description:
+			'Built 8x10 tool shed at Oak Street Garden using reclaimed cedar. Includes shelving, tool racks, and weatherproof door. Foundation on concrete blocks.',
+		hoursWorked: 16,
+		media: ['ipfs://Qm...shed-frame', 'ipfs://Qm...shed-complete'],
+		timestamp: '2024-10-25T11:30:00Z',
+		status: 'token_created',
+		tokenId: 'tok-timber-001',
+		location: {
+			name: 'Oak Street Garden',
+			coords: [40.2045, -8.4115]
+		}
+	},
+	{
+		proofId: 'proof-006',
+		intentionId: 'int-solar-001',
+		userId: 'user-truman-001',
+		userName: 'Dr. Truman Ellis',
+		userAvatar: '👨‍🔬',
+		title: 'Taught Solar Dehydrator Workshop',
+		description:
+			'Led 3-hour workshop on building solar food dehydrators. 12 participants built their own units. Covered design principles, material selection, and food preservation techniques.',
+		hoursWorked: 5,
+		timestamp: '2025-11-05T14:00:00Z',
+		status: 'pending',
+		location: {
+			name: 'Workshop Barn'
+		}
+	}
+];
+
+// Helper Functions for Proof of Service
+export function getProofsByIntention(intentionId: string): ProofOfService[] {
+	return proofsOfService.filter((proof) => proof.intentionId === intentionId);
+}
+
+export function getProofsByUser(userId: string): ProofOfService[] {
+	return proofsOfService.filter((proof) => proof.userId === userId);
+}
+
+export function getProofById(proofId: string): ProofOfService | undefined {
+	return proofsOfService.find((proof) => proof.proofId === proofId);
+}
+
+export function submitProofOfService(proof: Omit<ProofOfService, 'proofId' | 'timestamp' | 'status'>): ProofOfService {
+	const newProof: ProofOfService = {
+		...proof,
+		proofId: `proof-${Date.now()}`,
+		timestamp: new Date().toISOString(),
+		status: 'pending'
+	};
+	proofsOfService.push(newProof);
+	return newProof;
 }
