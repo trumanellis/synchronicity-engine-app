@@ -1,13 +1,9 @@
 <script lang="ts">
-	// No props needed anymore
+	// No props needed
 </script>
 
 <div class="top-bar">
-	<div class="brand">
-		<span class="app-title left">Synchronicity</span>
-		<img src="/Glowing Eye.png" alt="" class="app-logo" />
-		<span class="app-title right">Engine</span>
-	</div>
+	<img src="/Synchronicity Engine.png" alt="Synchronicity Engine" class="logo-image" />
 </div>
 
 <style>
@@ -16,7 +12,7 @@
 		top: 0;
 		left: 0;
 		right: 0;
-		height: 48px; /* Narrow bar */
+		height: 48px;
 		background: #000000;
 		border-bottom: 1px solid rgba(212, 175, 55, 0.3);
 		display: flex;
@@ -33,49 +29,22 @@
 		}
 	}
 
-	.brand {
-		display: flex;
-		align-items: center;
-		gap: var(--spacing-4); /* 8px φ-based gap between elements */
-	}
-
-	.app-logo {
-		height: 24px; /* Smaller on mobile */
+	.logo-image {
+		height: 36px;
 		width: auto;
 		object-fit: contain;
 		filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.6));
-		animation: pulse-gold var(--duration-0) ease-in-out infinite; /* 3s φ-based */
+		animation: pulse-glow var(--duration-0) ease-in-out infinite; /* 3s φ-based */
 	}
 
-	/* Desktop: larger logo */
+	/* Desktop: slightly larger */
 	@media (min-width: 768px) {
-		.app-logo {
-			height: 32px;
+		.logo-image {
+			height: 40px;
 		}
 	}
 
-	.app-title {
-		font-size: var(--font-size-3); /* 8px Level 3 φ-based - smaller on mobile */
-		font-weight: 600;
-		text-transform: uppercase;
-		letter-spacing: 0.5px;
-		color: theme('colors.gold.DEFAULT');
-		margin: 0;
-		font-family: theme('fontFamily.exo');
-		text-shadow: 0 0 10px rgba(212, 175, 55, 0.6);
-		animation: pulse-gold-text var(--duration-0) ease-in-out infinite; /* 3s φ-based */
-		white-space: nowrap;
-	}
-
-	/* Desktop: larger text */
-	@media (min-width: 768px) {
-		.app-title {
-			font-size: var(--font-size-2); /* 12.2px Level 2 φ-based */
-			letter-spacing: 1px;
-		}
-	}
-
-	@keyframes pulse-gold {
+	@keyframes pulse-glow {
 		0%,
 		100% {
 			filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.6));
@@ -84,15 +53,4 @@
 			filter: drop-shadow(0 0 16px rgba(212, 175, 55, 1));
 		}
 	}
-
-	@keyframes pulse-gold-text {
-		0%,
-		100% {
-			text-shadow: 0 0 10px rgba(212, 175, 55, 0.6);
-		}
-		50% {
-			text-shadow: 0 0 20px rgba(212, 175, 55, 1);
-		}
-	}
-
 </style>
