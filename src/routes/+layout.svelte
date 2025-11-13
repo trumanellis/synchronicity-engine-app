@@ -9,5 +9,7 @@
 </script>
 
 <div class="app-container">
-	<slot />
+	<div class="frame-wrapper">
+		<slot />
+	</div>
 </div>

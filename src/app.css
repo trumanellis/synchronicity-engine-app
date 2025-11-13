@@ -174,6 +174,61 @@ body {
 	}
 }
 
+/* Frame wrapper for top and bottom lines */
+.frame-wrapper {
+	position: relative;
+	width: 100%;
+	min-height: 100vh;
+}
+
+/* Top glowing line */
+.frame-wrapper::before {
+	content: '';
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 3px;
+	background: linear-gradient(90deg,
+		transparent 0%,
+		rgba(195, 128, 23, 0.8) 10%,
+		rgba(195, 128, 23, 1) 50%,
+		rgba(195, 128, 23, 0.8) 90%,
+		transparent 100%
+	);
+	pointer-events: none;
+	box-shadow:
+		0 0 40px rgba(195, 128, 23, 0.9),
+		0 0 80px rgba(195, 128, 23, 0.6),
+		0 0 120px rgba(195, 128, 23, 0.3);
+	animation: side-glow 2s ease-in-out infinite;
+	z-index: 10000;
+}
+
+/* Bottom glowing line */
+.frame-wrapper::after {
+	content: '';
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	height: 3px;
+	background: linear-gradient(90deg,
+		transparent 0%,
+		rgba(195, 128, 23, 0.8) 10%,
+		rgba(195, 128, 23, 1) 50%,
+		rgba(195, 128, 23, 0.8) 90%,
+		transparent 100%
+	);
+	pointer-events: none;
+	box-shadow:
+		0 0 40px rgba(195, 128, 23, 0.9),
+		0 0 80px rgba(195, 128, 23, 0.6),
+		0 0 120px rgba(195, 128, 23, 0.3);
+	animation: side-glow 2s ease-in-out infinite;
+	z-index: 10000;
+}
+
 /* Phone Mockup Pattern - Responsive */
 .phone-mockup {
 	@apply bg-bg-front rounded-[1.5rem];
