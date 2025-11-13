@@ -74,17 +74,24 @@
 		overflow-y: auto;
 		overflow-x: hidden;
 		padding: var(--spacing-3); /* 12px all around */
-		padding-bottom: calc(100vh * var(--small-ratio) + var(--spacing-1)); /* Extra padding for fixed hero + breathing room */
+		padding-bottom: 200px; /* Mobile: fixed 180px hero + 20px breathing room */
 		scrollbar-width: thin;
 	}
 
+	/* Desktop: adjust padding for golden ratio hero */
+	@media (min-width: 768px) {
+		.content-section {
+			padding-bottom: calc(100vh * var(--small-ratio) + var(--spacing-1)); /* Extra padding for fixed hero + breathing room */
+		}
+	}
+
 	.hero-section {
-		/* Fixed at bottom - 38.2% of viewport (golden small ratio) */
+		/* Fixed at bottom - smaller on mobile, golden ratio on desktop */
 		position: fixed;
 		bottom: 0;
 		left: 0;
 		right: 0;
-		height: calc(100vh * var(--small-ratio));
+		height: 180px; /* Fixed height on mobile (120px hero card + 60px nav) */
 		display: flex;
 		flex-direction: column;
 		justify-content: flex-end; /* Push content to bottom */
@@ -94,10 +101,11 @@
 		z-index: 100;
 	}
 
-	/* Desktop: account for sidebar */
+	/* Desktop: golden ratio and account for sidebar */
 	@media (min-width: 768px) {
 		.hero-section {
 			left: 5rem;
+			height: calc(100vh * var(--small-ratio)); /* 38.2% golden ratio on desktop */
 		}
 	}
 

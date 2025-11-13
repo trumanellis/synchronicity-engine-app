@@ -155,13 +155,20 @@
 		background: #000000; /* Solid black background */
 		border: 2px solid rgba(212, 175, 55, 0.6); /* Gold border */
 		border-radius: 24px;
-		padding: var(--spacing-2); /* 18px φ-based */
+		padding: var(--spacing-4) var(--spacing-3); /* 8px 12px φ-based - more compact on mobile */
 		cursor: pointer;
 		transition: all 0.3s ease;
 		text-align: left;
 		position: relative;
 		overflow: hidden;
 		animation: glow-pulse var(--duration-0) ease-in-out infinite; /* 3s φ-based */
+	}
+
+	/* Desktop: more padding */
+	@media (min-width: 768px) {
+		.hero-card {
+			padding: var(--spacing-2); /* 18px φ-based */
+		}
 	}
 
 	.hero-card::before {
@@ -247,16 +254,30 @@
 	}
 
 	.category-emoji {
-		font-size: var(--font-size-0); /* 32px Level 0 φ-based */
+		font-size: var(--font-size-1); /* 19.8px Level 1 φ-based - smaller on mobile */
 		filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.6));
 	}
 
+	/* Desktop: larger emoji */
+	@media (min-width: 768px) {
+		.category-emoji {
+			font-size: var(--font-size-0); /* 32px Level 0 φ-based */
+		}
+	}
+
 	.title {
-		font-size: var(--font-size-1); /* 19.8px Level 1 φ-based */
+		font-size: var(--font-size-2); /* 12.2px Level 2 φ-based - smaller on mobile */
 		font-weight: 600;
 		color: theme('colors.cyan.DEFAULT');
 		flex: 1;
 		line-height: 1.3;
+	}
+
+	/* Desktop: larger title */
+	@media (min-width: 768px) {
+		.title {
+			font-size: var(--font-size-1); /* 19.8px Level 1 φ-based */
+		}
 	}
 
 	.timer {
@@ -271,16 +292,25 @@
 	.description {
 		color: theme('colors.cream.DEFAULT');
 		opacity: 0.85;
-		font-size: var(--font-size-2); /* 12.2px Level 2 φ-based */
+		font-size: var(--font-size-3); /* 8px Level 3 φ-based - smaller on mobile */
 		line-height: 1.4;
-		margin-bottom: var(--spacing-3); /* 12px φ-based */
+		margin-bottom: var(--spacing-4); /* 8px φ-based - less margin on mobile */
 		position: relative;
 		z-index: 1;
-		/* 3-line clamp for description */
+		/* 2-line clamp for mobile, 3-line for desktop */
 		display: -webkit-box;
-		-webkit-line-clamp: 3;
+		-webkit-line-clamp: 2;
 		-webkit-box-orient: vertical;
 		overflow: hidden;
+	}
+
+	/* Desktop: larger text and more lines */
+	@media (min-width: 768px) {
+		.description {
+			font-size: var(--font-size-2); /* 12.2px Level 2 φ-based */
+			margin-bottom: var(--spacing-3); /* 12px φ-based */
+			-webkit-line-clamp: 3;
+		}
 	}
 
 	.bottom-section {

@@ -89,7 +89,14 @@
 		z-index: 1000;
 		box-shadow: none; /* Remove shadow */
 		flex-shrink: 0; /* Prevent shrinking */
-		height: 85px; /* Slightly reduced height for compactness */
+		height: 60px; /* Smaller on mobile */
+	}
+
+	/* Desktop: taller nav */
+	@media (min-width: 768px) {
+		.bottom-nav {
+			height: 85px;
+		}
 	}
 
 	.nav-item {
@@ -107,10 +114,17 @@
 	}
 
 	.nav-icon {
-		font-size: var(--font-size-0); /* 32px Level 0 φ-based - fill the space */
+		font-size: var(--font-size-1); /* 19.8px Level 1 φ-based - smaller on mobile */
 		transition: all 0.3s ease;
 		filter: grayscale(0.5);
 		opacity: 0.6;
+	}
+
+	/* Desktop: larger icons */
+	@media (min-width: 768px) {
+		.nav-icon {
+			font-size: var(--font-size-0); /* 32px Level 0 φ-based */
+		}
 	}
 
 	.nav-label {

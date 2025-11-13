@@ -49,11 +49,18 @@
 	}
 
 	.app-logo {
-		height: 32px;
+		height: 24px; /* Smaller on mobile */
 		width: auto;
 		object-fit: contain;
 		filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.6));
 		animation: pulse-gold var(--duration-0) ease-in-out infinite; /* 3s φ-based */
+	}
+
+	/* Desktop: larger logo */
+	@media (min-width: 768px) {
+		.app-logo {
+			height: 32px;
+		}
 	}
 
 	.app-title {
