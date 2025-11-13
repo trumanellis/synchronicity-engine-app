@@ -74,7 +74,7 @@
 		overflow-y: auto;
 		overflow-x: hidden;
 		padding: var(--spacing-3); /* 12px all around */
-		padding-bottom: 170px; /* Mobile: fixed 150px hero + 20px breathing room */
+		padding-bottom: 190px; /* Mobile: fixed 170px hero + 20px breathing room */
 		scrollbar-width: thin;
 	}
 
@@ -91,13 +91,13 @@
 		bottom: 0;
 		left: 0;
 		right: 0;
-		height: 150px; /* Fixed height on mobile (smaller without chat/tokens) */
+		height: 170px; /* Fixed height on mobile (more room for hero card) */
 		display: flex;
 		flex-direction: column;
 		justify-content: flex-end; /* Push content to bottom */
 		gap: 0; /* No gap between hero and nav */
 		background: transparent; /* Transparent - no black gap */
-		overflow: hidden; /* Prevent overflow */
+		overflow: visible; /* Allow top of card to show on hover */
 		z-index: 100;
 	}
 
@@ -111,9 +111,16 @@
 
 	.hero-container {
 		flex: 0 0 auto; /* Don't grow, just fit content */
-		padding: var(--spacing-4) var(--spacing-3) 0; /* Small top padding for hover state, sides only */
+		padding: var(--spacing-3) var(--spacing-3) 0; /* 12px top padding for hover state, sides only */
 		display: flex;
 		align-items: center;
 		overflow: visible; /* Allow hover effect to show */
+	}
+
+	/* Desktop: smaller top padding */
+	@media (min-width: 768px) {
+		.hero-container {
+			padding: var(--spacing-4) var(--spacing-3) 0; /* 8px top padding on desktop */
+		}
 	}
 </style>
