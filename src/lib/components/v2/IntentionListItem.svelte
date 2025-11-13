@@ -2,8 +2,8 @@
 	import type { Intention } from '$types';
 
 	export let intention: Intention;
-	export let unreleasedHours: number = 0;
-	export let showUnreleased: boolean = false;
+	export let potentialHours: number = 0;
+	export let showPotential: boolean = false;
 	export let isRecommended: boolean = false;
 	export let recommendationReason: string = '';
 	export let onClick: (() => void) | undefined = undefined;
@@ -27,8 +27,8 @@
 		<span class="emoji">{getCategoryEmoji(intention.category)}</span>
 		<div class="item-content">
 			<h3 class="item-title">{intention.title}</h3>
-			{#if showUnreleased && unreleasedHours > 0}
-				<div class="unreleased-badge">⚡ {unreleasedHours}h unreleased</div>
+			{#if showPotential && potentialHours > 0}
+				<div class="potential-badge">⚡ {potentialHours}h potential</div>
 			{/if}
 			{#if isRecommended}
 				<div class="recommended-badge">
@@ -96,7 +96,7 @@
 		line-height: 1.3;
 	}
 
-	.unreleased-badge {
+	.potential-badge {
 		display: inline-block;
 		background: linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(212, 175, 55, 0.1));
 		border: 1px solid rgba(212, 175, 55, 0.4);

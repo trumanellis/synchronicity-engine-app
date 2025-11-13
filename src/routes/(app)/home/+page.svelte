@@ -8,7 +8,7 @@
 	import { goto } from '$app/navigation';
 	import { activeTab } from '$stores/navigationStore';
 	import {
-		getRecentIntentionsByUnreleased,
+		getRecentIntentionsByPotential,
 		getRecommendedIntentions
 	} from '$data/mockData';
 
@@ -27,8 +27,8 @@
 		activeTab.set('home');
 	});
 
-	// Get recent intentions sorted by unreleased attention
-	$: recentIntentions = getRecentIntentionsByUnreleased();
+	// Get recent intentions sorted by potential attention
+	$: recentIntentions = getRecentIntentionsByPotential();
 
 	// Get recommended intentions
 	$: recommendedIntentions = getRecommendedIntentions();
@@ -43,17 +43,17 @@
 </svelte:head>
 
 <Stack gap="md">
-	<!-- Intentions (sorted by unreleased attention) -->
+	<!-- Intentions (sorted by potential attention) -->
 	<Section spacing="md">
 		<Stack gap="md">
 			<SectionTitle icon="⚡" title="Intentions" />
 
 			<Stack gap="sm">
-				{#each recentIntentions as { intention, unreleasedHours }}
+				{#each recentIntentions as { intention, potentialHours }}
 					<IntentionListItem
 						{intention}
-						{unreleasedHours}
-						showUnreleased={true}
+						potentialHours={potentialHours}
+						showPotential={true}
 						onClick={() => handleViewIntention(intention.intentionId)}
 					/>
 				{/each}

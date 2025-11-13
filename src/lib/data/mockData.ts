@@ -49,8 +49,8 @@ export const currentUser: User = {
 // User's active intention (most recent joined)
 export const activeIntentionId = 'int-garden-001';
 
-// User's unreleased attention hours per intention
-export const unreleasedAttention: Record<string, number> = {
+// User's potential attention hours per intention
+export const potentialAttention: Record<string, number> = {
 	'int-garden-001': 187,
 	'int-eucalyptus-001': 124,
 	'int-mushroom-001': 89,
@@ -548,16 +548,16 @@ export function getRecommendedIntentions(): Array<
 	];
 }
 
-// Get recent intentions sorted by unreleased attention
-export function getRecentIntentionsByUnreleased(): Array<{
+// Get recent intentions sorted by potential attention
+export function getRecentIntentionsByPotential(): Array<{
 	intention: Intention;
-	unreleasedHours: number;
+	potentialHours: number;
 }> {
-	return Object.entries(unreleasedAttention)
+	return Object.entries(potentialAttention)
 		.map(([intentionId, hours]) => ({
 			intention: intentions.find((i) => i.intentionId === intentionId)!,
-			unreleasedHours: hours
+			potentialHours: hours
 		}))
 		.filter((item) => item.intention)
-		.sort((a, b) => b.unreleasedHours - a.unreleasedHours);
+		.sort((a, b) => b.potentialHours - a.potentialHours);
 }
