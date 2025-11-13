@@ -43,13 +43,10 @@
 </svelte:head>
 
 <Stack gap="md">
-	<!-- Recent Intentions (sorted by unreleased attention) -->
+	<!-- Intentions (sorted by unreleased attention) -->
 	<Section spacing="md">
 		<Stack gap="md">
-			<div class="section-header">
-				<SectionTitle icon="⚡" title="Recent Intentions" />
-				<span class="sort-label">Sorted by unreleased</span>
-			</div>
+			<SectionTitle icon="⚡" title="Intentions" />
 
 			<Stack gap="sm">
 				{#each recentIntentions as { intention, unreleasedHours }}
@@ -64,13 +61,10 @@
 		</Stack>
 	</Section>
 
-	<!-- Recommended Intentions -->
+	<!-- Suggested Intentions -->
 	<Section spacing="lg">
 		<Stack gap="md">
-			<div class="section-header">
-				<SectionTitle icon="✨" title="Recommended For You" />
-				<span class="sort-label">From community</span>
-			</div>
+			<SectionTitle icon="✨" title="Suggested" />
 
 			<Stack gap="sm">
 				{#each recommendedIntentions as intention}
@@ -93,22 +87,6 @@
 </Stack>
 
 <style>
-	.section-header {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		gap: 1rem;
-	}
-
-	.sort-label {
-		font-size: 0.7rem;
-		text-transform: uppercase;
-		letter-spacing: 0.5px;
-		color: theme('colors.sage.DEFAULT');
-		opacity: 0.6;
-		font-weight: 600;
-	}
-
 	.view-more {
 		text-align: center;
 		margin-top: 0.5rem;
