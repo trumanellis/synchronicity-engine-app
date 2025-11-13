@@ -8,9 +8,10 @@
 </script>
 
 <div class="top-bar">
-	<h1 class="app-title">Synchronicity Engine</h1>
 	<div class="brand">
+		<span class="app-title left">Synchronicity</span>
 		<img src="/Glowing Eye.png" alt="" class="app-logo" />
+		<span class="app-title right">Engine</span>
 	</div>
 	<button class="notifications-button" on:click={handleNotifications} aria-label="Notifications">
 		<span class="notification-icon">🔔</span>
@@ -46,6 +47,7 @@
 	.brand {
 		display: flex;
 		align-items: center;
+		gap: var(--spacing-4); /* 8px φ-based gap between elements */
 	}
 
 	.app-logo {
@@ -64,17 +66,24 @@
 	}
 
 	.app-title {
-		position: absolute;
-		left: var(--spacing-2); /* 18px φ-based */
-		font-size: var(--font-size-2); /* 12.2px Level 2 φ-based */
+		font-size: var(--font-size-3); /* 8px Level 3 φ-based - smaller on mobile */
 		font-weight: 600;
 		text-transform: uppercase;
-		letter-spacing: 1px;
+		letter-spacing: 0.5px;
 		color: theme('colors.gold.DEFAULT');
 		margin: 0;
 		font-family: theme('fontFamily.exo');
 		text-shadow: 0 0 10px rgba(212, 175, 55, 0.6);
 		animation: pulse-gold-text var(--duration-0) ease-in-out infinite; /* 3s φ-based */
+		white-space: nowrap;
+	}
+
+	/* Desktop: larger text */
+	@media (min-width: 768px) {
+		.app-title {
+			font-size: var(--font-size-2); /* 12.2px Level 2 φ-based */
+			letter-spacing: 1px;
+		}
 	}
 
 	@keyframes pulse-gold {
