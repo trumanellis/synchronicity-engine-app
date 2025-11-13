@@ -13,8 +13,8 @@
 		left: 0;
 		right: 0;
 		height: 90px;
-		background: #000000;
-		border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+		background: transparent;
+		border-bottom: none;
 		display: flex;
 		align-items: center;
 		justify-content: center;
