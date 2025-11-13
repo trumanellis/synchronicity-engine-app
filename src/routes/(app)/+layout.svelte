@@ -5,7 +5,7 @@
 	 * Implements golden ratio layout (61.8% content / 38.2% hero+nav)
 	 */
 	import { onMount } from 'svelte';
-	import { intentions, activeIntentionId, notificationCount } from '$data/mockData';
+	import { intentions, activeIntentionId } from '$data/mockData';
 
 	// V2 Components
 	import TopBar from '$lib/components/v2/TopBar.svelte';
@@ -23,7 +23,7 @@
 	}
 </script>
 
-<TopBar notificationCount={notificationCount} />
+<TopBar />
 
 <div class="v2-layout">
 	<div class="golden-layout">

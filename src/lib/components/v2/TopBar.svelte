@@ -1,10 +1,5 @@
 <script lang="ts">
-	export let notificationCount: number = 0;
-
-	function handleNotifications() {
-		// TODO: Navigate to notifications page
-		console.log('Opening notifications...');
-	}
+	// No props needed anymore
 </script>
 
 <div class="top-bar">
@@ -13,12 +8,6 @@
 		<img src="/Glowing Eye.png" alt="" class="app-logo" />
 		<span class="app-title right">Engine</span>
 	</div>
-	<button class="notifications-button" on:click={handleNotifications} aria-label="Notifications">
-		<span class="notification-icon">🔔</span>
-		{#if notificationCount > 0}
-			<span class="badge">{notificationCount}</span>
-		{/if}
-	</button>
 </div>
 
 <style>
@@ -106,55 +95,4 @@
 		}
 	}
 
-	.notifications-button {
-		position: absolute;
-		right: var(--spacing-2); /* 18px φ-based */
-		background: none;
-		border: none;
-		cursor: pointer;
-		padding: var(--spacing-4); /* 8px φ-based */
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		transition: all 0.3s ease;
-	}
-
-	.notification-icon {
-		font-size: var(--font-size-2); /* 12.2px Level 2 φ-based - smaller */
-		filter: grayscale(0.5);
-		opacity: 0.6;
-		transition: all 0.3s ease;
-	}
-
-	.notifications-button:hover .notification-icon {
-		filter: grayscale(0);
-		opacity: 1;
-		transform: scale(1.1);
-	}
-
-	.badge {
-		position: absolute;
-		top: 2px;
-		right: 2px;
-		background: linear-gradient(135deg, #ff4757, #ff6348);
-		color: white;
-		font-size: 0.5rem; /* Small */
-		font-weight: 700;
-		padding: 1px 4px;
-		border-radius: 8px;
-		min-width: 14px;
-		text-align: center;
-		box-shadow: 0 2px 8px rgba(255, 71, 87, 0.6);
-		animation: pulse-badge var(--duration-1) ease-in-out infinite;
-	}
-
-	@keyframes pulse-badge {
-		0%,
-		100% {
-			transform: scale(1);
-		}
-		50% {
-			transform: scale(1.1);
-		}
-	}
 </style>
