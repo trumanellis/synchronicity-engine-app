@@ -12,7 +12,7 @@
 		top: 0;
 		left: 0;
 		right: 0;
-		height: 48px;
+		height: 90px;
 		background: #000000;
 		border-bottom: 1px solid rgba(212, 175, 55, 0.3);
 		display: flex;
@@ -26,11 +26,12 @@
 	@media (min-width: 768px) {
 		.top-bar {
 			left: 5rem;
+			height: 100px;
 		}
 	}
 
 	.logo-image {
-		height: 36px;
+		height: 72px;
 		width: auto;
 		object-fit: contain;
 		filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.6));
@@ -40,7 +41,7 @@
 	/* Desktop: slightly larger */
 	@media (min-width: 768px) {
 		.logo-image {
-			height: 40px;
+			height: 80px;
 		}
 	}
 

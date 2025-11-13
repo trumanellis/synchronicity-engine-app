@@ -47,7 +47,7 @@
 <style>
 	.v2-layout {
 		min-height: 100vh;
-		padding-top: 48px; /* Account for fixed top bar */
+		padding-top: 90px; /* Account for fixed top bar */
 		background: theme('colors.bg.deep');
 		width: 100%;
 		max-width: 100%;
@@ -58,6 +58,7 @@
 	@media (min-width: 768px) {
 		.v2-layout {
 			margin-left: 5rem;
+			padding-top: 100px; /* Taller top bar on desktop */
 		}
 	}
 
