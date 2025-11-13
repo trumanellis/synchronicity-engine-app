@@ -314,10 +314,17 @@
 	}
 
 	.bottom-section {
-		display: flex;
+		display: none; /* Hidden on mobile for compactness */
 		gap: var(--spacing-3); /* 12px φ-based */
 		position: relative;
 		z-index: 1;
+	}
+
+	/* Desktop: show chat and tokens */
+	@media (min-width: 768px) {
+		.bottom-section {
+			display: flex;
+		}
 	}
 
 	.chat-preview {

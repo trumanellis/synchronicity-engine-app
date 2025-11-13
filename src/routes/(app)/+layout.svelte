@@ -74,7 +74,7 @@
 		overflow-y: auto;
 		overflow-x: hidden;
 		padding: var(--spacing-3); /* 12px all around */
-		padding-bottom: 200px; /* Mobile: fixed 180px hero + 20px breathing room */
+		padding-bottom: 170px; /* Mobile: fixed 150px hero + 20px breathing room */
 		scrollbar-width: thin;
 	}
 
@@ -91,7 +91,7 @@
 		bottom: 0;
 		left: 0;
 		right: 0;
-		height: 180px; /* Fixed height on mobile (120px hero card + 60px nav) */
+		height: 150px; /* Fixed height on mobile (smaller without chat/tokens) */
 		display: flex;
 		flex-direction: column;
 		justify-content: flex-end; /* Push content to bottom */
