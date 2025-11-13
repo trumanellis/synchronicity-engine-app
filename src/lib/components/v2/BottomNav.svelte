@@ -10,11 +10,6 @@
 	function handleCreate() {
 		goto('/create');
 	}
-
-	function handlePostProof() {
-		// TODO: Navigate to proof submission page
-		console.log('Opening proof submission...');
-	}
 </script>
 
 <nav class="bottom-nav">
@@ -39,15 +34,10 @@
 		<span class="nav-label">Browse</span>
 	</button>
 
-	<!-- Center Action Buttons -->
+	<!-- Center Action Button -->
 	<button class="nav-item action-button" on:click={handleCreate} aria-label="Create Intention">
 		<span class="nav-icon">🙏</span>
 		<span class="nav-label">Create</span>
-	</button>
-
-	<button class="nav-item action-button" on:click={handlePostProof} aria-label="Post Proof">
-		<span class="nav-icon">📸</span>
-		<span class="nav-label">Proof</span>
 	</button>
 
 	<!-- Right Section -->
