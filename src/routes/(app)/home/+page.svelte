@@ -42,55 +42,65 @@
 	<title>Home - Synchronicity Engine</title>
 </svelte:head>
 
-<!-- Banner at top of page -->
-<div class="home-banner" />
+<div class="home-page-wrapper">
+	<!-- Banner at top of page - full width, outside padding -->
+	<div class="home-banner" />
 
-<Stack gap="md">
-	<!-- Intentions (sorted by potential attention) -->
-	<Section spacing="md">
+	<!-- Content with padding -->
+	<div class="home-content">
 		<Stack gap="md">
-			<SectionTitle icon="⚡" title="Intentions" />
+			<!-- Intentions (sorted by potential attention) -->
+			<Section spacing="md">
+				<Stack gap="md">
+					<SectionTitle icon="⚡" title="Intentions" />
 
-			<Stack gap="sm">
-				{#each recentIntentions as { intention, potentialHours }}
-					<IntentionListItem
-						{intention}
-						potentialHours={potentialHours}
-						showPotential={true}
-						onClick={() => handleViewIntention(intention.intentionId)}
-					/>
-				{/each}
-			</Stack>
+					<Stack gap="sm">
+						{#each recentIntentions as { intention, potentialHours }}
+							<IntentionListItem
+								{intention}
+								potentialHours={potentialHours}
+								showPotential={true}
+								onClick={() => handleViewIntention(intention.intentionId)}
+							/>
+						{/each}
+					</Stack>
+				</Stack>
+			</Section>
+
+			<!-- Suggested Intentions -->
+			<Section spacing="lg">
+				<Stack gap="md">
+					<SectionTitle icon="✨" title="Suggested" />
+
+					<Stack gap="sm">
+						{#each recommendedIntentions as intention}
+							<IntentionListItem
+								{intention}
+								isRecommended={true}
+								recommendationReason={intention.recommendationReason}
+								onClick={() => handleViewIntention(intention.intentionId)}
+							/>
+						{/each}
+					</Stack>
+
+					<div class="view-more">
+						<button class="view-more-link" on:click={() => goto('/browse')}>
+							Browse all intentions →
+						</button>
+					</div>
+				</Stack>
+			</Section>
 		</Stack>
-	</Section>
-
-	<!-- Suggested Intentions -->
-	<Section spacing="lg">
-		<Stack gap="md">
-			<SectionTitle icon="✨" title="Suggested" />
-
-			<Stack gap="sm">
-				{#each recommendedIntentions as intention}
-					<IntentionListItem
-						{intention}
-						isRecommended={true}
-						recommendationReason={intention.recommendationReason}
-						onClick={() => handleViewIntention(intention.intentionId)}
-					/>
-				{/each}
-			</Stack>
-
-			<div class="view-more">
-				<button class="view-more-link" on:click={() => goto('/browse')}>
-					Browse all intentions →
-				</button>
-			</div>
-		</Stack>
-	</Section>
-</Stack>
+	</div>
+</div>
 
 <style>
-	/* Banner at top of dashboard */
+	/* Home page wrapper - no padding */
+	.home-page-wrapper {
+		margin: calc(var(--spacing-3) * -1); /* Negative margin to cancel PageContainer padding */
+	}
+
+	/* Banner at top of dashboard - full edge to edge */
 	.home-banner {
 		position: relative;
 		width: 100%;
@@ -102,7 +112,7 @@
 		background-position: center center;
 		opacity: 0.8; /* Prominent but not overwhelming */
 		pointer-events: none;
-		margin-bottom: var(--spacing-3);
+		margin-bottom: 0;
 		z-index: 1;
 		animation: pulse-golden var(--duration-0) ease-in-out infinite; /* 3s φ-based pulsing */
 		filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.6));
@@ -112,6 +122,11 @@
 		.home-banner {
 			padding-bottom: 40%; /* Wider aspect ratio on desktop */
 		}
+	}
+
+	/* Content with padding restored */
+	.home-content {
+		padding: var(--spacing-3);
 	}
 
 	@keyframes pulse-golden {
