@@ -10,10 +10,10 @@
 	let qrDataUrl = '';
 	let container: HTMLDivElement;
 
-	// Size variants (φ-based)
+	// Size variants (compact design)
 	const sizes = {
 		small: { container: '80px', emoji: '3.5rem', qr: 70 },
-		medium: { container: '120px', emoji: '5rem', qr: 110 },
+		medium: { container: '140px', emoji: '4rem', qr: 110 },
 		large: { container: '180px', emoji: '7rem', qr: 170 }
 	};
 
@@ -117,12 +117,13 @@
 
 	.flip-card-back {
 		transform: rotateY(180deg);
-		background: theme('colors.bg.mid');
-		border: 4px solid theme('colors.gold.DEFAULT');
-		box-shadow: 0 0 40px theme('colors.gold.glow');
+		background: white;
+		border: 3px solid theme('colors.cyan.DEFAULT');
+		box-shadow: 0 0 30px rgba(0, 255, 209, 0.5);
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		padding: 15px;
 	}
 
 	.avatar-circle {
@@ -131,11 +132,10 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		background: theme('colors.bg.mid');
-		border: 4px solid theme('colors.gold.DEFAULT');
+		background: linear-gradient(135deg, theme('colors.bg.mid') 0%, theme('colors.bg.front') 100%);
+		border: 3px solid theme('colors.cyan.DEFAULT');
 		border-radius: 50%;
-		box-shadow: 0 0 40px theme('colors.gold.glow');
-		animation: pulse-glow var(--duration-0) ease-in-out infinite;
+		box-shadow: 0 0 30px rgba(0, 255, 209, 0.5);
 		position: relative;
 		overflow: hidden;
 	}
@@ -202,18 +202,21 @@
 	}
 
 	/* Hover effects */
-	.flippable-avatar-container:hover .avatar-circle {
-		box-shadow: 0 0 60px theme('colors.gold.glow');
-		border-color: rgba(212, 175, 55, 1);
+	.flippable-avatar-container:hover .flip-card {
+		transform: rotateY(10deg);
 	}
 
-	.flippable-avatar-container:hover .flip-card-back {
-		box-shadow: 0 0 60px theme('colors.gold.glow');
+	.flippable-avatar-container.flipped:hover .flip-card {
+		transform: rotateY(190deg);
 	}
 
 	/* Focus state for accessibility */
 	.flippable-avatar-container:focus {
-		outline: 2px solid theme('colors.gold.DEFAULT');
+		outline: 2px solid theme('colors.cyan.DEFAULT');
 		outline-offset: 4px;
+	}
+
+	.avatar-emoji {
+		filter: none;
 	}
 </style>

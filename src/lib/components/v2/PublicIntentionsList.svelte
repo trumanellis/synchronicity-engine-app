@@ -90,25 +90,19 @@
 	}
 
 	.intentions-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-		gap: var(--spacing-3);
-	}
-
-	@media (max-width: 768px) {
-		.intentions-grid {
-			grid-template-columns: 1fr;
-		}
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
 	}
 
 	.intention-item {
-		background: theme('colors.bg.mid');
-		border: 2px solid theme('colors.cyan.border');
-		border-radius: var(--spacing-3);
-		padding: var(--spacing-2);
+		background: rgba(0, 255, 209, 0.05);
+		border: 2px solid rgba(0, 255, 209, 0.3);
+		border-radius: 1rem;
+		padding: 1rem;
 		display: flex;
 		flex-direction: column;
-		gap: var(--spacing-4);
+		gap: 0.5rem;
 		text-align: left;
 		cursor: pointer;
 		transition: all 0.3s ease;
@@ -128,37 +122,30 @@
 	}
 
 	.intention-title {
-		color: theme('colors.cyan.DEFAULT');
-		font-size: var(--font-size-1);
-		font-weight: 700;
+		color: theme('colors.gold.DEFAULT');
+		font-size: 1.1rem;
+		font-weight: 600;
 		margin: 0;
 		flex: 1;
-		text-shadow: 0 0 10px rgba(0, 255, 209, 0.4);
 	}
 
 	.intention-status {
-		width: 32px;
-		height: 32px;
-		display: flex;
+		display: inline-flex;
 		align-items: center;
-		justify-content: center;
-		font-size: var(--font-size-1);
-		background: theme('colors.cyan.bg');
-		border: 2px solid theme('colors.cyan.border');
-		border-radius: 50%;
-		flex-shrink: 0;
-	}
-
-	.intention-status.active {
-		border-color: theme('colors.cyan.DEFAULT');
+		gap: 0.35rem;
+		background: rgba(0, 255, 209, 0.15);
+		border: 2px solid theme('colors.cyan.DEFAULT');
+		border-radius: 0.5rem;
+		padding: 0.25rem 0.65rem;
+		font-size: 0.7rem;
+		font-weight: 600;
 	}
 
 	.intention-description {
 		color: theme('colors.cream.DEFAULT');
-		font-size: var(--font-size-2);
+		font-size: 0.85rem;
 		line-height: 1.5;
 		margin: 0;
-		opacity: 0.9;
 	}
 
 	.intention-meta {

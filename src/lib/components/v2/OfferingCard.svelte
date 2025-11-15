@@ -52,19 +52,19 @@
 
 <style>
 	.offering-card {
-		background: theme('colors.bg.mid');
-		border: 2px solid theme('colors.gold.border');
-		border-radius: var(--spacing-3);
-		padding: var(--spacing-2);
+		background: rgba(212, 175, 55, 0.1);
+		border: 2px solid rgba(212, 175, 55, 0.5);
+		border-radius: 1rem;
+		padding: 1rem;
 		display: flex;
 		flex-direction: column;
-		gap: var(--spacing-4);
+		gap: 0.5rem;
 		transition: all 0.3s ease;
 	}
 
 	.offering-card:hover {
 		border-color: theme('colors.gold.DEFAULT');
-		box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+		box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
 		transform: translateY(-2px);
 	}
 
@@ -82,20 +82,19 @@
 
 	.offering-title {
 		color: theme('colors.gold.DEFAULT');
-		font-size: var(--font-size-1);
-		font-weight: 700;
+		font-size: 1.1rem;
+		font-weight: 600;
 		margin: 0;
 		flex: 1;
-		text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
 	}
 
 	.availability-badge {
-		display: flex;
+		display: inline-flex;
 		align-items: center;
-		gap: 0.25rem;
-		padding: 0.25rem 0.75rem;
-		border-radius: 1rem;
-		font-size: var(--font-size-3);
+		gap: 0.35rem;
+		padding: 0.25rem 0.65rem;
+		border-radius: 0.5rem;
+		font-size: 0.7rem;
 		font-weight: 600;
 		text-transform: uppercase;
 		letter-spacing: 0.05em;
@@ -103,21 +102,21 @@
 	}
 
 	.availability-badge.cyan {
-		background: theme('colors.cyan.bg');
+		background: rgba(0, 255, 209, 0.15);
 		color: theme('colors.cyan.DEFAULT');
-		border: 1px solid theme('colors.cyan.border');
+		border: 2px solid theme('colors.cyan.DEFAULT');
 	}
 
 	.availability-badge.gold {
-		background: theme('colors.gold.bg');
+		background: rgba(212, 175, 55, 0.2);
 		color: theme('colors.gold.DEFAULT');
-		border: 1px solid theme('colors.gold.border');
+		border: 2px solid theme('colors.gold.DEFAULT');
 	}
 
 	.availability-badge.sage {
 		background: rgba(132, 169, 140, 0.1);
 		color: theme('colors.sage.DEFAULT');
-		border: 1px solid rgba(132, 169, 140, 0.3);
+		border: 2px solid rgba(132, 169, 140, 0.3);
 	}
 
 	.badge-icon {
@@ -130,10 +129,9 @@
 
 	.offering-description {
 		color: theme('colors.cream.DEFAULT');
-		font-size: var(--font-size-2);
+		font-size: 0.85rem;
 		line-height: 1.5;
 		margin: 0;
-		opacity: 0.9;
 	}
 
 	.offering-category {
