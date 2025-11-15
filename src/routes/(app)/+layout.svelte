@@ -69,7 +69,7 @@
 		/* Full viewport height with padding for fixed hero at bottom */
 		min-height: 100vh;
 		overflow-y: auto;
-		overflow-x: hidden;
+		overflow-x: visible; /* Allow horizontal glow spread */
 		padding: var(--spacing-3); /* 12px all around */
 		padding-bottom: 190px; /* Mobile: fixed 170px hero + 20px breathing room */
 		scrollbar-width: thin;

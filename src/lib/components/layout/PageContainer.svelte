@@ -18,6 +18,7 @@
 		margin: 0 auto;
 		box-sizing: border-box;
 		min-height: 100vh;
+		overflow: visible; /* Allow child elements to extend beyond container */
 	}
 
 	/* Max Width Variants */

@@ -98,6 +98,7 @@
 	/* Home page wrapper - no padding */
 	.home-page-wrapper {
 		margin: calc(var(--spacing-3) * -1); /* Negative margin to cancel PageContainer padding */
+		overflow: visible; /* Allow glow to extend beyond container */
 	}
 
 	/* Banner at top of dashboard - full edge to edge */
@@ -116,6 +117,7 @@
 		z-index: 1;
 		animation: pulse-golden var(--duration-0) ease-in-out infinite; /* 3s φ-based pulsing */
 		filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.6));
+		overflow: visible; /* Allow glow to spread */
 	}
 
 	@media (min-width: 768px) {
