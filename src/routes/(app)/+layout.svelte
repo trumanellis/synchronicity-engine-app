@@ -1,14 +1,13 @@
 <script lang="ts">
 	/**
 	 * V2 Shared Layout
-	 * Provides TopBar, ActiveIntentionHero, and BottomNav to all pages
+	 * Provides ActiveIntentionHero and BottomNav to all pages
 	 * Implements golden ratio layout (61.8% content / 38.2% hero+nav)
 	 */
 	import { onMount } from 'svelte';
 	import { intentions, activeIntentionId } from '$data/mockData';
 
 	// V2 Components
-	import TopBar from '$lib/components/v2/TopBar.svelte';
 	import ActiveIntentionHero from '$lib/components/v2/ActiveIntentionHero.svelte';
 	import BottomNav from '$lib/components/v2/BottomNav.svelte';
 	import PageContainer from '$lib/components/layout/PageContainer.svelte';
@@ -22,8 +21,6 @@
 		}
 	}
 </script>
-
-<TopBar />
 
 <div class="v2-layout">
 	<!-- Relative Banner Background - at top of scrollable content -->
@@ -50,7 +47,6 @@
 <style>
 	.v2-layout {
 		min-height: 100vh;
-		padding-top: 60px; /* Responsive: Account for fixed top bar */
 		background: theme('colors.bg.deep');
 		width: 100%;
 		max-width: 100%;
@@ -62,7 +58,6 @@
 	@media (min-width: 768px) {
 		.v2-layout {
 			margin-left: 5rem;
-			padding-top: 80px; /* Desktop: responsive top bar */
 		}
 	}
 
@@ -76,9 +71,10 @@
 		background-size: cover;
 		background-repeat: no-repeat;
 		background-position: center center;
-		opacity: 0.15;
+		opacity: 0.5; /* More visible */
 		pointer-events: none;
 		margin-bottom: var(--spacing-3);
+		z-index: 10; /* Bring forward */
 	}
 
 	@media (min-width: 768px) {
@@ -99,9 +95,11 @@
 		min-height: 100vh;
 		overflow-y: auto;
 		overflow-x: hidden;
-		padding: var(--spacing-3); /* 12px all around */
+		padding: 0 var(--spacing-3) var(--spacing-3); /* No top padding, sides and bottom */
 		padding-bottom: 190px; /* Mobile: fixed 170px hero + 20px breathing room */
 		scrollbar-width: thin;
+		position: relative;
+		z-index: 5; /* Below banner */
 	}
 
 	/* Desktop: adjust padding for golden ratio hero */
