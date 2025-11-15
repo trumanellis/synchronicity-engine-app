@@ -25,6 +25,9 @@
 
 <TopBar />
 
+<!-- Fixed Banner Background -->
+<div class="banner-background" />
+
 <div class="v2-layout">
 	<div class="golden-layout">
 		<!-- Content Section: 61.8% viewport height (top), scrollable -->
@@ -45,6 +48,31 @@
 </div>
 
 <style>
+	/* Fixed Banner Background */
+	.banner-background {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		width: 100%;
+		height: 300px; /* Mobile: shorter banner */
+		background-image: url('/Synchronicity Engine.png');
+		background-size: cover;
+		background-repeat: no-repeat;
+		background-position: top center;
+		opacity: 0.15;
+		pointer-events: none;
+		z-index: 0;
+	}
+
+	@media (min-width: 768px) {
+		.banner-background {
+			left: 5rem; /* Account for sidebar */
+			width: calc(100% - 5rem);
+			height: 400px; /* Desktop: taller banner */
+		}
+	}
+
 	.v2-layout {
 		min-height: 100vh;
 		padding-top: 90px; /* Account for fixed top bar */
@@ -52,6 +80,8 @@
 		width: 100%;
 		max-width: 100%;
 		box-sizing: border-box;
+		position: relative;
+		z-index: 1;
 	}
 
 	/* Desktop: sidebar */
