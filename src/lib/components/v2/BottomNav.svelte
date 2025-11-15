@@ -2,7 +2,16 @@
 	import { goto } from '$app/navigation';
 	import { activeTab } from '$stores/navigationStore';
 
+	// Optional username for public profile pages
+	export let username: string | undefined = undefined;
+
 	function handleNavigate(tab: string) {
+		// If we have a username and navigating to profile, go to their bio page
+		if (tab === 'profile' && username) {
+			goto(`/${username}`);
+			return;
+		}
+
 		activeTab.set(tab as any);
 		goto(`/${tab === 'home' ? '' : tab}`);
 	}

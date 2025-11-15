@@ -185,7 +185,7 @@
 </div>
 
 <div class="bottom-nav-container">
-	<BottomNav />
+	<BottomNav username={user.username} />
 </div>
 
 <style>
