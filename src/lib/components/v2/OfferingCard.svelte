@@ -54,11 +54,11 @@
 	.offering-card {
 		background: rgba(212, 175, 55, 0.1);
 		border: 2px solid rgba(212, 175, 55, 0.5);
-		border-radius: 1rem;
-		padding: 1rem;
+		border-radius: var(--spacing-3);
+		padding: var(--spacing-2);
 		display: flex;
 		flex-direction: column;
-		gap: 0.5rem;
+		gap: var(--spacing-4);
 		transition: all 0.3s ease;
 	}
 
@@ -82,7 +82,7 @@
 
 	.offering-title {
 		color: theme('colors.gold.DEFAULT');
-		font-size: 1.1rem;
+		font-size: var(--font-size-1);
 		font-weight: 600;
 		margin: 0;
 		flex: 1;
@@ -129,7 +129,7 @@
 
 	.offering-description {
 		color: theme('colors.cream.DEFAULT');
-		font-size: 0.85rem;
+		font-size: var(--font-size-2);
 		line-height: 1.5;
 		margin: 0;
 	}

@@ -49,52 +49,51 @@
 <style>
 	.bio-card {
 		text-align: center;
-		margin-bottom: 1.5rem;
 	}
 
 	.avatar-section {
-		margin-bottom: 1.5rem;
+		margin-bottom: var(--spacing-2);
 	}
 
 	.username {
 		color: theme('colors.gold.DEFAULT');
-		font-size: 1.75rem;
+		font-size: var(--font-size-0);
 		font-weight: 700;
-		margin: 1rem 0 0.25rem;
+		margin: var(--spacing-3) 0 var(--spacing-4);
 		text-shadow: 0 0 15px rgba(212, 175, 55, 0.6);
 	}
 
 	.bio-tagline {
 		color: theme('colors.cream.DEFAULT');
-		font-size: 1rem;
-		margin-bottom: 0.5rem;
+		font-size: var(--font-size-1);
+		margin-bottom: var(--spacing-4);
 		line-height: 1.4;
 	}
 
 	.profile-url {
 		color: theme('colors.cyan.DEFAULT');
-		font-size: 0.85rem;
+		font-size: var(--font-size-2);
 		opacity: 0.8;
 	}
 
 	.stats-row {
 		display: grid;
 		grid-template-columns: repeat(3, 1fr);
-		gap: 0.75rem;
-		margin-bottom: 1.5rem;
+		gap: var(--spacing-3);
+		margin-top: var(--spacing-2);
 	}
 
 	.stat-box {
 		background: rgba(0, 0, 0, 0.4);
 		border: 1px solid rgba(0, 255, 209, 0.3);
-		border-radius: 0.75rem;
-		padding: 0.75rem;
+		border-radius: var(--spacing-3);
+		padding: var(--spacing-3);
 		text-align: center;
 	}
 
 	.stat-label {
 		color: theme('colors.sage.DEFAULT');
-		font-size: 0.7rem;
+		font-size: var(--font-size-3);
 		text-transform: uppercase;
 		letter-spacing: 0.05em;
 		margin-bottom: 0.25rem;
@@ -102,12 +101,12 @@
 
 	.stat-value {
 		color: theme('colors.gold.DEFAULT');
-		font-size: 1.25rem;
+		font-size: var(--font-size-1);
 		font-weight: 700;
 		text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
 	}
 
 	.stat-value.temple-name {
-		font-size: 1rem;
+		font-size: var(--font-size-2);
 	}
 </style>

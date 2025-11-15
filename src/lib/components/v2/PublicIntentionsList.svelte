@@ -92,17 +92,17 @@
 	.intentions-grid {
 		display: flex;
 		flex-direction: column;
-		gap: 1rem;
+		gap: var(--spacing-4);
 	}
 
 	.intention-item {
 		background: rgba(0, 255, 209, 0.05);
 		border: 2px solid rgba(0, 255, 209, 0.3);
-		border-radius: 1rem;
-		padding: 1rem;
+		border-radius: var(--spacing-3);
+		padding: var(--spacing-2);
 		display: flex;
 		flex-direction: column;
-		gap: 0.5rem;
+		gap: var(--spacing-4);
 		text-align: left;
 		cursor: pointer;
 		transition: all 0.3s ease;
@@ -123,7 +123,7 @@
 
 	.intention-title {
 		color: theme('colors.gold.DEFAULT');
-		font-size: 1.1rem;
+		font-size: var(--font-size-1);
 		font-weight: 600;
 		margin: 0;
 		flex: 1;
@@ -143,7 +143,7 @@
 
 	.intention-description {
 		color: theme('colors.cream.DEFAULT');
-		font-size: 0.85rem;
+		font-size: var(--font-size-2);
 		line-height: 1.5;
 		margin: 0;
 	}

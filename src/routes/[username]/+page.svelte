@@ -3,6 +3,8 @@
 	import BioCard from '$lib/components/v2/BioCard.svelte';
 	import OfferingCard from '$lib/components/v2/OfferingCard.svelte';
 	import PublicIntentionsList from '$lib/components/v2/PublicIntentionsList.svelte';
+	import Stack from '$lib/components/layout/Stack.svelte';
+	import Section from '$lib/components/layout/Section.svelte';
 
 	export let data: PageData;
 
@@ -18,122 +20,111 @@
 </svelte:head>
 
 <div class="public-profile-page">
-	<div class="profile-container">
-		<!-- Status Bar -->
-		<div class="status-bar">
-			<span>⚡ syncengine.earth/{user.username}</span>
-			<span>{new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}</span>
-		</div>
-
+	<Stack gap="md">
 		<!-- Bio Card - Avatar and Stats -->
 		{#if visibleSections.bio}
-			<BioCard {user} {canEdit} />
+			<Section spacing="md">
+				<BioCard {user} {canEdit} />
+			</Section>
 		{/if}
 
 		<!-- About Section with Bio and Tags -->
 		{#if visibleSections.bio}
-			<div class="section-header">
-				<div class="section-title">
-					<span>📖</span>
-					<span>About</span>
-				</div>
-				<div class="visibility-badge">PUBLIC</div>
-			</div>
-			<div class="bio-box">
-				<div class="bio-text">{user.bio}</div>
-				<div class="tags-container">
-					{#each bioTags as tag}
-						<div class="tag">{tag}</div>
-					{/each}
-				</div>
-			</div>
+			<Section spacing="md">
+				<Stack gap="sm">
+					<div class="section-header">
+						<div class="section-title">
+							<span>📖</span>
+							<span>About</span>
+						</div>
+						<div class="visibility-badge">PUBLIC</div>
+					</div>
+					<div class="bio-box">
+						<Stack gap="sm">
+							<div class="bio-text">{user.bio}</div>
+							<div class="tags-container">
+								{#each bioTags as tag}
+									<div class="tag">{tag}</div>
+								{/each}
+							</div>
+						</Stack>
+					</div>
+				</Stack>
+			</Section>
 		{/if}
 
 		<!-- Active Intentions -->
 		{#if visibleSections.intentions && userIntentions.length > 0}
-			<div class="section-header">
-				<div class="section-title">
-					<span>🎯</span>
-					<span>Active Intentions</span>
-				</div>
-				<div class="visibility-badge">MEMBERS</div>
-			</div>
-			<PublicIntentionsList intentions={userIntentions} />
+			<Section spacing="md">
+				<Stack gap="sm">
+					<div class="section-header">
+						<div class="section-title">
+							<span>🎯</span>
+							<span>Active Intentions</span>
+						</div>
+						<div class="visibility-badge">MEMBERS</div>
+					</div>
+					<PublicIntentionsList intentions={userIntentions} />
+				</Stack>
+			</Section>
 		{/if}
 
 		<!-- Offerings -->
 		{#if visibleSections.offerings && user.offerings.length > 0}
-			<div class="section-header">
-				<div class="section-title">
-					<span>🎁</span>
-					<span>Offerings</span>
-				</div>
-				<div class="visibility-badge">PUBLIC</div>
-			</div>
-			<div class="offerings-list">
-				{#each user.offerings as offering}
-					<OfferingCard {offering} compact={true} />
-				{/each}
-			</div>
+			<Section spacing="md">
+				<Stack gap="sm">
+					<div class="section-header">
+						<div class="section-title">
+							<span>🎁</span>
+							<span>Offerings</span>
+						</div>
+						<div class="visibility-badge">PUBLIC</div>
+					</div>
+					<Stack gap="sm">
+						{#each user.offerings as offering}
+							<OfferingCard {offering} />
+						{/each}
+					</Stack>
+				</Stack>
+			</Section>
 		{/if}
 
 		<!-- Connect Button -->
-		<button class="button-primary">Connect with {user.name.split(' ')[0]}</button>
-	</div>
+		<Section spacing="md">
+			<button class="button-primary">Connect with {user.name.split(' ')[0]}</button>
+		</Section>
+	</Stack>
 </div>
 
 <style>
 	.public-profile-page {
-		min-height: 100vh;
-		background: theme('colors.bg.deep');
-		padding: 1rem;
-	}
-
-	.profile-container {
-		max-width: 600px;
-		margin: 0 auto;
-		background: theme('colors.bg.front');
-		border: 2px solid theme('colors.cyan.DEFAULT');
-		border-radius: 1.5rem;
-		padding: 1.5rem;
-		box-shadow: 0 0 40px rgba(0, 255, 209, 0.3);
-	}
-
-	.status-bar {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		margin-bottom: 1.5rem;
-		padding-bottom: 0.5rem;
-		border-bottom: 1px solid rgba(0, 255, 209, 0.2);
-		font-size: 0.75rem;
-		color: theme('colors.sage.DEFAULT');
+		/* Layout provided by Stack and Section primitives */
 	}
 
 	.section-header {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		margin-bottom: 1rem;
+		margin-bottom: var(--spacing-4);
 	}
 
 	.section-title {
 		color: theme('colors.cyan.DEFAULT');
-		font-size: 0.9rem;
+		font-size: var(--font-size-2);
 		font-weight: 600;
 		text-transform: uppercase;
 		letter-spacing: 0.05em;
 		display: flex;
 		align-items: center;
-		gap: 0.5rem;
+		gap: var(--spacing-4);
 	}
 
 	.visibility-badge {
 		background: rgba(132, 169, 140, 0.2);
 		border: 1px solid theme('colors.sage.DEFAULT');
-		border-radius: 0.5rem;
-		padding: 0.25rem 0.5rem;
-		font-size: 0.65rem;
+		border-radius: var(--spacing-4);
+		padding: 0.25rem var(--spacing-4);
+		font-size: var(--font-size-3);
 		color: theme('colors.sage.DEFAULT');
 		text-transform: uppercase;
 		letter-spacing: 0.05em;
@@ -142,49 +133,40 @@
 	.bio-box {
 		background: rgba(0, 0, 0, 0.3);
 		border: 1px solid rgba(0, 255, 209, 0.2);
-		border-radius: 1rem;
-		padding: 1rem;
-		margin-bottom: 1.5rem;
+		border-radius: var(--spacing-3);
+		padding: var(--spacing-2);
 	}
 
 	.bio-text {
 		color: theme('colors.cream.DEFAULT');
 		line-height: 1.6;
-		font-size: 0.95rem;
-		margin-bottom: 1rem;
+		font-size: var(--font-size-2);
 	}
 
 	.tags-container {
 		display: flex;
 		flex-wrap: wrap;
-		gap: 0.5rem;
+		gap: var(--spacing-4);
 	}
 
 	.tag {
 		background: rgba(0, 255, 209, 0.15);
 		border: 1px solid rgba(0, 255, 209, 0.4);
-		border-radius: 0.5rem;
+		border-radius: var(--spacing-4);
 		padding: 0.35rem 0.75rem;
-		font-size: 0.8rem;
+		font-size: var(--font-size-3);
 		color: theme('colors.cyan.DEFAULT');
-	}
-
-	.offerings-list {
-		display: flex;
-		flex-direction: column;
-		gap: 1rem;
-		margin-bottom: 1.5rem;
 	}
 
 	.button-primary {
 		background: rgba(0, 255, 209, 0.9);
 		color: theme('colors.bg.deep');
 		border: none;
-		border-radius: 0.75rem;
-		padding: 0.85rem 1.5rem;
+		border-radius: var(--spacing-3);
+		padding: var(--spacing-3) var(--spacing-2);
 		font-family: theme('fontFamily.exo');
 		font-weight: 600;
-		font-size: 0.95rem;
+		font-size: var(--font-size-2);
 		cursor: pointer;
 		transition: all 0.3s ease;
 		box-shadow: 0 0 20px rgba(0, 255, 209, 0.4);
