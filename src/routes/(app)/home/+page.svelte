@@ -115,6 +115,7 @@
 		margin-bottom: 0;
 		z-index: 1;
 		animation: pulse-golden var(--duration-0) ease-in-out infinite; /* 3s φ-based pulsing */
+		filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.6));
 	}
 
 	@media (min-width: 768px) {
@@ -131,10 +132,12 @@
 	@keyframes pulse-golden {
 		0%,
 		100% {
-			opacity: 0.7;
+			filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.6));
+			opacity: 0.8;
 		}
 		50% {
-			opacity: 0.95;
+			filter: drop-shadow(0 0 40px rgba(212, 175, 55, 1)) drop-shadow(0 0 60px rgba(212, 175, 55, 0.8));
+			opacity: 0.9;
 		}
 	}
 

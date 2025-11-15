@@ -130,7 +130,7 @@ body {
 		0 0 80px rgba(195, 128, 23, 0.6),
 		0 0 120px rgba(195, 128, 23, 0.3);
 	animation: side-glow 2s ease-in-out infinite;
-	z-index: 9999;
+	z-index: 0; /* Back layer - behind content */
 }
 
 /* Right glowing line */
@@ -154,7 +154,7 @@ body {
 		0 0 80px rgba(195, 128, 23, 0.6),
 		0 0 120px rgba(195, 128, 23, 0.3);
 	animation: side-glow 2s ease-in-out infinite;
-	z-index: 9999;
+	z-index: 0; /* Back layer - behind content */
 }
 
 @keyframes side-glow {
@@ -202,7 +202,7 @@ body {
 		0 0 80px rgba(195, 128, 23, 0.6),
 		0 0 120px rgba(195, 128, 23, 0.3);
 	animation: side-glow 2s ease-in-out infinite;
-	z-index: 10000;
+	z-index: 0; /* Back layer - behind content */
 }
 
 /* Bottom glowing line */
@@ -226,7 +226,7 @@ body {
 		0 0 80px rgba(195, 128, 23, 0.6),
 		0 0 120px rgba(195, 128, 23, 0.3);
 	animation: side-glow 2s ease-in-out infinite;
-	z-index: 10000;
+	z-index: 0; /* Back layer - behind content */
 }
 
 /* Phone Mockup Pattern - Responsive */
