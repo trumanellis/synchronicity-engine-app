@@ -2,6 +2,7 @@
 
 export interface User {
 	userId: string;
+	username: string; // URL slug for public profile
 	name: string;
 	avatar: string;
 	bio: string;
@@ -9,6 +10,9 @@ export interface User {
 	temple: UserTemple;
 	stats: UserStats;
 	paymentMethods: PaymentMethod[];
+	offerings: Offering[];
+	achievements: Achievement[];
+	profileVisibility: Record<string, VisibilityLevel>;
 }
 
 export interface UserTemple {
@@ -260,3 +264,39 @@ export type SortOption = 'trending' | 'recent' | 'high-impact' | 'nearby';
 export type TokenFilter = 'available' | 'bid' | 'historical' | 'all';
 
 export type ProfileTab = 'tokens' | 'fulfillments' | 'connections' | 'settings';
+
+// Bio Card & Public Profile Types
+export type VisibilityLevel = 'public' | 'members' | 'connections' | 'friends' | 'groups' | 'private';
+
+export interface Offering {
+	offeringId: string;
+	title: string;
+	description: string;
+	category: string;
+	media?: string[];
+	availability: 'available' | 'limited' | 'unavailable';
+	tags?: string[];
+}
+
+export interface Achievement {
+	achievementId: string;
+	title: string;
+	description: string;
+	icon: string;
+	earnedDate: string;
+	category: 'contribution' | 'milestone' | 'badge' | 'special';
+	rarity: 'common' | 'rare' | 'legendary';
+}
+
+export interface ProfileSection {
+	sectionId: string;
+	title: string;
+	icon: string;
+	visibility: VisibilityLevel;
+	content: any;
+}
+
+export interface PublicProfile extends User {
+	visibleSections: ProfileSection[];
+	canEdit: boolean;
+}

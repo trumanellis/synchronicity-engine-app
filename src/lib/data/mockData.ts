@@ -10,12 +10,93 @@ import type {
 	Activity,
 	Connection,
 	GroupChat,
-	ProofOfService
+	ProofOfService,
+	Offering,
+	Achievement
 } from '$types';
+
+// Offerings Data
+export const offerings: Offering[] = [
+	{
+		offeringId: 'offer-001',
+		title: 'Irrigation System Design',
+		description: 'I design and install gravity-fed water systems for gardens and farms. Expertise in permaculture hydrology, catchment systems, and efficient distribution.',
+		category: 'Off-Grid & Sustainable Living',
+		media: ['ipfs://Qm...irrigation-portfolio'],
+		availability: 'available',
+		tags: ['permaculture', 'water-systems', 'engineering']
+	},
+	{
+		offeringId: 'offer-002',
+		title: 'Computational Modeling Workshops',
+		description: 'Teaching agent-based modeling for ecological and social systems. Perfect for understanding complex dynamics in regenerative communities.',
+		category: 'Self & Spiritual Development',
+		availability: 'limited',
+		tags: ['education', 'modeling', 'systems-thinking']
+	},
+	{
+		offeringId: 'offer-003',
+		title: 'Gift Economy Platform Development',
+		description: 'Building decentralized tools for P2P coordination. Experienced with blockchain, distributed systems, and community currencies.',
+		category: 'Community Abundance',
+		availability: 'available',
+		tags: ['coding', 'blockchain', 'p2p']
+	}
+];
+
+// Achievements Data
+export const achievements: Achievement[] = [
+	{
+		achievementId: 'ach-001',
+		title: 'Original Steward',
+		description: 'Founding member of Templo da Água Lila',
+		icon: '🛕',
+		earnedDate: '2024-08-15',
+		category: 'badge',
+		rarity: 'legendary'
+	},
+	{
+		achievementId: 'ach-002',
+		title: 'Century Club',
+		description: 'Contributed over 100 hours of attention',
+		icon: '⏱️',
+		earnedDate: '2024-11-01',
+		category: 'milestone',
+		rarity: 'rare'
+	},
+	{
+		achievementId: 'ach-003',
+		title: 'Master Builder',
+		description: 'Completed 5 major infrastructure projects',
+		icon: '🔨',
+		earnedDate: '2024-10-25',
+		category: 'contribution',
+		rarity: 'rare'
+	},
+	{
+		achievementId: 'ach-004',
+		title: 'Knowledge Sharer',
+		description: 'Taught 10+ community workshops',
+		icon: '📚',
+		earnedDate: '2024-11-05',
+		category: 'contribution',
+		rarity: 'common'
+	},
+	{
+		achievementId: 'ach-005',
+		title: 'Token Pioneer',
+		description: 'First to submit 5 tokens in a single cycle',
+		icon: '💎',
+		earnedDate: '2024-09-12',
+		category: 'special',
+		rarity: 'legendary'
+	}
+];
 
 // Current User Profile
 export const currentUser: User = {
 	userId: 'user-truman-001',
+	username: 'truman',
 	name: 'Dr. Truman Ellis',
 	avatar: '👨‍🔬',
 	bio: 'Computational scientist exploring P2P gift economies',
@@ -44,7 +125,18 @@ export const currentUser: User = {
 			lastFour: '4829',
 			isPrimary: true
 		}
-	]
+	],
+	offerings: offerings,
+	achievements: achievements,
+	profileVisibility: {
+		bio: 'public',
+		achievements: 'public',
+		offerings: 'public',
+		intentions: 'public',
+		tokens: 'members',
+		connections: 'connections',
+		activity: 'public'
+	}
 };
 
 // User's active intention (most recent joined)
@@ -695,4 +787,49 @@ export function submitProofOfService(proof: Omit<ProofOfService, 'proofId' | 'ti
 	};
 	proofsOfService.push(newProof);
 	return newProof;
+}
+
+// Helper Functions for Public Profile
+export function getUserByUsername(username: string): User | undefined {
+	// In real app, this would query the database
+	if (username === currentUser.username) {
+		return currentUser;
+	}
+	return undefined;
+}
+
+export function getUserVisibleSections(userId: string, viewerRole: 'public' | 'members' | 'connections' | 'friends'): Record<string, boolean> {
+	if (userId === currentUser.userId) {
+		// Viewing own profile - show everything
+		return {
+			bio: true,
+			achievements: true,
+			offerings: true,
+			intentions: true,
+			tokens: true,
+			connections: true,
+			activity: true
+		};
+	}
+
+	// Check visibility settings
+	const visibility = currentUser.profileVisibility;
+	const canView = (setting: string): boolean => {
+		const level = visibility[setting];
+		if (level === 'public') return true;
+		if (level === 'members' && ['members', 'connections', 'friends'].includes(viewerRole)) return true;
+		if (level === 'connections' && ['connections', 'friends'].includes(viewerRole)) return true;
+		if (level === 'friends' && viewerRole === 'friends') return true;
+		return false;
+	};
+
+	return {
+		bio: canView('bio'),
+		achievements: canView('achievements'),
+		offerings: canView('offerings'),
+		intentions: canView('intentions'),
+		tokens: canView('tokens'),
+		connections: canView('connections'),
+		activity: canView('activity')
+	};
 }
