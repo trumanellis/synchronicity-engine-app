@@ -101,13 +101,13 @@
 		overflow: visible; /* Allow glow to extend beyond container */
 	}
 
-	/* Banner at top of dashboard - full edge to edge */
+	/* Banner at top of dashboard - full screen width */
 	.home-banner {
 		position: relative;
-		width: 100%;
+		width: 100%; /* Full screen width */
 		height: 0;
-		padding-bottom: 56.25%; /* 16:9 aspect ratio for mobile */
-		background-image: url('/Synchronicity Engine.png');
+		padding-bottom: 33.33%; /* Aspect ratio for SyncEye (roughly 3:1) */
+		background-image: url('/SyncEye.png');
 		background-size: cover;
 		background-repeat: no-repeat;
 		background-position: center center;
@@ -122,7 +122,7 @@
 
 	@media (min-width: 768px) {
 		.home-banner {
-			padding-bottom: 40%; /* Wider aspect ratio on desktop */
+			padding-bottom: 25%; /* Adjusted aspect ratio for desktop */
 		}
 	}
 
