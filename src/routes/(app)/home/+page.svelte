@@ -42,6 +42,9 @@
 	<title>Home - Synchronicity Engine</title>
 </svelte:head>
 
+<!-- Banner at top of page -->
+<div class="home-banner" />
+
 <Stack gap="md">
 	<!-- Intentions (sorted by potential attention) -->
 	<Section spacing="md">
@@ -87,6 +90,28 @@
 </Stack>
 
 <style>
+	/* Banner at top of dashboard */
+	.home-banner {
+		position: relative;
+		width: 100%;
+		height: 0;
+		padding-bottom: 56.25%; /* 16:9 aspect ratio for mobile */
+		background-image: url('/Synchronicity Engine.png');
+		background-size: cover;
+		background-repeat: no-repeat;
+		background-position: center center;
+		opacity: 0.8; /* Prominent but not overwhelming */
+		pointer-events: none;
+		margin-bottom: var(--spacing-3);
+		z-index: 1;
+	}
+
+	@media (min-width: 768px) {
+		.home-banner {
+			padding-bottom: 40%; /* Wider aspect ratio on desktop */
+		}
+	}
+
 	.view-more {
 		text-align: center;
 		margin-top: 0.5rem;

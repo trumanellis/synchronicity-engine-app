@@ -23,9 +23,6 @@
 </script>
 
 <div class="v2-layout">
-	<!-- Relative Banner Background - at top of scrollable content -->
-	<div class="banner-background" />
-
 	<div class="golden-layout">
 		<!-- Content Section: 61.8% viewport height (top), scrollable -->
 		<div class="content-section">
@@ -61,28 +58,6 @@
 		}
 	}
 
-	/* Relative Banner Background - at top of scrollable content */
-	.banner-background {
-		position: relative;
-		width: 100%;
-		height: 0;
-		padding-bottom: 56.25%; /* 16:9 aspect ratio for mobile */
-		background-image: url('/Synchronicity Engine.png');
-		background-size: cover;
-		background-repeat: no-repeat;
-		background-position: center center;
-		opacity: 0.5; /* More visible */
-		pointer-events: none;
-		margin-bottom: var(--spacing-3);
-		z-index: 10; /* Bring forward */
-	}
-
-	@media (min-width: 768px) {
-		.banner-background {
-			padding-bottom: 40%; /* Wider aspect ratio on desktop */
-		}
-	}
-
 	/* Golden Ratio Layout: 61.8% Content (top) / 38.2% Hero+Nav (bottom) */
 	.golden-layout {
 		min-height: 100vh;
@@ -95,11 +70,9 @@
 		min-height: 100vh;
 		overflow-y: auto;
 		overflow-x: hidden;
-		padding: 0 var(--spacing-3) var(--spacing-3); /* No top padding, sides and bottom */
+		padding: var(--spacing-3); /* 12px all around */
 		padding-bottom: 190px; /* Mobile: fixed 170px hero + 20px breathing room */
 		scrollbar-width: thin;
-		position: relative;
-		z-index: 5; /* Below banner */
 	}
 
 	/* Desktop: adjust padding for golden ratio hero */
