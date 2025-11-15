@@ -12,7 +12,7 @@
 		top: 0;
 		left: 0;
 		right: 0;
-		height: 90px;
+		height: 60px; /* Responsive: smaller on mobile */
 		background: theme('colors.bg.deep');
 		border-bottom: none;
 		display: flex;
@@ -26,22 +26,22 @@
 	@media (min-width: 768px) {
 		.top-bar {
 			left: 5rem;
-			height: 100px;
+			height: 80px; /* Responsive: matches layout padding */
 		}
 	}
 
 	.logo-image {
-		height: 72px;
+		height: 48px; /* Smaller on mobile */
 		width: auto;
 		object-fit: contain;
 		filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.6));
 		animation: pulse-glow var(--duration-0) ease-in-out infinite; /* 3s φ-based */
 	}
 
-	/* Desktop: slightly larger */
+	/* Desktop: larger logo */
 	@media (min-width: 768px) {
 		.logo-image {
-			height: 80px;
+			height: 64px;
 		}
 	}
 

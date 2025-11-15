@@ -25,10 +25,10 @@
 
 <TopBar />
 
-<!-- Fixed Banner Background -->
-<div class="banner-background" />
-
 <div class="v2-layout">
+	<!-- Relative Banner Background - at top of scrollable content -->
+	<div class="banner-background" />
+
 	<div class="golden-layout">
 		<!-- Content Section: 61.8% viewport height (top), scrollable -->
 		<div class="content-section">
@@ -48,47 +48,42 @@
 </div>
 
 <style>
-	/* Fixed Banner Background */
-	.banner-background {
-		position: fixed;
-		top: 0;
-		left: 0;
-		right: 0;
-		width: 100%;
-		height: 300px; /* Mobile: shorter banner */
-		background-image: url('/Synchronicity Engine.png');
-		background-size: cover;
-		background-repeat: no-repeat;
-		background-position: top center;
-		opacity: 0.15;
-		pointer-events: none;
-		z-index: 0;
-	}
-
-	@media (min-width: 768px) {
-		.banner-background {
-			left: 5rem; /* Account for sidebar */
-			width: calc(100% - 5rem);
-			height: 400px; /* Desktop: taller banner */
-		}
-	}
-
 	.v2-layout {
 		min-height: 100vh;
-		padding-top: 90px; /* Account for fixed top bar */
+		padding-top: 60px; /* Responsive: Account for fixed top bar */
 		background: theme('colors.bg.deep');
 		width: 100%;
 		max-width: 100%;
 		box-sizing: border-box;
 		position: relative;
-		z-index: 1;
 	}
 
 	/* Desktop: sidebar */
 	@media (min-width: 768px) {
 		.v2-layout {
 			margin-left: 5rem;
-			padding-top: 100px; /* Taller top bar on desktop */
+			padding-top: 80px; /* Desktop: responsive top bar */
+		}
+	}
+
+	/* Relative Banner Background - at top of scrollable content */
+	.banner-background {
+		position: relative;
+		width: 100%;
+		height: 0;
+		padding-bottom: 56.25%; /* 16:9 aspect ratio for mobile */
+		background-image: url('/Synchronicity Engine.png');
+		background-size: cover;
+		background-repeat: no-repeat;
+		background-position: center center;
+		opacity: 0.15;
+		pointer-events: none;
+		margin-bottom: var(--spacing-3);
+	}
+
+	@media (min-width: 768px) {
+		.banner-background {
+			padding-bottom: 40%; /* Wider aspect ratio on desktop */
 		}
 	}
 
