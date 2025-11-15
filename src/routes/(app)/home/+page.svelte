@@ -104,11 +104,25 @@
 		pointer-events: none;
 		margin-bottom: var(--spacing-3);
 		z-index: 1;
+		animation: pulse-golden var(--duration-0) ease-in-out infinite; /* 3s φ-based pulsing */
+		filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.6));
 	}
 
 	@media (min-width: 768px) {
 		.home-banner {
 			padding-bottom: 40%; /* Wider aspect ratio on desktop */
+		}
+	}
+
+	@keyframes pulse-golden {
+		0%,
+		100% {
+			filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.6));
+			opacity: 0.8;
+		}
+		50% {
+			filter: drop-shadow(0 0 40px rgba(212, 175, 55, 1)) drop-shadow(0 0 60px rgba(212, 175, 55, 0.8));
+			opacity: 0.9;
 		}
 	}
 
