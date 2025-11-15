@@ -4,6 +4,7 @@
 	import OfferingCard from '$lib/components/v2/OfferingCard.svelte';
 	import PublicIntentionsList from '$lib/components/v2/PublicIntentionsList.svelte';
 	import TabSwitcher from '$lib/components/v2/TabSwitcher.svelte';
+	import BottomNav from '$lib/components/v2/BottomNav.svelte';
 	import Stack from '$lib/components/layout/Stack.svelte';
 	import Section from '$lib/components/layout/Section.svelte';
 
@@ -183,9 +184,28 @@
 	</Stack>
 </div>
 
+<div class="bottom-nav-container">
+	<BottomNav />
+</div>
+
 <style>
 	.public-profile-page {
 		/* Layout provided by Stack and Section primitives */
+		padding-bottom: 80px; /* Account for fixed bottom nav (60px + 20px breathing room) */
+	}
+
+	@media (min-width: 768px) {
+		.public-profile-page {
+			padding-bottom: 105px; /* Desktop: 85px nav + 20px breathing room */
+		}
+	}
+
+	.bottom-nav-container {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		z-index: 1000;
 	}
 
 	.section-header {
