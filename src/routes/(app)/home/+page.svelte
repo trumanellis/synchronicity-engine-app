@@ -99,7 +99,7 @@
 			<!-- Intentions (sorted by potential attention) -->
 			<Section spacing="md">
 				<Stack gap="md">
-					<SectionTitle icon="⚡" title="Intentions" />
+					<SectionTitle icon="⚡" title="Recent Intentions" />
 
 					<Stack gap="sm">
 						{#each recentIntentions as { intention, potentialHours }}

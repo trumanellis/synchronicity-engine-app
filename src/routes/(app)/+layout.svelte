@@ -31,9 +31,9 @@
 			</PageContainer>
 		</div>
 
-		<!-- Hero Section: Hidden - active intention now inline on home page -->
-		<div class="hero-section" style="display: none;">
-			<div class="hero-container">
+		<!-- Hero Section: Only show BottomNav, active intention now inline on home page -->
+		<div class="hero-section">
+			<div class="hero-container" style="display: none;">
 				<ActiveIntentionHero intention={activeIntention} onClick={handleExpandIntention} />
 			</div>
 			<BottomNav />
@@ -66,35 +66,35 @@
 	}
 
 	.content-section {
-		/* Full viewport height - no bottom padding needed (hero is hidden) */
+		/* Full viewport height with padding for fixed bottom nav */
 		min-height: 100vh;
 		overflow-y: auto;
 		overflow-x: visible; /* Allow horizontal glow spread */
 		padding: var(--spacing-3); /* 12px all around */
+		padding-bottom: 80px; /* Space for fixed bottom nav */
 		scrollbar-width: thin;
 	}
 
 	.hero-section {
-		/* Fixed at bottom - smaller on mobile, golden ratio on desktop */
+		/* Fixed at bottom - just the bottom nav now */
 		position: fixed;
 		bottom: 0;
 		left: 0;
 		right: 0;
-		height: 170px; /* Fixed height on mobile (more room for hero card) */
+		height: auto; /* Auto height for just the nav */
 		display: flex;
 		flex-direction: column;
 		justify-content: flex-end; /* Push content to bottom */
-		gap: 0; /* No gap between hero and nav */
-		background: transparent; /* Transparent - no black gap */
-		overflow: visible; /* Allow top of card to show on hover */
+		gap: 0;
+		background: transparent;
+		overflow: visible;
 		z-index: 100;
 	}
 
-	/* Desktop: golden ratio and account for sidebar */
+	/* Desktop: account for sidebar */
 	@media (min-width: 768px) {
 		.hero-section {
 			left: 5rem;
-			height: calc(100vh * var(--small-ratio)); /* 38.2% golden ratio on desktop */
 		}
 	}
 
