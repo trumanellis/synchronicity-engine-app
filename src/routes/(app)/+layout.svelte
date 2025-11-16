@@ -31,8 +31,8 @@
 			</PageContainer>
 		</div>
 
-		<!-- Hero Section: 38.2% viewport height (bottom) - includes hero card + nav bar -->
-		<div class="hero-section">
+		<!-- Hero Section: Hidden - active intention now inline on home page -->
+		<div class="hero-section" style="display: none;">
 			<div class="hero-container">
 				<ActiveIntentionHero intention={activeIntention} onClick={handleExpandIntention} />
 			</div>
@@ -66,20 +66,12 @@
 	}
 
 	.content-section {
-		/* Full viewport height with padding for fixed hero at bottom */
+		/* Full viewport height - no bottom padding needed (hero is hidden) */
 		min-height: 100vh;
 		overflow-y: auto;
 		overflow-x: visible; /* Allow horizontal glow spread */
 		padding: var(--spacing-3); /* 12px all around */
-		padding-bottom: 190px; /* Mobile: fixed 170px hero + 20px breathing room */
 		scrollbar-width: thin;
-	}
-
-	/* Desktop: adjust padding for golden ratio hero */
-	@media (min-width: 768px) {
-		.content-section {
-			padding-bottom: calc(100vh * var(--small-ratio) + var(--spacing-1)); /* Extra padding for fixed hero + breathing room */
-		}
 	}
 
 	.hero-section {
