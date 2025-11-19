@@ -102,7 +102,7 @@ export const currentUser: User = {
 	userId: 'user-truman-001',
 	username: 'truman',
 	name: 'Dr. Truman Ellis',
-	avatar: '👨‍🔬',
+	avatar: '/Truman.jpeg',
 	bio: 'Computational scientist exploring P2P gift economies',
 	joinDate: '2024-08-15',
 	temple: {
@@ -436,7 +436,7 @@ export const intentions: Intention[] = [
 			{
 				userId: 'user-truman-001',
 				name: 'Dr. Truman Ellis',
-				avatar: '👨‍🔬',
+				avatar: '/Truman.jpeg',
 				hours: 189,
 				role: 'Workshop Lead'
 			},
@@ -836,7 +836,7 @@ export const proofsOfService: ProofOfService[] = [
 		intentionId: 'int-garden-001',
 		userId: 'user-truman-001',
 		userName: 'Dr. Truman Ellis',
-		userAvatar: '👨‍🔬',
+		userAvatar: '/Truman.jpeg',
 		title: 'Irrigation System Design & Installation',
 		description:
 			'Designed and installed gravity-fed irrigation system for Riverside Garden. Calculated optimal pipe sizing, installed 200ft of mainline, and set up 8 zone valves with pressure regulators.',
@@ -888,7 +888,7 @@ export const proofsOfService: ProofOfService[] = [
 		intentionId: 'int-garden-001',
 		userId: 'user-truman-001',
 		userName: 'Dr. Truman Ellis',
-		userAvatar: '👨‍🔬',
+		userAvatar: '/Truman.jpeg',
 		title: 'Tool Shed Construction',
 		description:
 			'Built 8x10 tool shed at Oak Street Garden using reclaimed cedar. Includes shelving, tool racks, and weatherproof door. Foundation on concrete blocks.',
@@ -907,7 +907,7 @@ export const proofsOfService: ProofOfService[] = [
 		intentionId: 'int-solar-001',
 		userId: 'user-truman-001',
 		userName: 'Dr. Truman Ellis',
-		userAvatar: '👨‍🔬',
+		userAvatar: '/Truman.jpeg',
 		title: 'Taught Solar Dehydrator Workshop',
 		description:
 			'Led 3-hour workshop on building solar food dehydrators. 12 participants built their own units. Covered design principles, material selection, and food preservation techniques.',
@@ -994,7 +994,7 @@ export const userAttentionLogs: UserAttentionLog[] = [
 	{
 		userId: 'user-truman-001',
 		userName: 'Dr. Truman Ellis',
-		userAvatar: '👨‍🔬',
+		userAvatar: '/Truman.jpeg',
 		events: [
 			{
 				eventId: 'evt-truman-001',
