@@ -91,19 +91,6 @@
 			<p class="content-text">{intention.description}</p>
 		</div>
 
-		<div class="info-box">
-			<div class="info-box-title">
-				<span>💡</span>
-				<span>High Impact Opportunity</span>
-			</div>
-			<div class="info-box-content">
-				This Intention has accumulated <strong
-					>{intention.stats.totalAttentionHours.toLocaleString()} hours</strong
-				>
-				of collective attention. Fulfilling requests here earns Tokens with higher gratitude value.
-			</div>
-		</div>
-
 		<div class="action-buttons mt-6">
 			<ActionButton variant="primary" fullWidth={true} onClick={handleSubmitProof}
 				>Submit Proof of Service</ActionButton
