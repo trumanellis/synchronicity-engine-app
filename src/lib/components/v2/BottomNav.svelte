@@ -22,133 +22,96 @@
 </script>
 
 <nav class="bottom-nav">
-	<!-- Left Section -->
+	<!-- Home -->
 	<button
 		class="nav-item"
 		class:active={$activeTab === 'home'}
 		on:click={() => handleNavigate('home')}
 		aria-label="Home"
 	>
-		<span class="nav-icon">🏠</span>
-		<span class="nav-label">Home</span>
+		<img src="/1.png" alt="Home" />
 	</button>
 
+	<!-- Discover -->
 	<button
 		class="nav-item"
 		class:active={$activeTab === 'browse'}
 		on:click={() => handleNavigate('browse')}
-		aria-label="Browse"
+		aria-label="Discover"
 	>
-		<span class="nav-icon">🔍</span>
-		<span class="nav-label">Browse</span>
+		<img src="/2.png" alt="Discover" />
 	</button>
 
-	<!-- Center Action Button -->
+	<!-- Create Intention -->
 	<button class="nav-item action-button" on:click={handleCreate} aria-label="Create Intention">
-		<span class="nav-icon">🙏</span>
-		<span class="nav-label">Create</span>
+		<img src="/3.png" alt="Create" />
 	</button>
 
-	<!-- Right Section -->
+	<!-- Tokens -->
 	<button
 		class="nav-item"
 		class:active={$activeTab === 'tokens'}
 		on:click={() => handleNavigate('tokens')}
 		aria-label="Tokens"
 	>
-		<span class="nav-icon">💎</span>
-		<span class="nav-label">Tokens</span>
+		<img src="/4.png" alt="Tokens" />
 	</button>
 
+	<!-- Profile -->
 	<button
 		class="nav-item"
 		class:active={$activeTab === 'profile'}
 		on:click={() => handleNavigate('profile')}
 		aria-label="Profile"
 	>
-		<span class="nav-icon">👤</span>
-		<span class="nav-label">Profile</span>
+		<img src="/5.png" alt="Profile" />
 	</button>
 </nav>
 
 <style>
 	.bottom-nav {
-		position: relative; /* Changed from fixed to relative */
-		bottom: auto; /* Reset bottom positioning */
-		left: auto; /* Reset left positioning */
-		right: auto; /* Reset right positioning */
-		background: #000000; /* Solid black background */
-		backdrop-filter: none; /* Remove blur */
-		border-top: none; /* Remove divider */
-		padding: 0 0.25rem 0; /* Remove top and bottom padding */
-		display: flex;
-		align-items: center; /* Vertically center icons */
-		justify-content: space-around;
-		gap: 0.15rem;
+		position: relative;
+		background: rgba(107, 207, 126, 0.15); /* Translucent moss green */
+		backdrop-filter: blur(8px);
+		box-shadow:
+			0 -4px 20px rgba(107, 207, 126, 0.3),
+			inset 0 0 30px rgba(107, 207, 126, 0.1);
+		padding: var(--spacing-4); /* 8px padding around buttons */
+		display: grid;
+		grid-template-columns: repeat(5, 1fr); /* 5 equal columns */
+		gap: var(--spacing-4); /* 8px gap between buttons */
 		z-index: 1000;
-		box-shadow: none; /* Remove shadow */
-		flex-shrink: 0; /* Prevent shrinking */
-		height: 60px; /* Smaller on mobile */
-	}
-
-	/* Desktop: taller nav */
-	@media (min-width: 768px) {
-		.bottom-nav {
-			height: 85px;
-		}
+		flex-shrink: 0;
+		width: 100%; /* Ensure it doesn't exceed viewport */
+		box-sizing: border-box; /* Include padding in width calculation */
 	}
 
 	.nav-item {
 		display: flex;
-		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		padding: 0.5rem;
 		background: none;
 		border: none;
 		cursor: pointer;
-		transition: all 0.3s ease;
-		flex: 1;
+		padding: 0;
 		position: relative;
-	}
-
-	.nav-icon {
-		font-size: var(--font-size-1); /* 19.8px Level 1 φ-based - smaller on mobile */
-		transition: all 0.3s ease;
-		filter: grayscale(0.5);
-		opacity: 0.6;
-	}
-
-	/* Desktop: larger icons */
-	@media (min-width: 768px) {
-		.nav-icon {
-			font-size: var(--font-size-0); /* 32px Level 0 φ-based */
-		}
-	}
-
-	.nav-label {
-		display: none; /* Hide labels - icons are sufficient */
-	}
-
-	.nav-item:hover .nav-icon,
-	.nav-item.active .nav-icon {
-		filter: grayscale(0);
-		opacity: 1;
-		transform: translateY(-2px);
-	}
-
-
-	.nav-item.active .nav-icon {
-		filter: drop-shadow(0 0 8px rgba(0, 255, 209, 0.6));
-	}
-
-	/* Action buttons (create & proof) */
-	.nav-item.action-button .nav-icon {
 		filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.6));
+		animation: gold-pulse 2s ease-in-out infinite;
 	}
 
-	.nav-item.action-button:hover .nav-icon {
-		filter: drop-shadow(0 0 12px rgba(212, 175, 55, 0.8));
-		transform: translateY(-3px) scale(1.1);
+	.nav-item img {
+		width: 100%;
+		height: auto;
+		display: block;
+	}
+
+	@keyframes gold-pulse {
+		0%,
+		100% {
+			filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.6));
+		}
+		50% {
+			filter: drop-shadow(0 0 16px rgba(212, 175, 55, 0.9));
+		}
 	}
 </style>

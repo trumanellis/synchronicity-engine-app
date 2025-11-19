@@ -1,7 +1,6 @@
 <script lang="ts">
 	import type { ProofOfService } from '$types';
 	import ProofPreviewCard from './ProofPreviewCard.svelte';
-	import Stack from '$lib/components/layout/Stack.svelte';
 
 	export let proofs: ProofOfService[];
 	export let filterUserId: string | null = null;
@@ -68,16 +67,16 @@
 		</button>
 	</div>
 
-	<!-- Proofs List -->
+	<!-- Proofs Grid -->
 	{#if filteredProofs.length > 0}
-		<Stack gap="md">
+		<div class="grid-3-cols">
 			{#each filteredProofs as proof (proof.proofId)}
 				<ProofPreviewCard
 					{proof}
 					onClick={onProofClick ? () => onProofClick(proof) : undefined}
 				/>
 			{/each}
-		</Stack>
+		</div>
 	{:else}
 		<div class="empty-state">
 			<div class="empty-icon">📋</div>

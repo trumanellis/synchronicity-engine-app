@@ -264,6 +264,70 @@ html::before {
 	.activity-item:hover {
 		@apply bg-black/40;
 	}
+
+	/* 3-Column Grid Layout */
+	.grid-3-cols {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: var(--spacing-4); /* 8px φ-based - tighter spacing */
+		width: 100%;
+	}
+
+	/* Golden Ratio Card - maintains φ height-to-width ratio */
+	.card-golden-ratio {
+		width: 100%;
+		aspect-ratio: 1 / 1.4; /* Reduced from 1.618 to 1.4 for more compact cards */
+		display: flex;
+		flex-direction: column;
+	}
+
+	/* Golden Ratio Content Sections - image:text = φ:1 */
+	.golden-ratio-image {
+		flex: 1.618; /* φ proportion - larger section */
+		min-height: 0;
+		overflow: hidden;
+	}
+
+	.golden-ratio-text {
+		flex: 1; /* 1 proportion - smaller section */
+		min-height: 0;
+		overflow: hidden;
+	}
+
+	/* Alternative: text:image = φ:1 (text larger) */
+	.golden-ratio-text-primary {
+		flex: 1.618; /* φ proportion - larger section */
+		min-height: 0;
+		overflow: auto;
+	}
+
+	.golden-ratio-image-secondary {
+		flex: 1; /* 1 proportion - smaller section */
+		min-height: 0;
+		overflow: hidden;
+	}
+
+	/* Mobile: 2 columns for compact gallery view */
+	@media (max-width: 640px) {
+		.grid-3-cols {
+			grid-template-columns: repeat(2, 1fr);
+			gap: var(--spacing-4); /* 8px φ-based */
+		}
+	}
+
+	/* Tablet: 3 columns */
+	@media (min-width: 641px) and (max-width: 1024px) {
+		.grid-3-cols {
+			grid-template-columns: repeat(3, 1fr);
+		}
+	}
+
+	/* Desktop: 4 columns for maximum density */
+	@media (min-width: 1025px) {
+		.grid-3-cols {
+			grid-template-columns: repeat(4, 1fr);
+		}
+	}
 }
 
 /* Responsive Utilities - Removed custom narrow screen overrides */

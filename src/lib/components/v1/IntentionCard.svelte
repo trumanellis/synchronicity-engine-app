@@ -28,8 +28,8 @@
 	$: emoji = getCategoryEmoji(intention.category);
 </script>
 
-<Card variant="default" padding="md" interactive={true} on:click={onClick} on:keypress={onClick}>
-	<Stack gap="md">
+<Card variant="default" padding="md" interactive={true} on:click={onClick} on:keypress={onClick} className="card-golden-ratio">
+	<div class="card-content">
 		<!-- Header: Icon + Content -->
 		<Row gap="md" align="start">
 			<div class="icon">{emoji}</div>
@@ -42,27 +42,44 @@
 		</Row>
 
 		<!-- Stats Row -->
-		<div class="divider" />
-		<Row gap="lg" justify="between">
-			<Row gap="sm" align="center">
-				<span class="stat-icon">⏱️</span>
-				<span class="stat-value"
-					>{intention.stats.totalAttentionHours.toLocaleString()}h</span
-				>
+		<div class="stats-section">
+			<div class="divider" />
+			<Row gap="lg" justify="between">
+				<Row gap="sm" align="center">
+					<span class="stat-icon">⏱️</span>
+					<span class="stat-value"
+						>{intention.stats.totalAttentionHours.toLocaleString()}h</span
+					>
+				</Row>
+				<Row gap="sm" align="center">
+					<span class="stat-icon">👥</span>
+					<span class="stat-value">{intention.stats.participantCount}</span>
+				</Row>
+				<Row gap="sm" align="center">
+					<span class="stat-icon">🎯</span>
+					<span class="stat-value">{intention.stats.impactLevel}</span>
+				</Row>
 			</Row>
-			<Row gap="sm" align="center">
-				<span class="stat-icon">👥</span>
-				<span class="stat-value">{intention.stats.participantCount}</span>
-			</Row>
-			<Row gap="sm" align="center">
-				<span class="stat-icon">🎯</span>
-				<span class="stat-value">{intention.stats.impactLevel}</span>
-			</Row>
-		</Row>
-	</Stack>
+		</div>
+	</div>
 </Card>
 
 <style>
+	/* Card content wrapper */
+	.card-content {
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+		gap: var(--spacing-3);
+	}
+
+	.stats-section {
+		margin-top: auto;
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-3);
+	}
+
 	/* Icon */
 	.icon {
 		font-size: 1.75rem;

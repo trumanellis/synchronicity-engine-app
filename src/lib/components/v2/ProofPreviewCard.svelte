@@ -34,46 +34,11 @@
 	}
 </script>
 
-<button class="proof-card" on:click={onClick} disabled={!onClick}>
-	<div class="proof-header">
-		<div class="user-info">
-			<div class="user-avatar">{proof.userAvatar}</div>
-			<div class="user-details">
-				<div class="user-name">{proof.userName}</div>
-				<div class="proof-timestamp">{formatTimeAgo(proof.timestamp)}</div>
-			</div>
-		</div>
-		<div class="status-badge {getStatusColor(proof.status)}">
-			<span class="status-icon">{getStatusIcon(proof.status)}</span>
-			<span class="status-label">{getStatusLabel(proof.status)}</span>
-		</div>
-	</div>
-
-	<div class="proof-content">
-		<h3 class="proof-title">{proof.title}</h3>
-		<p class="proof-description">{proof.description}</p>
-
-		<div class="proof-meta">
-			<div class="meta-item hours">
-				<span class="meta-icon">⏱️</span>
-				<span class="meta-value">{proof.hoursWorked}h</span>
-			</div>
-			{#if proof.location}
-				<div class="meta-item location">
-					<span class="meta-icon">📍</span>
-					<span class="meta-value">{proof.location.name}</span>
-				</div>
-			{/if}
-			{#if proof.witnessIds && proof.witnessIds.length > 0}
-				<div class="meta-item witnesses">
-					<span class="meta-icon">👥</span>
-					<span class="meta-value">{proof.witnessIds.length} witnesses</span>
-				</div>
-			{/if}
-		</div>
-
-		{#if proof.media && proof.media.length > 0}
-			<div class="media-gallery">
+<button class="proof-card card-golden-ratio" on:click={onClick} disabled={!onClick}>
+	<!-- Media Section - φ proportion (larger) -->
+	{#if proof.media && proof.media.length > 0}
+		<div class="golden-ratio-image">
+			<div class="media-gallery-full">
 				{#each proof.media.slice(0, 3) as mediaUrl, i}
 					<div class="media-thumbnail">
 						<div class="media-placeholder">
@@ -86,31 +51,71 @@
 					<div class="media-more">+{proof.media.length - 3}</div>
 				{/if}
 			</div>
-		{/if}
+		</div>
+	{/if}
 
-		{#if proof.tokenId}
-			<div class="token-link">
-				<span class="token-icon">💎</span>
-				<span class="token-text">Token: {proof.tokenId}</span>
+	<!-- Text Section - 1 proportion (smaller) -->
+	<div class="{proof.media && proof.media.length > 0 ? 'golden-ratio-text' : 'golden-ratio-text-primary'}">
+		<div class="proof-header">
+			<div class="user-info">
+				<div class="user-avatar">{proof.userAvatar}</div>
+				<div class="user-details">
+					<div class="user-name">{proof.userName}</div>
+					<div class="proof-timestamp">{formatTimeAgo(proof.timestamp)}</div>
+				</div>
+			</div>
+			<div class="status-badge {getStatusColor(proof.status)}">
+				<span class="status-icon">{getStatusIcon(proof.status)}</span>
+				<span class="status-label">{getStatusLabel(proof.status)}</span>
+			</div>
+		</div>
+
+		<div class="proof-content">
+			<h3 class="proof-title">{proof.title}</h3>
+			<p class="proof-description">{proof.description}</p>
+
+			<div class="proof-meta">
+				<div class="meta-item hours">
+					<span class="meta-icon">⏱️</span>
+					<span class="meta-value">{proof.hoursWorked}h</span>
+				</div>
+				{#if proof.location}
+					<div class="meta-item location">
+						<span class="meta-icon">📍</span>
+						<span class="meta-value">{proof.location.name}</span>
+					</div>
+				{/if}
+				{#if proof.witnessIds && proof.witnessIds.length > 0}
+					<div class="meta-item witnesses">
+						<span class="meta-icon">👥</span>
+						<span class="meta-value">{proof.witnessIds.length} witnesses</span>
+					</div>
+				{/if}
+			</div>
+
+			{#if proof.tokenId}
+				<div class="token-link">
+					<span class="token-icon">💎</span>
+					<span class="token-text">Token: {proof.tokenId}</span>
+				</div>
+			{/if}
+		</div>
+
+		{#if showActions}
+			<div class="proof-actions">
+				<button class="action-button secondary" on:click|stopPropagation={() => alert('Edit proof')}>
+					Edit
+				</button>
+				<button class="action-button danger" on:click|stopPropagation={() => alert('Delete proof')}>
+					Delete
+				</button>
 			</div>
 		{/if}
 	</div>
-
-	{#if showActions}
-		<div class="proof-actions">
-			<button class="action-button secondary" on:click|stopPropagation={() => alert('Edit proof')}>
-				Edit
-			</button>
-			<button class="action-button danger" on:click|stopPropagation={() => alert('Delete proof')}>
-				Delete
-			</button>
-		</div>
-	{/if}
 </button>
 
 <style>
 	.proof-card {
-		width: 100%;
 		background: linear-gradient(135deg, theme('colors.moss.bg'), rgba(0, 0, 0, 0.3));
 		border: 2px solid theme('colors.moss.border');
 		border-radius: var(--spacing-3); /* 12px φ-based */
@@ -119,6 +124,8 @@
 		cursor: pointer;
 		transition: all 0.3s ease;
 		box-shadow: 0 0 10px rgba(107, 207, 126, 0.1);
+		overflow: hidden;
+		position: relative;
 	}
 
 	.proof-card:hover:not(:disabled) {
@@ -136,7 +143,8 @@
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		margin-bottom: var(--spacing-3); /* 12px φ-based */
+		padding: var(--spacing-3); /* 12px φ-based */
+		padding-bottom: 0;
 	}
 
 	.user-info {
@@ -210,6 +218,22 @@
 		display: flex;
 		flex-direction: column;
 		gap: var(--spacing-4); /* 8px φ-based */
+		flex: 1;
+		overflow: hidden;
+		padding: var(--spacing-3); /* 12px φ-based */
+	}
+
+	/* Add padding to text section container */
+	.proof-card > .golden-ratio-text,
+	.proof-card > .golden-ratio-text-primary {
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-4);
+	}
+
+	.proof-card > .golden-ratio-image {
+		background: rgba(0, 0, 0, 0.2);
+		border-bottom: 1px solid theme('colors.moss.border');
 	}
 
 	.proof-title {
@@ -261,15 +285,18 @@
 		opacity: 0.9;
 	}
 
-	.media-gallery {
-		display: flex;
+	.media-gallery-full {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
 		gap: var(--spacing-4); /* 8px φ-based */
-		margin-top: var(--spacing-4);
+		padding: var(--spacing-3); /* 12px φ-based */
+		height: 100%;
+		align-content: center;
 	}
 
 	.media-thumbnail {
-		width: 80px;
-		height: 80px;
+		width: 100%;
+		aspect-ratio: 1;
 		flex-shrink: 0;
 	}
 
@@ -296,8 +323,8 @@
 	}
 
 	.media-more {
-		width: 80px;
-		height: 80px;
+		width: 100%;
+		aspect-ratio: 1;
 		background: rgba(0, 255, 209, 0.1);
 		border: 1px solid theme('colors.cyan.border');
 		border-radius: var(--spacing-4); /* 8px φ-based */
@@ -333,7 +360,8 @@
 	.proof-actions {
 		display: flex;
 		gap: var(--spacing-4); /* 8px φ-based */
-		margin-top: var(--spacing-3); /* 12px φ-based */
+		margin-top: auto;
+		padding: var(--spacing-3); /* 12px φ-based */
 		padding-top: var(--spacing-3);
 		border-top: 1px solid theme('colors.cyan.border');
 	}

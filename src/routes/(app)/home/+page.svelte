@@ -19,10 +19,13 @@
 	import Section from '$lib/components/layout/Section.svelte';
 
 	// V2 Components
-	import IntentionListItem from '$lib/components/v2/IntentionListItem.svelte';
+	import ContentCardGallery from '$lib/components/v2/ContentCardGallery.svelte';
 
 	// V1 Components
 	import SectionTitle from '$lib/components/v1/SectionTitle.svelte';
+
+	// Utilities
+	import { intentionToCard } from '$lib/utils/cardTransformers';
 
 	// Set active tab
 	onMount(() => {
@@ -37,6 +40,22 @@
 
 	// Get recommended intentions
 	$: recommendedIntentions = getRecommendedIntentions();
+
+	// Transform intentions to cards
+	$: recentCards = recentIntentions.map(({ intention, potentialHours }) => ({
+		...intentionToCard(intention),
+		subtitle: `${potentialHours}h potential attention • ${intention.description.slice(0, 80)}...`,
+		onClick: () => handleViewIntention(intention.intentionId)
+	}));
+
+	$: recommendedCards = recommendedIntentions.map((intention) => ({
+		...intentionToCard(intention),
+		subtitle: intention.recommendationReason
+			? `${intention.recommendationReason} • ${intention.description.slice(0, 60)}...`
+			: intention.description.slice(0, 100) + '...',
+		variant: 'featured' as const,
+		onClick: () => handleViewIntention(intention.intentionId)
+	}));
 
 	function handleViewIntention(intentionId: string) {
 		goto(`/browse/${intentionId}`);
@@ -96,39 +115,24 @@
 				</Section>
 			{/if}
 
-			<!-- Intentions (sorted by potential attention) -->
+			<!-- Recent Intentions Gallery -->
 			<Section spacing="md">
 				<Stack gap="md">
 					<SectionTitle icon="⚡" title="Recent Intentions" />
-
-					<Stack gap="sm">
-						{#each recentIntentions as { intention, potentialHours }}
-							<IntentionListItem
-								{intention}
-								potentialHours={potentialHours}
-								showPotential={true}
-								onClick={() => handleViewIntention(intention.intentionId)}
-							/>
-						{/each}
-					</Stack>
+					<ContentCardGallery items={recentCards} />
 				</Stack>
 			</Section>
 
-			<!-- Suggested Intentions -->
+			<!-- Suggested Intentions Gallery -->
 			<Section spacing="lg">
 				<Stack gap="md">
-					<SectionTitle icon="✨" title="Suggested" />
-
-					<Stack gap="sm">
-						{#each recommendedIntentions as intention}
-							<IntentionListItem
-								{intention}
-								isRecommended={true}
-								recommendationReason={intention.recommendationReason}
-								onClick={() => handleViewIntention(intention.intentionId)}
-							/>
-						{/each}
-					</Stack>
+					<SectionTitle icon="✨" title="Suggested For You" />
+					<ContentCardGallery
+						items={recommendedCards}
+						emptyIcon="✨"
+						emptyTitle="No suggestions yet"
+						emptyMessage="Explore intentions to get personalized recommendations"
+					/>
 
 					<div class="view-more">
 						<button class="view-more-link" on:click={() => goto('/browse')}>

@@ -1,0 +1,145 @@
+/**
+ * Card Transformers - Utilities to convert various data types to ContentCard format
+ * Enables reusability of ContentCard across different content types
+ */
+
+import type { Intention, ProofOfService, Token } from '$types';
+import { formatTimeAgo } from '$data/mockData';
+
+/**
+ * Transform Intention to ContentCard format
+ */
+export function intentionToCard(intention: Intention) {
+	return {
+		imageUrl: null, // Intentions don't have images by default
+		imageAlt: intention.title,
+		imagePlaceholder: getCategoryEmoji(intention.category),
+		title: intention.title,
+		subtitle: intention.description.slice(0, 100) + (intention.description.length > 100 ? '...' : ''),
+		tags: [intention.category, intention.stats.impactLevel],
+		metrics: [
+			{
+				icon: '⏱️',
+				value: intention.stats.totalAttentionHours.toLocaleString(),
+				label: 'hours'
+			},
+			{
+				icon: '👥',
+				value: intention.stats.participantCount,
+				label: 'participants'
+			},
+			{
+				icon: '🎯',
+				value: intention.stats.impactLevel
+			}
+		],
+		date: '', // Intentions don't have a specific date
+		actionText: 'View Details',
+		actionIcon: '→',
+		variant: intention.stats.impactLevel === 'High' ? 'featured' : 'default',
+		onClick: undefined // Will be set by parent component
+	} as const;
+}
+
+/**
+ * Transform ProofOfService to ContentCard format
+ */
+export function proofToCard(proof: ProofOfService) {
+	return {
+		imageUrl: proof.media && proof.media.length > 0 ? proof.media[0] : null,
+		imageAlt: proof.title,
+		imagePlaceholder: '📷',
+		title: proof.title,
+		subtitle: proof.description.slice(0, 100) + (proof.description.length > 100 ? '...' : ''),
+		tags: [proof.status, ...(proof.location ? [proof.location.name] : [])],
+		metrics: [
+			{
+				icon: '⏱️',
+				value: proof.hoursWorked,
+				label: 'hours'
+			},
+			...(proof.witnessIds && proof.witnessIds.length > 0
+				? [
+						{
+							icon: '👥',
+							value: proof.witnessIds.length,
+							label: 'witnesses'
+						}
+					]
+				: [])
+		],
+		date: formatTimeAgo(proof.timestamp),
+		actionText: 'View Proof',
+		actionIcon: '→',
+		variant: proof.status === 'token_created' ? 'featured' : 'default',
+		onClick: undefined // Will be set by parent component
+	} as const;
+}
+
+/**
+ * Transform Token to ContentCard format
+ */
+export function tokenToCard(token: Token) {
+	return {
+		imageUrl: null,
+		imageAlt: token.name,
+		imagePlaceholder: '💎',
+		title: token.name,
+		subtitle: token.description || 'Community token representing verified contribution',
+		tags: [token.category, `${token.totalSupply} supply`],
+		metrics: [
+			{
+				icon: '👤',
+				value: token.holdersCount || 0,
+				label: 'holders'
+			},
+			{
+				icon: '⏱️',
+				value: token.baseHoursValue,
+				label: 'hours value'
+			}
+		],
+		date: formatTimeAgo(token.creationDate),
+		actionText: 'View Token',
+		actionIcon: '💎',
+		variant: 'default',
+		onClick: undefined // Will be set by parent component
+	} as const;
+}
+
+/**
+ * Get emoji for intention category
+ */
+function getCategoryEmoji(category: string): string {
+	const emojiMap: Record<string, string> = {
+		'Organic Food & Nutrition': '🌱',
+		'Land Stewardship': '🌳',
+		'Off-Grid & Sustainable Living': '☀️',
+		'Health & Vitality': '💪',
+		'Community Abundance': '🤝',
+		'Self & Spiritual Development': '🧘',
+		'Creative Expression': '🎨'
+	};
+	return emojiMap[category] || '🎯';
+}
+
+/**
+ * Batch transform intentions to cards
+ */
+export function intentionsToCards(intentions: Intention[]) {
+	return intentions.map(intentionToCard);
+}
+
+/**
+ * Batch transform proofs to cards
+ */
+export function proofsToCards(proofs: ProofOfService[]) {
+	return proofs.map(proofToCard);
+}
+
+/**
+ * Batch transform tokens to cards
+ */
+export function tokensToCards(tokens: Token[]) {
+	return tokens.map(tokenToCard);
+}

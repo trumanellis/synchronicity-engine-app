@@ -96,10 +96,10 @@
 		</Row>
 	</Section>
 
-	<!-- Intentions List -->
+	<!-- Intentions Grid -->
 	<Section spacing="lg">
 		{#if $filteredIntentions.length > 0}
-			<Stack gap="md">
+			<div class="grid-3-cols">
 				{#each $filteredIntentions as intention (intention.intentionId)}
 					<div class="animate-fade-in">
 						<IntentionCard
@@ -108,7 +108,7 @@
 						/>
 					</div>
 				{/each}
-			</Stack>
+			</div>
 		{:else}
 			<EmptyState
 				icon="🔍"
