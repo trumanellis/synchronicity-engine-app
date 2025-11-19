@@ -174,10 +174,22 @@
 		pointer-events: none;
 		margin-bottom: 0;
 		z-index: 1;
-		filter: drop-shadow(0 0 15px rgba(0, 255, 209, 0.5))
-			drop-shadow(0 0 25px rgba(0, 255, 209, 0.3))
-			drop-shadow(0 0 35px rgba(0, 255, 209, 0.2));
 		overflow: visible; /* Allow glow to spread */
+		animation: tokens-banner-pulse 3s ease-in-out infinite;
+	}
+
+	@keyframes tokens-banner-pulse {
+		0%,
+		100% {
+			filter: drop-shadow(0 0 15px rgba(38, 96, 135, 0.5))
+				drop-shadow(0 0 25px rgba(38, 96, 135, 0.3))
+				drop-shadow(0 0 35px rgba(38, 96, 135, 0.2));
+		}
+		50% {
+			filter: drop-shadow(0 0 30px rgba(38, 96, 135, 0.7))
+				drop-shadow(0 0 50px rgba(38, 96, 135, 0.5))
+				drop-shadow(0 0 70px rgba(38, 96, 135, 0.4));
+		}
 	}
 
 	@media (min-width: 768px) {

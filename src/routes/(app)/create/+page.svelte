@@ -108,10 +108,10 @@
 
 		<!-- Content with padding -->
 		<div class="create-content">
-			<Stack gap="md">
+			<Stack gap="sm">
 				<!-- Form -->
 				<form on:submit={handleSubmit} class="create-form">
-					<Stack gap="md">
+					<Stack gap="sm">
 			<!-- Title -->
 			<FormField
 				label="Title"
@@ -128,7 +128,7 @@
 				bind:value={description}
 				placeholder="Describe your intention in detail. What help do you need or what can you offer?"
 				required={true}
-				rows={4}
+				rows={3}
 				maxLength={500}
 			/>
 
@@ -202,7 +202,7 @@
 		position: relative;
 		width: 100%; /* Full screen width */
 		height: 0;
-		padding-bottom: 50%; /* Taller aspect ratio to show full image */
+		padding-bottom: 35%; /* More compact aspect ratio */
 		background-image: url('/CreateIntentionBanner.png');
 		background-size: contain; /* Changed to contain to show full image */
 		background-repeat: no-repeat;
@@ -218,26 +218,26 @@
 	@keyframes gold-banner-pulse {
 		0%,
 		100% {
-			filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.5))
-				drop-shadow(0 0 25px rgba(212, 175, 55, 0.3))
-				drop-shadow(0 0 35px rgba(212, 175, 55, 0.2));
+			filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.5))
+				drop-shadow(0 0 25px rgba(255, 255, 255, 0.3))
+				drop-shadow(0 0 35px rgba(255, 255, 255, 0.2));
 		}
 		50% {
-			filter: drop-shadow(0 0 30px rgba(212, 175, 55, 0.7))
-				drop-shadow(0 0 50px rgba(212, 175, 55, 0.5))
-				drop-shadow(0 0 70px rgba(212, 175, 55, 0.4));
+			filter: drop-shadow(0 0 30px rgba(255, 255, 255, 0.7))
+				drop-shadow(0 0 50px rgba(255, 255, 255, 0.5))
+				drop-shadow(0 0 70px rgba(255, 255, 255, 0.4));
 		}
 	}
 
 	@media (min-width: 768px) {
 		.create-banner {
-			padding-bottom: 35%; /* Adjusted aspect ratio for desktop */
+			padding-bottom: 25%; /* More compact for desktop */
 		}
 	}
 
 	/* Content with padding restored */
 	.create-content {
-		padding: var(--spacing-3);
+		padding: var(--spacing-4) var(--spacing-3); /* Reduced vertical padding */
 	}
 
 	.create-form {
@@ -248,7 +248,7 @@
 		display: grid;
 		grid-template-columns: 1fr 1fr;
 		gap: var(--spacing-4); /* 8px φ-based */
-		margin-top: var(--spacing-2); /* 18px φ-based */
+		margin-top: 0; /* Remove top margin for compactness */
 	}
 
 	.info-box {
@@ -263,7 +263,7 @@
 		color: theme('colors.gold.DEFAULT');
 		font-weight: 600;
 		font-size: var(--font-size-3); /* 8px Level 3 φ-based - more compact */
-		margin-bottom: 4px; /* More compact */
+		margin-bottom: 2px; /* Even more compact */
 		display: flex;
 		align-items: center;
 		gap: 4px; /* More compact */
@@ -272,7 +272,7 @@
 	.info-box-content {
 		color: theme('colors.cream.DEFAULT');
 		font-size: var(--font-size-3); /* 8px Level 3 φ-based */
-		line-height: 1.5; /* Tighter line height */
+		line-height: 1.4; /* Tighter line height */
 		opacity: 0.9;
 	}
 
