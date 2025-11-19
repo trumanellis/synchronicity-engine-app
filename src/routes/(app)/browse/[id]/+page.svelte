@@ -252,6 +252,9 @@
 								placeholder="Type a message..."
 								on:click={() => alert('Chat functionality coming soon!')}
 							/>
+							<button class="chat-proof-button" on:click={handleSubmitProof} title="Submit Proof of Service">
+								+
+							</button>
 							<button class="chat-send-button">Send</button>
 						</div>
 					</div>
@@ -952,6 +955,30 @@
 	.chat-input:focus {
 		border-color: theme('colors.cyan.DEFAULT');
 		box-shadow: 0 0 10px rgba(0, 255, 209, 0.3);
+	}
+
+	.chat-proof-button {
+		width: 36px;
+		height: 36px;
+		background: rgba(0, 255, 209, 0.1);
+		border: 2px solid theme('colors.cyan.DEFAULT');
+		border-radius: 50%;
+		color: theme('colors.cyan.DEFAULT');
+		font-size: var(--font-size-0); /* 32px Level 0 φ-based */
+		font-weight: 300;
+		line-height: 1;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		cursor: pointer;
+		transition: all 0.3s ease;
+		flex-shrink: 0;
+	}
+
+	.chat-proof-button:hover {
+		background: rgba(0, 255, 209, 0.2);
+		box-shadow: 0 0 20px rgba(0, 255, 209, 0.6);
+		transform: rotate(90deg);
 	}
 
 	.chat-send-button {
