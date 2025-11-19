@@ -37,18 +37,18 @@
 					<span class="badge-text">Featured</span>
 				</div>
 			{/if}
-			<!-- Tags overlaid on image -->
-			{#if tags.length > 0}
-				<div class="tags-overlay">
-					{#each tags.slice(0, 3) as tag}
-						<span class="tag">#{tag}</span>
-					{/each}
-					{#if tags.length > 3}
-						<span class="tag-more">+{tags.length - 3}</span>
-					{/if}
-				</div>
-			{/if}
 		</div>
+		<!-- Tags positioned outside circular frame -->
+		{#if tags.length > 0}
+			<div class="tags-overlay">
+				{#each tags.slice(0, 3) as tag}
+					<span class="tag">#{tag}</span>
+				{/each}
+				{#if tags.length > 3}
+					<span class="tag-more">+{tags.length - 3}</span>
+				{/if}
+			</div>
+		{/if}
 	</div>
 
 	<!-- Content Section - 1 proportion (smaller) -->
@@ -111,24 +111,31 @@
 		transform: translateY(-2px);
 	}
 
+	.content-card:hover:not(:disabled) .image-container {
+		border-color: theme('colors.moss.DEFAULT');
+		box-shadow: 0 0 20px theme('colors.moss.glow');
+	}
+
 	.content-card:disabled {
 		cursor: default;
 	}
 
-	/* Image Section - Golden Ratio φ proportion */
+	/* Image Section - Circular crop */
 	.image-container {
 		width: 100%;
-		aspect-ratio: 1.618 / 1; /* Golden ratio: width to height = φ:1 */
+		aspect-ratio: 1 / 1; /* Square for perfect circle */
 		position: relative;
 		overflow: hidden;
 		background: rgba(0, 0, 0, 0.4);
-		border-bottom: 1px solid theme('colors.moss.border');
+		border-radius: 50%; /* Circular cropping */
+		border: 2px solid theme('colors.moss.border');
 	}
 
 	.golden-ratio-image {
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		position: relative; /* Positioning context for tags */
 	}
 
 	.featured-image {
@@ -191,7 +198,7 @@
 		height: 100%;
 	}
 
-	/* Tags overlay on image */
+	/* Tags overlay on image - positioned at bottom left corner */
 	.tags-overlay {
 		position: absolute;
 		bottom: var(--spacing-4); /* 8px from bottom */
@@ -200,6 +207,7 @@
 		flex-wrap: wrap;
 		gap: 4px;
 		z-index: 10;
+		max-width: 70%;
 	}
 
 	.tag {
@@ -274,6 +282,18 @@
 	.metric-icon {
 		font-size: 0.75rem;
 		opacity: 0.7;
+		filter: drop-shadow(0 0 3px rgba(0, 255, 209, 0.5));
+		animation: icon-pulse 3s ease-in-out infinite;
+	}
+
+	@keyframes icon-pulse {
+		0%,
+		100% {
+			filter: drop-shadow(0 0 3px rgba(0, 255, 209, 0.5));
+		}
+		50% {
+			filter: drop-shadow(0 0 6px rgba(0, 255, 209, 0.8));
+		}
 	}
 
 	.metric-value {

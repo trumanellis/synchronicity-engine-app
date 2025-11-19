@@ -207,6 +207,13 @@
 	<h1 class="intention-title">{intention.title}</h1>
 	<p class="intention-subtitle">{intention.description}</p>
 
+	<!-- Featured Image -->
+	{#if intention.media && intention.media.length > 0}
+		<div class="featured-image-container">
+			<img src={intention.media[0]} alt={intention.title} class="featured-image" />
+		</div>
+	{/if}
+
 	<!-- Collective Attention Spiral -->
 	{#if attentionSummary && attentionSummary.userSummaries.length > 0}
 		<AttentionSpiral {attentionSummary} />
@@ -473,6 +480,35 @@
 		line-height: 1.6;
 		margin-bottom: var(--spacing-2); /* 18px φ-based */
 		opacity: 0.9;
+	}
+
+	.featured-image-container {
+		width: 100%;
+		aspect-ratio: 1.618 / 1; /* Golden ratio: width to height */
+		overflow: hidden;
+		border-radius: var(--spacing-3); /* 12px φ-based */
+		border: 2px solid theme('colors.moss.border');
+		background: rgba(0, 0, 0, 0.4);
+		margin-bottom: var(--spacing-2); /* 18px φ-based */
+		box-shadow: 0 0 20px rgba(107, 207, 126, 0.2);
+		transition: all 0.3s ease;
+	}
+
+	.featured-image-container:hover {
+		border-color: theme('colors.moss.DEFAULT');
+		box-shadow: 0 0 30px theme('colors.moss.glow');
+		transform: translateY(-2px);
+	}
+
+	.featured-image {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		transition: transform 0.3s ease;
+	}
+
+	.featured-image-container:hover .featured-image {
+		transform: scale(1.05);
 	}
 
 	.page-title {

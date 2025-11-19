@@ -209,7 +209,7 @@ export const intentions: Intention[] = [
 			name: 'Multiple sites',
 			proximity: 'local'
 		},
-		media: ['ipfs://Qm...garden1', 'ipfs://Qm...garden2'],
+		media: ['/CommunityGarden.png'],
 		stats: {
 			totalAttentionHours: 2847,
 			participantCount: 156,
@@ -278,6 +278,7 @@ export const intentions: Intention[] = [
 			name: 'Água Lila Valley',
 			proximity: 'on-site'
 		},
+		media: ['/EucalyptusRemoval.png'],
 		stats: {
 			totalAttentionHours: 3892,
 			participantCount: 89,
@@ -359,6 +360,7 @@ export const intentions: Intention[] = [
 			name: 'Regional network',
 			proximity: 'nearby'
 		},
+		media: ['/MushroomCultivation.png'],
 		stats: {
 			totalAttentionHours: 2134,
 			participantCount: 56,
@@ -423,6 +425,7 @@ export const intentions: Intention[] = [
 			name: 'Workshop Barn',
 			proximity: 'on-site'
 		},
+		media: ['/SolarDehydrator.png'],
 		stats: {
 			totalAttentionHours: 2145,
 			participantCount: 43,

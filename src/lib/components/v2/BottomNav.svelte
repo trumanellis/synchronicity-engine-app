@@ -71,7 +71,12 @@
 <style>
 	.bottom-nav {
 		position: relative;
-		background: rgba(107, 207, 126, 0.15); /* Translucent moss green */
+		background: linear-gradient(
+			to bottom,
+			rgba(107, 207, 126, 0) 0%,
+			rgba(107, 207, 126, 0.15) 23%,
+			rgba(107, 207, 126, 0.15) 100%
+		); /* Gradient from transparent to moss green */
 		backdrop-filter: blur(8px);
 		box-shadow:
 			0 -4px 20px rgba(107, 207, 126, 0.3),

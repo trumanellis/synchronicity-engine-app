@@ -4,39 +4,55 @@
  */
 
 import type { Intention, ProofOfService, Token } from '$types';
-import { formatTimeAgo } from '$data/mockData';
+import { formatTimeAgo, userTokens } from '$data/mockData';
+
+/**
+ * Calculate percentage done for an intention
+ * Based on released blessings (tokens created) / total attention received
+ */
+function calculatePercentDone(intention: Intention): number {
+	// Get all tokens created for this intention
+	const intentionTokens = userTokens.filter(token => token.intentionId === intention.intentionId);
+
+	// Sum up hours from all tokens (released blessings)
+	const releasedHours = intentionTokens.reduce((sum, token) => sum + (token.computed?.hours || 0), 0);
+
+	// Calculate percentage
+	const totalHours = intention.stats.totalAttentionHours;
+	if (totalHours === 0) return 0;
+
+	return Math.min(100, Math.round((releasedHours / totalHours) * 100));
+}
 
 /**
  * Transform Intention to ContentCard format
  */
 export function intentionToCard(intention: Intention) {
+	const percentDone = calculatePercentDone(intention);
+
 	return {
-		imageUrl: null, // Intentions don't have images by default
+		imageUrl: intention.media && intention.media.length > 0 ? intention.media[0] : null,
 		imageAlt: intention.title,
 		imagePlaceholder: getCategoryEmoji(intention.category),
 		title: intention.title,
 		subtitle: intention.description.slice(0, 100) + (intention.description.length > 100 ? '...' : ''),
-		tags: [intention.category, intention.stats.impactLevel],
+		tags: [intention.category],
 		metrics: [
 			{
-				icon: '⏱️',
+				icon: '👁️',
 				value: intention.stats.totalAttentionHours.toLocaleString(),
 				label: 'hours'
 			},
 			{
-				icon: '👥',
-				value: intention.stats.participantCount,
-				label: 'participants'
-			},
-			{
-				icon: '🎯',
-				value: intention.stats.impactLevel
+				icon: '✨',
+				value: `${percentDone}%`,
+				label: 'manifested'
 			}
 		],
 		date: '', // Intentions don't have a specific date
 		actionText: 'View Details',
 		actionIcon: '→',
-		variant: intention.stats.impactLevel === 'High' ? 'featured' : 'default',
+		variant: 'default',
 		onClick: undefined // Will be set by parent component
 	} as const;
 }
