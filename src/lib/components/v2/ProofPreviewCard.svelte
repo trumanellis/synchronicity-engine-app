@@ -111,18 +111,20 @@
 <style>
 	.proof-card {
 		width: 100%;
-		background: linear-gradient(135deg, rgba(0, 255, 209, 0.02), rgba(0, 0, 0, 0.3));
-		border: 2px solid theme('colors.cyan.border');
+		background: linear-gradient(135deg, theme('colors.moss.bg'), rgba(0, 0, 0, 0.3));
+		border: 2px solid theme('colors.moss.border');
 		border-radius: var(--spacing-3); /* 12px φ-based */
 		padding: var(--spacing-3); /* 12px φ-based */
 		text-align: left;
 		cursor: pointer;
 		transition: all 0.3s ease;
+		box-shadow: 0 0 10px rgba(107, 207, 126, 0.1);
 	}
 
 	.proof-card:hover:not(:disabled) {
-		border-color: theme('colors.cyan.DEFAULT');
-		box-shadow: 0 0 25px theme('colors.cyan.glow');
+		border-color: theme('colors.moss.DEFAULT');
+		background: linear-gradient(135deg, rgba(107, 207, 126, 0.12), rgba(0, 0, 0, 0.3));
+		box-shadow: 0 0 25px theme('colors.moss.glow');
 		transform: translateY(-2px);
 	}
 

@@ -46,6 +46,77 @@ body {
 	min-height: 100vh;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+	position: relative;
+}
+
+/* Corner Glow Effect */
+body::before,
+body::after {
+	content: '';
+	position: fixed;
+	width: 300px;
+	height: 300px;
+	border-radius: 50%;
+	background: radial-gradient(
+		circle,
+		rgba(212, 175, 55, 0.3) 0%,
+		rgba(212, 175, 55, 0.15) 30%,
+		rgba(212, 175, 55, 0) 70%
+	);
+	pointer-events: none;
+	z-index: 9999;
+	animation: corner-pulse 4s ease-in-out infinite;
+}
+
+body::before {
+	top: -150px;
+	left: -150px;
+}
+
+body::after {
+	top: -150px;
+	right: -150px;
+}
+
+/* Top Edge Glow - 50% intensity */
+html::before {
+	content: '';
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 200px;
+	background: linear-gradient(
+		to bottom,
+		rgba(212, 175, 55, 0.15) 0%,
+		rgba(212, 175, 55, 0.075) 30%,
+		rgba(212, 175, 55, 0) 100%
+	);
+	pointer-events: none;
+	z-index: 9999;
+	animation: edge-pulse 4s ease-in-out infinite;
+}
+
+@keyframes edge-pulse {
+	0%,
+	100% {
+		opacity: 0.3;
+	}
+	50% {
+		opacity: 0.5;
+	}
+}
+
+@keyframes corner-pulse {
+	0%,
+	100% {
+		opacity: 0.6;
+		transform: scale(1);
+	}
+	50% {
+		opacity: 1;
+		transform: scale(1.1);
+	}
 }
 
 /* Custom Scrollbar */
@@ -160,8 +231,22 @@ body {
 		@apply bg-gold/30 shadow-glow-gold transform -translate-y-0.5;
 	}
 
+	/* Centralized Section Title Styles */
 	.section-title {
-		@apply text-cyan text-sm font-semibold uppercase tracking-wider flex items-center gap-2;
+		color: theme('colors.cyan.DEFAULT');
+		font-size: var(--font-size-1); /* 19.8px Level 1 φ-based */
+		font-weight: 700;
+		font-family: theme('fontFamily.exo');
+		text-transform: uppercase;
+		letter-spacing: 0.1em;
+		margin-bottom: var(--spacing-2); /* 18px φ-based */
+		margin-top: var(--spacing-2); /* 18px φ-based */
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: var(--spacing-4); /* 8px φ-based */
+		text-align: center;
+		text-shadow: 0 0 15px rgba(0, 255, 209, 0.5);
 	}
 
 	.content-box {

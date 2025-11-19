@@ -342,4 +342,5 @@
 		color: theme('colors.gold.DEFAULT');
 		opacity: 0.3;
 	}
+
 </style>

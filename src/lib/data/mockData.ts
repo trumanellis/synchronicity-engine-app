@@ -269,7 +269,7 @@ export const intentions: Intention[] = [
 	{
 		intentionId: 'int-eucalyptus-001',
 		title: 'Eucalyptus Removal Brigade',
-		description: 'Clear invasive fire-trees from sacred valley restoration site',
+		description: 'Clear invasive eucalyptus fire-trees from sacred valley restoration site. Removing non-native species that drain water table and increase wildfire risk. Clearing 15 acres to restore native oak and cork tree ecosystem.',
 		category: 'Land Stewardship',
 		createdBy: 'temple-agua-lila',
 		createdAt: '2024-09-15T10:00:00Z',
@@ -300,12 +300,57 @@ export const intentions: Intention[] = [
 				role: 'Ecologist'
 			}
 		],
-		recentActivity: []
+		recentActivity: [
+			{
+				activityId: 'act-euc-001',
+				type: 'proof_posted',
+				userId: 'user-miguel-001',
+				userName: 'Miguel Santos',
+				timestamp: '2025-11-09T16:30:00Z',
+				text: 'Safely felled and milled 47 eucalyptus trees from eastern slope',
+				icon: '✓',
+				tokenEarned: {
+					tokenId: 'tok-euc-001',
+					hours: 20
+				},
+				meta: '🏆 Earned 20h Token • 2 acres cleared'
+			},
+			{
+				activityId: 'act-euc-002',
+				type: 'proof_posted',
+				userId: 'user-elena-001',
+				userName: 'Elena Torres',
+				timestamp: '2025-11-08T14:00:00Z',
+				text: 'Completed ecological assessment and marked native seedlings for protection',
+				icon: '✓',
+				meta: '🌱 47 oak saplings protected • Survey complete'
+			},
+			{
+				activityId: 'act-euc-003',
+				type: 'intention_joined',
+				userId: 'user-james-001',
+				userName: 'James Rodriguez',
+				timestamp: '2025-11-08T10:15:00Z',
+				text: 'Joined to help with water management after tree removal',
+				icon: '🌟',
+				meta: '💧 Irrigation specialist • 3,892h community attention'
+			},
+			{
+				activityId: 'act-euc-004',
+				type: 'proof_posted',
+				userId: 'user-miguel-001',
+				userName: 'Miguel Santos',
+				timestamp: '2025-11-07T11:00:00Z',
+				text: 'Chipped eucalyptus branches into mulch for native plantings',
+				icon: '✓',
+				meta: '♻️ 3 cubic meters mulch created'
+			}
+		]
 	},
 	{
 		intentionId: 'int-mushroom-001',
 		title: 'Mushroom Cultivation Network',
-		description: 'Share techniques, spores, and growing spaces for food sovereignty',
+		description: 'Share techniques, spores, and growing spaces for food sovereignty. Building community knowledge around oyster, shiitake, and medicinal mushroom cultivation. Creating spore library and teaching workshops on log inoculation and substrate preparation.',
 		category: 'Organic Food & Nutrition',
 		createdBy: 'user-fungal-001',
 		createdAt: '2024-10-05T16:45:00Z',
@@ -320,13 +365,56 @@ export const intentions: Intention[] = [
 			activeDays: 35,
 			impactLevel: 'medium'
 		},
-		topContributors: [],
-		recentActivity: []
+		topContributors: [
+			{
+				userId: 'user-aisha-001',
+				name: 'Aisha Patel',
+				avatar: '🌿',
+				hours: 287,
+				role: 'Cultivation Expert'
+			}
+		],
+		recentActivity: [
+			{
+				activityId: 'act-mush-001',
+				type: 'proof_posted',
+				userId: 'user-aisha-001',
+				userName: 'Aisha Patel',
+				timestamp: '2025-11-09T13:15:00Z',
+				text: 'Taught mushroom cultivation workshop with 18 participants',
+				icon: '✓',
+				tokenEarned: {
+					tokenId: 'tok-mush-001',
+					hours: 6
+				},
+				meta: '🏆 Earned 6h Token • 45 logs inoculated'
+			},
+			{
+				activityId: 'act-mush-002',
+				type: 'proof_posted',
+				userId: 'user-sarah-001',
+				userName: 'Sarah Kim',
+				timestamp: '2025-11-08T09:30:00Z',
+				text: 'Built humidity-controlled fruiting chamber from recycled materials',
+				icon: '✓',
+				meta: '🍄 12 kg oyster mushrooms harvested last cycle'
+			},
+			{
+				activityId: 'act-mush-003',
+				type: 'intention_joined',
+				userId: 'user-truman-001',
+				userName: 'Dr. Truman Ellis',
+				timestamp: '2025-11-07T15:00:00Z',
+				text: 'Joined to contribute computational modeling for yield optimization',
+				icon: '🌟',
+				meta: '📊 Data scientist • 2,134h community attention'
+			}
+		]
 	},
 	{
 		intentionId: 'int-solar-001',
 		title: 'Solar Dehydrator Workshop',
-		description: 'Build and share solar food dehydrators for off-grid food preservation',
+		description: 'Build and share solar food dehydrators for off-grid food preservation. Teaching community members to construct passive solar dehydrators using recycled materials. Perfect for drying herbs, fruits, vegetables, and medicinal plants without electricity. Building skills for resilient food storage systems.',
 		category: 'Off-Grid & Sustainable Living',
 		createdBy: 'user-solar-001',
 		createdAt: '2024-11-01T09:00:00Z',
@@ -341,8 +429,68 @@ export const intentions: Intention[] = [
 			activeDays: 8,
 			impactLevel: 'medium'
 		},
-		topContributors: [],
-		recentActivity: []
+		topContributors: [
+			{
+				userId: 'user-truman-001',
+				name: 'Dr. Truman Ellis',
+				avatar: '👨‍🔬',
+				hours: 189,
+				role: 'Workshop Lead'
+			},
+			{
+				userId: 'user-sarah-001',
+				name: 'Sarah Kim',
+				avatar: '🌱',
+				hours: 124,
+				role: 'Materials Coordinator'
+			}
+		],
+		recentActivity: [
+			{
+				activityId: 'act-solar-001',
+				type: 'proof_posted',
+				userId: 'user-truman-001',
+				userName: 'Dr. Truman Ellis',
+				timestamp: '2025-11-09T10:00:00Z',
+				text: 'Taught solar dehydrator workshop with 12 participants building their own units',
+				icon: '✓',
+				tokenEarned: {
+					tokenId: 'tok-solar-001',
+					hours: 5
+				},
+				meta: '🏆 Earned 5h Token • 12 dehydrators built'
+			},
+			{
+				activityId: 'act-solar-002',
+				type: 'proof_posted',
+				userId: 'user-sarah-001',
+				userName: 'Sarah Kim',
+				timestamp: '2025-11-08T14:30:00Z',
+				text: 'Collected and organized recycled materials for 8 new dehydrator builds',
+				icon: '✓',
+				meta: '♻️ Glass panels and cedar frames sourced'
+			},
+			{
+				activityId: 'act-solar-003',
+				type: 'intention_joined',
+				userId: 'user-marcus-001',
+				userName: 'Marcus Chen',
+				timestamp: '2025-11-07T09:15:00Z',
+				text: 'Joined to help with carpentry and design improvements',
+				icon: '🌟',
+				meta: '🔨 Builder • 2,145h community attention'
+			},
+			{
+				activityId: 'act-solar-004',
+				type: 'proof_posted',
+				userId: 'user-sarah-001',
+				userName: 'Sarah Kim',
+				timestamp: '2025-11-06T16:00:00Z',
+				text: 'Successfully dried 15kg of tomatoes and herbs using completed dehydrators',
+				icon: '✓',
+				meta: '☀️ Food preservation results shared • Zero electricity used'
+			}
+		]
 	}
 ];
 

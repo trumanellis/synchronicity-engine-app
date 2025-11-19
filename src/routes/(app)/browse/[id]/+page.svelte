@@ -12,7 +12,7 @@
 		currentUser,
 		getIntentionAttentionSummary
 	} from '$data/mockData';
-	import type { Intention, ViewMode, ProofOfService, IntentionAttentionSummary } from '$types';
+	import type { Intention, ProofOfService, IntentionAttentionSummary } from '$types';
 
 	// Components
 	import SectionTitle from '$components/core/SectionTitle.svelte';
@@ -21,7 +21,6 @@
 	import ProofGallery from '$lib/components/v2/ProofGallery.svelte';
 	import AttentionSpiral from '$lib/components/v2/AttentionSpiral.svelte';
 
-	let currentView: ViewMode = 'discovery';
 	let intention: Intention | undefined;
 	let allProofs: ProofOfService[] = [];
 	let userProofs: ProofOfService[] = [];
@@ -61,10 +60,6 @@
 			minute: '2-digit',
 			hour12: true
 		});
-	}
-
-	function switchView(view: ViewMode) {
-		currentView = view;
 	}
 
 	function handleSubmitProof() {
@@ -208,354 +203,240 @@
 </svelte:head>
 
 {#if intention}
-	{#if currentView === 'discovery'}
-		<!-- Discovery View -->
-		<h1 class="intention-title">{intention.title}</h1>
-		<p class="intention-subtitle">{intention.description}</p>
+	<!-- Title and Description -->
+	<h1 class="intention-title">{intention.title}</h1>
+	<p class="intention-subtitle">{intention.description}</p>
 
-		<!-- Collective Attention Spiral -->
-		{#if attentionSummary && attentionSummary.userSummaries.length > 0}
-			<AttentionSpiral {attentionSummary} />
-		{/if}
-
-		<SectionTitle icon="📋" title="Overview" />
-
-		<div class="content-box mb-4">
-			<p class="content-text">{intention.description}</p>
-		</div>
-
-		<!-- Action Tabs -->
-		<div class="action-tabs-container">
-			<div class="action-tabs-nav">
-				<button
-					class="action-tab-button"
-					class:active={activeActionTab === 'chat'}
-					on:click={() => switchActionTab('chat')}
-				>
-					<span>💬</span>
-					<span>Chat</span>
-				</button>
-				<button
-					class="action-tab-button"
-					class:active={activeActionTab === 'artifacts'}
-					on:click={() => switchActionTab('artifacts')}
-				>
-					<span>📁</span>
-					<span>Artifacts</span>
-				</button>
-				<button
-					class="action-tab-button"
-					class:active={activeActionTab === 'assistant'}
-					on:click={() => switchActionTab('assistant')}
-				>
-					<span>🤖</span>
-					<span>AI Assistant</span>
-				</button>
-			</div>
-
-			<div class="action-tab-content">
-				{#if activeActionTab === 'chat'}
-					<!-- Chat Tab -->
-					<div class="chat-container">
-						<div class="chat-messages">
-							{#each mockChatMessages as message}
-								<div class="chat-message">
-									<div class="chat-avatar">{message.avatar}</div>
-									<div class="chat-message-content">
-										<div class="chat-message-header">
-											<span class="chat-user-name">{message.userName}</span>
-											<span class="chat-timestamp">{formatTimestamp(message.timestamp)}</span>
-										</div>
-										<div class="chat-message-text">{message.text}</div>
-									</div>
-								</div>
-							{/each}
-						</div>
-						<div class="chat-input-container">
-							<input
-								type="text"
-								class="chat-input"
-								placeholder="Type a message..."
-								on:click={() => alert('Chat functionality coming soon!')}
-							/>
-							<div class="chat-radial-menu-wrapper">
-								<button
-									class="chat-proof-button"
-									class:active={showRadialMenu}
-									on:click={toggleRadialMenu}
-									title="Add content"
-								>
-									+
-								</button>
-								{#if showRadialMenu}
-									<div class="radial-menu">
-										<div class="radial-arm" style="--angle: 60deg"></div>
-										<div class="radial-arm" style="--angle: 120deg"></div>
-										<div class="radial-arm" style="--angle: 180deg"></div>
-										<div class="radial-arm" style="--angle: 240deg"></div>
-										<div class="radial-arm" style="--angle: 300deg"></div>
-										<button
-											class="radial-menu-item"
-											style="--angle: 60deg"
-											on:click={() => handleRadialOption('proof')}
-											title="Submit Proof of Service"
-										>
-											<span class="radial-icon">✓</span>
-											<span class="radial-label">Proof</span>
-										</button>
-										<button
-											class="radial-menu-item"
-											style="--angle: 120deg"
-											on:click={() => handleRadialOption('artifact')}
-											title="Upload Artifact"
-										>
-											<span class="radial-icon">📄</span>
-											<span class="radial-label">Artifact</span>
-										</button>
-										<button
-											class="radial-menu-item"
-											style="--angle: 180deg"
-											on:click={() => handleRadialOption('voice')}
-											title="Record Voice Memo"
-										>
-											<span class="radial-icon">🎤</span>
-											<span class="radial-label">Voice</span>
-										</button>
-										<button
-											class="radial-menu-item"
-											style="--angle: 240deg"
-											on:click={() => handleRadialOption('media')}
-											title="Upload Media"
-										>
-											<span class="radial-icon">📷</span>
-											<span class="radial-label">Media</span>
-										</button>
-										<button
-											class="radial-menu-item"
-											style="--angle: 300deg"
-											on:click={() => handleRadialOption('blessing')}
-											title="Send Blessing"
-										>
-											<span class="radial-icon">✨</span>
-											<span class="radial-label">Blessing</span>
-										</button>
-									</div>
-								{/if}
-							</div>
-							<button class="chat-send-button">Send</button>
-						</div>
-					</div>
-				{:else if activeActionTab === 'artifacts'}
-					<!-- Artifacts Tab -->
-					<div class="artifacts-container">
-						<div class="artifacts-header">
-							<span class="artifacts-count">{mockArtifacts.length} documents</span>
-							<button class="artifacts-upload-button" on:click={() => alert('Upload coming soon!')}>
-								<span>⬆️</span>
-								<span>Upload</span>
-							</button>
-						</div>
-						<div class="artifacts-list">
-							{#each mockArtifacts as artifact}
-								<div class="artifact-card" on:click={() => alert(`Opening ${artifact.title}...`)}>
-									<div class="artifact-icon">{artifact.icon}</div>
-									<div class="artifact-info">
-										<div class="artifact-title">{artifact.title}</div>
-										<div class="artifact-meta">
-											<span>{artifact.type}</span>
-											<span>•</span>
-											<span>{artifact.size}</span>
-											<span>•</span>
-											<span>{artifact.uploadedBy}</span>
-										</div>
-									</div>
-									<div class="artifact-date">{artifact.uploadedAt}</div>
-								</div>
-							{/each}
-						</div>
-					</div>
-				{:else if activeActionTab === 'assistant'}
-					<!-- AI Assistant Tab -->
-					<div class="assistant-container">
-						<div class="assistant-messages">
-							{#if aiMessages.length === 0}
-								<div class="assistant-welcome">
-									<div class="assistant-welcome-icon">🤖</div>
-									<div class="assistant-welcome-text">
-										Hi! I'm your AI assistant for this intention. Ask me anything about the project,
-										how to contribute, or what's happening in the community.
-									</div>
-									<div class="assistant-suggestions">
-										<button
-											class="suggestion-chip"
-											on:click={() => {
-												aiInput = 'How can I help with this intention?';
-												sendAiMessage();
-											}}
-										>
-											How can I help?
-										</button>
-										<button
-											class="suggestion-chip"
-											on:click={() => {
-												aiInput = "What's the current progress?";
-												sendAiMessage();
-											}}
-										>
-											Current progress?
-										</button>
-										<button
-											class="suggestion-chip"
-											on:click={() => {
-												aiInput = 'What skills are needed?';
-												sendAiMessage();
-											}}
-										>
-											Skills needed?
-										</button>
-									</div>
-								</div>
-							{:else}
-								{#each aiMessages as message}
-									<div class="ai-message" class:user={message.role === 'user'}>
-										<div class="ai-message-avatar">
-											{message.role === 'user' ? currentUser.avatar : '🤖'}
-										</div>
-										<div class="ai-message-text">{message.text}</div>
-									</div>
-								{/each}
-							{/if}
-						</div>
-						<div class="assistant-input-container">
-							<input
-								type="text"
-								class="assistant-input"
-								placeholder="Ask me anything..."
-								bind:value={aiInput}
-								on:keydown={(e) => e.key === 'Enter' && sendAiMessage()}
-							/>
-							<button class="assistant-send-button" on:click={sendAiMessage}>Send</button>
-						</div>
-					</div>
-				{/if}
-			</div>
-		</div>
-	{:else if currentView === 'details'}
-		<!-- Details View - Top Contributors -->
-		<h2 class="page-title">Top Contributors</h2>
-		<div class="participants-list">
-			{#each intention.topContributors as contributor}
-				<div class="participant-card">
-					<div class="participant-avatar">{contributor.avatar}</div>
-					<div class="participant-info">
-						<div class="participant-name">{contributor.name}</div>
-						<div class="participant-meta">{contributor.hours}h • {contributor.role}</div>
-					</div>
-				</div>
-			{/each}
-		</div>
-
-		<!-- Attention Summary -->
-		{#if attentionSummary && attentionSummary.userSummaries.length > 0}
-			<SectionTitle icon="⚡" title="Attention Devoted" />
-
-			<!-- User Summaries -->
-			<div class="attention-users-list">
-				{#each attentionSummary.userSummaries as userSummary}
-					<div class="attention-user-card">
-						<span class="attention-avatar">{userSummary.userAvatar}</span>
-						<span class="attention-user-name">{userSummary.userName}</span>
-						<span class="attention-duration">{formatDuration(userSummary.totalMinutes)}</span>
-					</div>
-				{/each}
-			</div>
-
-			<!-- Attention Log -->
-			<SectionTitle icon="📋" title="Attention Log" />
-			<div class="attention-log">
-				{#each attentionSummary.durations as duration}
-					<div class="attention-log-item">
-						<div class="log-avatar">{duration.userAvatar}</div>
-						<div class="log-content">
-							<div class="log-user">{duration.userName}</div>
-							<div class="log-time">{formatTimestamp(duration.startTime)}</div>
-						</div>
-						<div class="log-duration">{formatDuration(duration.durationMinutes)}</div>
-					</div>
-				{/each}
-			</div>
-		{/if}
-	{:else if currentView === 'activity'}
-		<!-- Activity View -->
-		<SectionTitle icon="📊" title="Recent Activity" />
-		<div class="activity-feed">
-			{#each intention.recentActivity as activity}
-				<ActivityItem {activity} />
-			{/each}
-		</div>
-
-		<!-- All Proofs for this Intention -->
-		{#if allProofs.length > 0}
-			<SectionTitle icon="✓" title="Community Proofs" />
-			<ProofGallery proofs={allProofs} />
-		{/if}
-	{:else if currentView === 'participation'}
-		<!-- Your Impact View -->
-		<h2 class="page-title">Your Journey</h2>
-
-		{#if userProofs.length > 0}
-			<p class="page-subtitle">
-				You've submitted {userProofs.length} proof{userProofs.length !== 1 ? 's' : ''} of service for
-				this intention.
-			</p>
-
-			<SectionTitle icon="✓" title="Your Proofs" />
-			<ProofGallery proofs={userProofs} />
-
-			<div class="action-buttons mt-6">
-				<ActionButton variant="primary" fullWidth={true} onClick={handleSubmitProof}
-					>Submit Another Proof</ActionButton
-				>
-			</div>
-		{:else}
-			<p class="page-subtitle">You haven't participated in this intention yet.</p>
-			<ActionButton variant="primary" fullWidth={true} onClick={handleSubmitProof}
-				>Submit Proof of Service</ActionButton
-			>
-		{/if}
+	<!-- Collective Attention Spiral -->
+	{#if attentionSummary && attentionSummary.userSummaries.length > 0}
+		<AttentionSpiral {attentionSummary} />
 	{/if}
 
-	<!-- View Tabs -->
-	<div class="view-tabs">
-		<button
-			class="tab-button"
-			class:active={currentView === 'discovery'}
-			on:click={() => switchView('discovery')}
-		>
-			Discovery
-		</button>
-		<button
-			class="tab-button"
-			class:active={currentView === 'details'}
-			on:click={() => switchView('details')}
-		>
-			Details
-		</button>
-		<button
-			class="tab-button"
-			class:active={currentView === 'activity'}
-			on:click={() => switchView('activity')}
-		>
-			Activity
-		</button>
-		<button
-			class="tab-button"
-			class:active={currentView === 'participation'}
-			on:click={() => switchView('participation')}
-		>
-			Your Impact
-		</button>
+	<!-- Action Tabs -->
+	<div class="action-tabs-container">
+		<div class="action-tabs-nav">
+			<button
+				class="action-tab-button"
+				class:active={activeActionTab === 'chat'}
+				on:click={() => switchActionTab('chat')}
+			>
+				<span>💬</span>
+				<span>Chat</span>
+			</button>
+			<button
+				class="action-tab-button"
+				class:active={activeActionTab === 'artifacts'}
+				on:click={() => switchActionTab('artifacts')}
+			>
+				<span>📁</span>
+				<span>Artifacts</span>
+			</button>
+			<button
+				class="action-tab-button"
+				class:active={activeActionTab === 'assistant'}
+				on:click={() => switchActionTab('assistant')}
+			>
+				<span>🤖</span>
+				<span>AI Assistant</span>
+			</button>
+		</div>
+
+		<div class="action-tab-content">
+			{#if activeActionTab === 'chat'}
+				<!-- Chat Tab -->
+				<div class="chat-container">
+					<div class="chat-messages">
+						{#each mockChatMessages as message}
+							<div class="chat-message">
+								<div class="chat-avatar">{message.avatar}</div>
+								<div class="chat-message-content">
+									<div class="chat-message-header">
+										<span class="chat-user-name">{message.userName}</span>
+										<span class="chat-timestamp">{formatTimestamp(message.timestamp)}</span>
+									</div>
+									<div class="chat-message-text">{message.text}</div>
+								</div>
+							</div>
+						{/each}
+					</div>
+					<div class="chat-input-container">
+						<input
+							type="text"
+							class="chat-input"
+							placeholder="Type a message..."
+							on:click={() => alert('Chat functionality coming soon!')}
+						/>
+						<div class="chat-radial-menu-wrapper">
+							<button
+								class="chat-proof-button"
+								class:active={showRadialMenu}
+								on:click={toggleRadialMenu}
+								title="Add content"
+							>
+								+
+							</button>
+							{#if showRadialMenu}
+								<div class="radial-menu">
+									<button
+										class="radial-menu-item"
+										style="--angle: 60deg"
+										on:click={() => handleRadialOption('proof')}
+										title="Submit Proof of Service"
+									>
+										<span class="radial-icon">✓</span>
+										<span class="radial-label">Proof</span>
+									</button>
+									<button
+										class="radial-menu-item"
+										style="--angle: 120deg"
+										on:click={() => handleRadialOption('artifact')}
+										title="Upload Artifact"
+									>
+										<span class="radial-icon">📄</span>
+										<span class="radial-label">Artifact</span>
+									</button>
+									<button
+										class="radial-menu-item radial-menu-item-moss"
+										style="--angle: 180deg"
+										on:click={() => handleRadialOption('voice')}
+										title="Record Voice Memo"
+									>
+										<span class="radial-icon">🎤</span>
+										<span class="radial-label">Voice</span>
+									</button>
+									<button
+										class="radial-menu-item"
+										style="--angle: 240deg"
+										on:click={() => handleRadialOption('media')}
+										title="Upload Media"
+									>
+										<span class="radial-icon">📷</span>
+										<span class="radial-label">Media</span>
+									</button>
+									<button
+										class="radial-menu-item radial-menu-item-moss"
+										style="--angle: 300deg"
+										on:click={() => handleRadialOption('blessing')}
+										title="Send Blessing"
+									>
+										<span class="radial-icon">✨</span>
+										<span class="radial-label">Blessing</span>
+									</button>
+								</div>
+							{/if}
+						</div>
+						<button class="chat-send-button">Send</button>
+					</div>
+				</div>
+			{:else if activeActionTab === 'artifacts'}
+				<!-- Artifacts Tab -->
+				<div class="artifacts-container">
+					<div class="artifacts-header">
+						<span class="artifacts-count">{mockArtifacts.length} documents</span>
+						<button class="artifacts-upload-button" on:click={() => alert('Upload coming soon!')}>
+							<span>⬆️</span>
+							<span>Upload</span>
+						</button>
+					</div>
+					<div class="artifacts-list">
+						{#each mockArtifacts as artifact}
+							<div class="artifact-card" on:click={() => alert(`Opening ${artifact.title}...`)}>
+								<div class="artifact-icon">{artifact.icon}</div>
+								<div class="artifact-info">
+									<div class="artifact-title">{artifact.title}</div>
+									<div class="artifact-meta">
+										<span>{artifact.type}</span>
+										<span>•</span>
+										<span>{artifact.size}</span>
+										<span>•</span>
+										<span>{artifact.uploadedBy}</span>
+									</div>
+								</div>
+								<div class="artifact-date">{artifact.uploadedAt}</div>
+							</div>
+						{/each}
+					</div>
+				</div>
+			{:else if activeActionTab === 'assistant'}
+				<!-- AI Assistant Tab -->
+				<div class="assistant-container">
+					<div class="assistant-messages">
+						{#if aiMessages.length === 0}
+							<div class="assistant-welcome">
+								<div class="assistant-welcome-icon">🤖</div>
+								<div class="assistant-welcome-text">
+									Hi! I'm your AI assistant for this intention. Ask me anything about the project,
+									how to contribute, or what's happening in the community.
+								</div>
+								<div class="assistant-suggestions">
+									<button
+										class="suggestion-chip"
+										on:click={() => {
+											aiInput = 'How can I help with this intention?';
+											sendAiMessage();
+										}}
+									>
+										How can I help?
+									</button>
+									<button
+										class="suggestion-chip"
+										on:click={() => {
+											aiInput = "What's the current progress?";
+											sendAiMessage();
+										}}
+									>
+										Current progress?
+									</button>
+									<button
+										class="suggestion-chip"
+										on:click={() => {
+											aiInput = 'What skills are needed?';
+											sendAiMessage();
+										}}
+									>
+										Skills needed?
+									</button>
+								</div>
+							</div>
+						{:else}
+							{#each aiMessages as message}
+								<div class="ai-message" class:user={message.role === 'user'}>
+									<div class="ai-message-avatar">
+										{message.role === 'user' ? currentUser.avatar : '🤖'}
+									</div>
+									<div class="ai-message-text">{message.text}</div>
+								</div>
+							{/each}
+						{/if}
+					</div>
+					<div class="assistant-input-container">
+						<input
+							type="text"
+							class="assistant-input"
+							placeholder="Ask me anything..."
+							bind:value={aiInput}
+							on:keydown={(e) => e.key === 'Enter' && sendAiMessage()}
+						/>
+						<button class="assistant-send-button" on:click={sendAiMessage}>Send</button>
+					</div>
+				</div>
+			{/if}
+		</div>
 	</div>
+
+	<!-- Recent Activity -->
+	<SectionTitle icon="📊" title="Recent Activity" />
+	<div class="activity-feed activity-feed-moss">
+		{#each intention.recentActivity.slice(0, 8) as activity}
+			<ActivityItem {activity} />
+		{/each}
+	</div>
+
+	<!-- Community Proofs -->
+	{#if allProofs.length > 0}
+		<SectionTitle icon="✓" title="Community Proofs" />
+		<ProofGallery proofs={allProofs.slice(0, 9)} />
+	{/if}
 {:else}
 	<h1 class="page-title">Intention Not Found</h1>
 	<ActionButton variant="primary" onClick={() => goto('/browse')}>Back to Browse</ActionButton>
@@ -758,39 +639,19 @@
 		margin-bottom: var(--spacing-2); /* 18px φ-based */
 	}
 
-	.view-tabs {
-		display: grid;
-		grid-template-columns: repeat(4, 1fr);
-		gap: var(--spacing-4); /* 8px φ-based */
-		margin-top: var(--spacing-1); /* 30px φ-based */
-		padding-top: var(--spacing-3); /* 12px φ-based */
-		border-top: 1px solid theme('colors.gold.border');
-	}
-
-	.tab-button {
-		background: rgba(0, 0, 0, 0.3);
-		border: 1px solid theme('colors.gold.border');
-		border-radius: var(--spacing-4); /* 8px φ-based */
-		padding: var(--spacing-4); /* 8px φ-based */
-		color: theme('colors.sage.DEFAULT');
-		font-family: theme('fontFamily.exo');
-		font-size: var(--font-size-3); /* 8px Level 3 φ-based */
-		font-weight: 500;
-		cursor: pointer;
+	.activity-feed-moss :global(.activity-item) {
+		background: theme('colors.moss.bg');
+		border: 1px solid theme('colors.moss.border');
+		border-radius: var(--spacing-3); /* 12px φ-based */
+		padding: var(--spacing-3); /* 12px φ-based */
 		transition: all 0.2s ease;
+		box-shadow: 0 0 10px rgba(107, 207, 126, 0.1);
 	}
 
-	.tab-button:hover {
-		border-color: theme('colors.gold.DEFAULT');
-		color: theme('colors.gold.DEFAULT');
-		box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
-	}
-
-	.tab-button.active {
-		background: theme('colors.gold.bg');
-		border-color: theme('colors.gold.DEFAULT');
-		color: theme('colors.gold.DEFAULT');
-		box-shadow: 0 0 15px theme('colors.gold.glow');
+	.activity-feed-moss :global(.activity-item:hover) {
+		background: rgba(107, 207, 126, 0.12);
+		border-color: theme('colors.moss.DEFAULT');
+		box-shadow: 0 0 15px theme('colors.moss.glow');
 	}
 
 	.mb-4 {
@@ -1118,39 +979,6 @@
 		opacity: 0;
 	}
 
-	.radial-arm {
-		position: absolute;
-		width: 2px;
-		height: 35px;
-		top: 50%;
-		left: 50%;
-		transform-origin: top center;
-		transform: translate(-50%, -50%)
-			rotate(var(--angle))
-			translateY(18px);
-		background: linear-gradient(
-			to bottom,
-			rgba(200, 162, 255, 0.3) 0%,
-			rgba(200, 162, 255, 0.5) 50%,
-			rgba(200, 162, 255, 0.3) 100%
-		);
-		box-shadow: 0 0 8px rgba(200, 162, 255, 0.3);
-		animation: lilacPulse 3s ease-in-out infinite;
-		pointer-events: none;
-	}
-
-	@keyframes lilacPulse {
-		0%,
-		100% {
-			opacity: 0.4;
-			box-shadow: 0 0 8px rgba(200, 162, 255, 0.3);
-		}
-		50% {
-			opacity: 0.7;
-			box-shadow: 0 0 12px rgba(200, 162, 255, 0.5);
-		}
-	}
-
 	@keyframes radialFadeIn {
 		from {
 			opacity: 0;
@@ -1181,6 +1009,19 @@
 				calc(sin(var(--angle)) * -94px)
 			)
 			scale(1.05);
+	}
+
+	.radial-menu-item-moss {
+		border-color: theme('colors.moss.DEFAULT');
+	}
+
+	.radial-menu-item-moss:hover {
+		background: rgba(107, 207, 126, 0.2);
+		box-shadow: 0 0 20px theme('colors.moss.glow');
+	}
+
+	.radial-menu-item-moss .radial-label {
+		color: theme('colors.moss.DEFAULT');
 	}
 
 	.radial-icon {
@@ -1236,11 +1077,11 @@
 	}
 
 	.artifacts-upload-button {
-		background: rgba(0, 255, 209, 0.1);
-		border: 1px solid theme('colors.cyan.DEFAULT');
+		background: theme('colors.moss.bg');
+		border: 1px solid theme('colors.moss.DEFAULT');
 		border-radius: var(--spacing-4); /* 8px φ-based */
 		padding: var(--spacing-4) var(--spacing-3); /* 8px 12px φ-based */
-		color: theme('colors.cyan.DEFAULT');
+		color: theme('colors.moss.DEFAULT');
 		font-family: theme('fontFamily.exo');
 		font-size: var(--font-size-3); /* 8px Level 3 φ-based */
 		font-weight: 600;
@@ -1252,8 +1093,8 @@
 	}
 
 	.artifacts-upload-button:hover {
-		box-shadow: 0 0 15px rgba(0, 255, 209, 0.5);
-		background: rgba(0, 255, 209, 0.2);
+		box-shadow: 0 0 15px theme('colors.moss.glow');
+		background: rgba(107, 207, 126, 0.15);
 	}
 
 	.artifacts-list {
@@ -1450,10 +1291,6 @@
 	@media (max-width: 768px) {
 		.action-buttons {
 			grid-template-columns: 1fr;
-		}
-
-		.view-tabs {
-			grid-template-columns: repeat(2, 1fr);
 		}
 
 		.attention-users-list {

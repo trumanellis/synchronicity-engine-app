@@ -17,6 +17,12 @@ export default {
 					bg: 'rgba(212, 175, 55, 0.1)',
 					border: 'rgba(212, 175, 55, 0.5)'
 				},
+				moss: {
+					DEFAULT: '#6BCF7E',
+					glow: 'rgba(107, 207, 126, 0.4)',
+					bg: 'rgba(107, 207, 126, 0.08)',
+					border: 'rgba(107, 207, 126, 0.3)'
+				},
 				sage: {
 					DEFAULT: '#84A98C'
 				},
@@ -35,8 +41,10 @@ export default {
 			boxShadow: {
 				'glow-cyan': '0 0 40px rgba(0, 255, 209, 0.3)',
 				'glow-gold': '0 0 20px rgba(212, 175, 55, 0.6)',
+				'glow-moss': '0 0 30px rgba(107, 207, 126, 0.4)',
 				'glow-cyan-lg': '0 0 60px rgba(0, 255, 209, 0.4)',
-				'glow-gold-lg': '0 0 30px rgba(212, 175, 55, 0.8)'
+				'glow-gold-lg': '0 0 30px rgba(212, 175, 55, 0.8)',
+				'glow-moss-lg': '0 0 40px rgba(107, 207, 126, 0.5)'
 			}
 		}
 	},
