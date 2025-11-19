@@ -29,6 +29,7 @@
 	let activeActionTab: 'chat' | 'artifacts' | 'assistant' = 'chat';
 	let aiInput = '';
 	let aiMessages: Array<{ role: 'user' | 'assistant'; text: string }> = [];
+	let showRadialMenu = false;
 
 	onMount(() => {
 		const intentionId = $page.params.id;
@@ -92,6 +93,31 @@
 					}
 				];
 			}, 500);
+		}
+	}
+
+	function toggleRadialMenu() {
+		showRadialMenu = !showRadialMenu;
+	}
+
+	function handleRadialOption(option: string) {
+		showRadialMenu = false;
+		switch (option) {
+			case 'proof':
+				handleSubmitProof();
+				break;
+			case 'artifact':
+				alert('Upload artifact coming soon!');
+				break;
+			case 'voice':
+				alert('Voice memo recording coming soon!');
+				break;
+			case 'media':
+				alert('Media upload coming soon!');
+				break;
+			case 'blessing':
+				alert('Send blessing coming soon!');
+				break;
 		}
 	}
 
@@ -252,9 +278,65 @@
 								placeholder="Type a message..."
 								on:click={() => alert('Chat functionality coming soon!')}
 							/>
-							<button class="chat-proof-button" on:click={handleSubmitProof} title="Submit Proof of Service">
-								+
-							</button>
+							<div class="chat-radial-menu-wrapper">
+								<button
+									class="chat-proof-button"
+									class:active={showRadialMenu}
+									on:click={toggleRadialMenu}
+									title="Add content"
+								>
+									+
+								</button>
+								{#if showRadialMenu}
+									<div class="radial-menu">
+										<button
+											class="radial-menu-item"
+											style="--angle: 0deg"
+											on:click={() => handleRadialOption('proof')}
+											title="Submit Proof of Service"
+										>
+											<span class="radial-icon">✓</span>
+											<span class="radial-label">Proof</span>
+										</button>
+										<button
+											class="radial-menu-item"
+											style="--angle: 72deg"
+											on:click={() => handleRadialOption('artifact')}
+											title="Upload Artifact"
+										>
+											<span class="radial-icon">📄</span>
+											<span class="radial-label">Artifact</span>
+										</button>
+										<button
+											class="radial-menu-item"
+											style="--angle: 144deg"
+											on:click={() => handleRadialOption('voice')}
+											title="Record Voice Memo"
+										>
+											<span class="radial-icon">🎤</span>
+											<span class="radial-label">Voice</span>
+										</button>
+										<button
+											class="radial-menu-item"
+											style="--angle: 216deg"
+											on:click={() => handleRadialOption('media')}
+											title="Upload Media"
+										>
+											<span class="radial-icon">📷</span>
+											<span class="radial-label">Media</span>
+										</button>
+										<button
+											class="radial-menu-item"
+											style="--angle: 288deg"
+											on:click={() => handleRadialOption('blessing')}
+											title="Send Blessing"
+										>
+											<span class="radial-icon">✨</span>
+											<span class="radial-label">Blessing</span>
+										</button>
+									</div>
+								{/if}
+							</div>
 							<button class="chat-send-button">Send</button>
 						</div>
 					</div>
@@ -957,6 +1039,11 @@
 		box-shadow: 0 0 10px rgba(0, 255, 209, 0.3);
 	}
 
+	.chat-radial-menu-wrapper {
+		position: relative;
+		flex-shrink: 0;
+	}
+
 	.chat-proof-button {
 		width: 36px;
 		height: 36px;
@@ -973,12 +1060,102 @@
 		cursor: pointer;
 		transition: all 0.3s ease;
 		flex-shrink: 0;
+		z-index: 10;
+		position: relative;
 	}
 
 	.chat-proof-button:hover {
 		background: rgba(0, 255, 209, 0.2);
 		box-shadow: 0 0 20px rgba(0, 255, 209, 0.6);
 		transform: rotate(90deg);
+	}
+
+	.chat-proof-button.active {
+		background: rgba(0, 255, 209, 0.2);
+		box-shadow: 0 0 20px rgba(0, 255, 209, 0.6);
+		transform: rotate(45deg);
+	}
+
+	.radial-menu {
+		position: absolute;
+		bottom: 45px;
+		left: 50%;
+		transform: translateX(-50%);
+		width: 200px;
+		height: 200px;
+		pointer-events: none;
+	}
+
+	.radial-menu-item {
+		position: absolute;
+		width: 60px;
+		height: 60px;
+		background: rgba(0, 0, 0, 0.9);
+		border: 2px solid theme('colors.cyan.DEFAULT');
+		border-radius: 50%;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: 2px;
+		cursor: pointer;
+		transition: all 0.3s ease;
+		pointer-events: all;
+		top: 50%;
+		left: 50%;
+		transform-origin: center center;
+		transform: translate(-50%, -50%)
+			translate(
+				calc(cos(var(--angle)) * 80px),
+				calc(sin(var(--angle)) * -80px)
+			);
+		animation: radialFadeIn 0.3s ease forwards;
+		opacity: 0;
+	}
+
+	@keyframes radialFadeIn {
+		from {
+			opacity: 0;
+			transform: translate(-50%, -50%)
+				translate(
+					calc(cos(var(--angle)) * 40px),
+					calc(sin(var(--angle)) * -40px)
+				)
+				scale(0.5);
+		}
+		to {
+			opacity: 1;
+			transform: translate(-50%, -50%)
+				translate(
+					calc(cos(var(--angle)) * 80px),
+					calc(sin(var(--angle)) * -80px)
+				)
+				scale(1);
+		}
+	}
+
+	.radial-menu-item:hover {
+		background: rgba(0, 255, 209, 0.2);
+		box-shadow: 0 0 20px rgba(0, 255, 209, 0.6);
+		transform: translate(-50%, -50%)
+			translate(
+				calc(cos(var(--angle)) * 85px),
+				calc(sin(var(--angle)) * -85px)
+			)
+			scale(1.1);
+	}
+
+	.radial-icon {
+		font-size: var(--font-size-1); /* 19.8px Level 1 φ-based */
+	}
+
+	.radial-label {
+		color: theme('colors.cyan.DEFAULT');
+		font-size: var(--font-size-3); /* 8px Level 3 φ-based */
+		font-family: theme('fontFamily.exo');
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
 	}
 
 	.chat-send-button {
