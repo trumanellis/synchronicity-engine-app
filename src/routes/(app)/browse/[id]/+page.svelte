@@ -1088,8 +1088,8 @@
 
 	.radial-menu-item {
 		position: absolute;
-		width: 50px;
-		height: 50px;
+		width: 81px;
+		height: 81px;
 		background: rgba(0, 0, 0, 0.9);
 		border: 2px solid theme('colors.cyan.DEFAULT');
 		border-radius: 50%;
@@ -1097,7 +1097,7 @@
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		gap: 2px;
+		gap: 3px;
 		cursor: pointer;
 		transition: all 0.3s ease;
 		pointer-events: all;
@@ -1106,8 +1106,8 @@
 		transform-origin: center center;
 		transform: translate(-50%, -50%)
 			translate(
-				calc(cos(var(--angle)) * 55px),
-				calc(sin(var(--angle)) * -55px)
+				calc(cos(var(--angle)) * 89px),
+				calc(sin(var(--angle)) * -89px)
 			);
 		animation: radialFadeIn 0.3s ease forwards;
 		opacity: 0;
@@ -1118,8 +1118,8 @@
 			opacity: 0;
 			transform: translate(-50%, -50%)
 				translate(
-					calc(cos(var(--angle)) * 30px),
-					calc(sin(var(--angle)) * -30px)
+					calc(cos(var(--angle)) * 48px),
+					calc(sin(var(--angle)) * -48px)
 				)
 				scale(0.5);
 		}
@@ -1127,8 +1127,8 @@
 			opacity: 1;
 			transform: translate(-50%, -50%)
 				translate(
-					calc(cos(var(--angle)) * 55px),
-					calc(sin(var(--angle)) * -55px)
+					calc(cos(var(--angle)) * 89px),
+					calc(sin(var(--angle)) * -89px)
 				)
 				scale(1);
 		}
@@ -1139,19 +1139,19 @@
 		box-shadow: 0 0 20px rgba(0, 255, 209, 0.6);
 		transform: translate(-50%, -50%)
 			translate(
-				calc(cos(var(--angle)) * 58px),
-				calc(sin(var(--angle)) * -58px)
+				calc(cos(var(--angle)) * 94px),
+				calc(sin(var(--angle)) * -94px)
 			)
 			scale(1.05);
 	}
 
 	.radial-icon {
-		font-size: var(--font-size-1); /* 19.8px Level 1 φ-based */
+		font-size: var(--font-size-0); /* 32px Level 0 φ-based */
 	}
 
 	.radial-label {
 		color: theme('colors.cyan.DEFAULT');
-		font-size: var(--font-size-3); /* 8px Level 3 φ-based */
+		font-size: var(--font-size-2); /* 12.2px Level 2 φ-based */
 		font-family: theme('fontFamily.exo');
 		font-weight: 600;
 		text-transform: uppercase;
