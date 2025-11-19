@@ -291,7 +291,7 @@
 									<div class="radial-menu">
 										<button
 											class="radial-menu-item"
-											style="--angle: 90deg"
+											style="--angle: 60deg"
 											on:click={() => handleRadialOption('proof')}
 											title="Submit Proof of Service"
 										>
@@ -300,7 +300,7 @@
 										</button>
 										<button
 											class="radial-menu-item"
-											style="--angle: 135deg"
+											style="--angle: 120deg"
 											on:click={() => handleRadialOption('artifact')}
 											title="Upload Artifact"
 										>
@@ -318,7 +318,7 @@
 										</button>
 										<button
 											class="radial-menu-item"
-											style="--angle: 225deg"
+											style="--angle: 240deg"
 											on:click={() => handleRadialOption('media')}
 											title="Upload Media"
 										>
@@ -327,7 +327,7 @@
 										</button>
 										<button
 											class="radial-menu-item"
-											style="--angle: 270deg"
+											style="--angle: 300deg"
 											on:click={() => handleRadialOption('blessing')}
 											title="Send Blessing"
 										>
