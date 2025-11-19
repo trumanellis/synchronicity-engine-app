@@ -1088,8 +1088,8 @@
 
 	.radial-menu-item {
 		position: absolute;
-		width: 81px;
-		height: 81px;
+		width: 54px;
+		height: 54px;
 		background: rgba(0, 0, 0, 0.9);
 		border: 2px solid theme('colors.cyan.DEFAULT');
 		border-radius: 50%;
@@ -1097,7 +1097,7 @@
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		gap: 3px;
+		gap: 2px;
 		cursor: pointer;
 		transition: all 0.3s ease;
 		pointer-events: all;
@@ -1146,12 +1146,12 @@
 	}
 
 	.radial-icon {
-		font-size: var(--font-size-0); /* 32px Level 0 φ-based */
+		font-size: 14.4px; /* 32px × 0.45 */
 	}
 
 	.radial-label {
 		color: theme('colors.cyan.DEFAULT');
-		font-size: var(--font-size-2); /* 12.2px Level 2 φ-based */
+		font-size: 5.5px; /* 12.2px × 0.45 */
 		font-family: theme('fontFamily.exo');
 		font-weight: 600;
 		text-transform: uppercase;
