@@ -109,14 +109,6 @@
 		<!-- Content with padding -->
 		<div class="create-content">
 			<Stack gap="md">
-				<!-- Page Header -->
-				<Section spacing="none">
-					<Stack gap="sm">
-						<h1 class="page-title">Create Intention</h1>
-						<p class="page-subtitle">Share what you need or what you can offer</p>
-					</Stack>
-				</Section>
-
 				<!-- Form -->
 				<form on:submit={handleSubmit} class="create-form">
 					<Stack gap="md">
@@ -205,24 +197,36 @@
 		overflow: visible; /* Allow glow to extend beyond container */
 	}
 
-	/* Banner at top of create page - full screen width */
+	/* Banner at top of dashboard - full screen width */
 	.create-banner {
 		position: relative;
 		width: 100%; /* Full screen width */
 		height: 0;
-		padding-bottom: 50%; /* Aspect ratio to show full image */
-		background-image: url('/CreateIntention.png');
-		background-size: contain; /* Show full image */
+		padding-bottom: 50%; /* Taller aspect ratio to show full image */
+		background-image: url('/CreateBanner.png');
+		background-size: contain; /* Changed to contain to show full image */
 		background-repeat: no-repeat;
 		background-position: center center;
 		opacity: 0.9; /* Prominent but not overwhelming */
 		pointer-events: none;
 		margin-bottom: 0;
 		z-index: 1;
-		filter: drop-shadow(0 0 15px rgba(0, 255, 209, 0.5))
-			drop-shadow(0 0 25px rgba(0, 255, 209, 0.3))
-			drop-shadow(0 0 35px rgba(0, 255, 209, 0.2));
 		overflow: visible; /* Allow glow to spread */
+		animation: gold-banner-pulse 3s ease-in-out infinite;
+	}
+
+	@keyframes gold-banner-pulse {
+		0%,
+		100% {
+			filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.5))
+				drop-shadow(0 0 25px rgba(212, 175, 55, 0.3))
+				drop-shadow(0 0 35px rgba(212, 175, 55, 0.2));
+		}
+		50% {
+			filter: drop-shadow(0 0 30px rgba(212, 175, 55, 0.7))
+				drop-shadow(0 0 50px rgba(212, 175, 55, 0.5))
+				drop-shadow(0 0 70px rgba(212, 175, 55, 0.4));
+		}
 	}
 
 	@media (min-width: 768px) {
@@ -234,21 +238,6 @@
 	/* Content with padding restored */
 	.create-content {
 		padding: var(--spacing-3);
-	}
-
-	.page-title {
-		color: theme('colors.gold.DEFAULT');
-		font-size: var(--font-size-1); /* 19.8px Level 1 φ-based */
-		font-weight: 700;
-		margin: 0;
-		text-shadow: 0 0 10px rgba(212, 175, 55, 0.6);
-	}
-
-	.page-subtitle {
-		color: theme('colors.sage.DEFAULT');
-		font-size: var(--font-size-3); /* 8px Level 3 φ-based - more compact */
-		margin: 0;
-		opacity: 0.85;
 	}
 
 	.create-form {

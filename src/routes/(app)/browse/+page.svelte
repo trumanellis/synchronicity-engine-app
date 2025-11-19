@@ -72,7 +72,13 @@
 	<title>Browse Intentions - Synchronicity Engine</title>
 </svelte:head>
 
-<Stack gap="lg">
+<div class="browse-page-wrapper">
+	<!-- Banner at top of page - full width, outside padding -->
+	<div class="browse-banner" />
+
+	<!-- Content with padding -->
+	<div class="browse-content">
+		<Stack gap="lg">
 	<!-- Page Header -->
 	<Section spacing="sm">
 		<Stack gap="sm">
@@ -121,9 +127,48 @@
 			/>
 		{/if}
 	</Section>
-</Stack>
+		</Stack>
+	</div>
+</div>
 
 <style>
+	/* Browse page wrapper - no padding */
+	.browse-page-wrapper {
+		margin: calc(var(--spacing-3) * -1); /* Negative margin to cancel PageContainer padding */
+		overflow: visible; /* Allow glow to extend beyond container */
+	}
+
+	/* Banner at top of dashboard - full screen width */
+	.browse-banner {
+		position: relative;
+		width: 100%; /* Full screen width */
+		height: 0;
+		padding-bottom: 50%; /* Taller aspect ratio to show full image */
+		background-image: url('/DiscoverBanner.png');
+		background-size: contain; /* Changed to contain to show full image */
+		background-repeat: no-repeat;
+		background-position: center center;
+		opacity: 0.9; /* Prominent but not overwhelming */
+		pointer-events: none;
+		margin-bottom: 0;
+		z-index: 1;
+		filter: drop-shadow(0 0 15px rgba(0, 255, 209, 0.5))
+			drop-shadow(0 0 25px rgba(0, 255, 209, 0.3))
+			drop-shadow(0 0 35px rgba(0, 255, 209, 0.2));
+		overflow: visible; /* Allow glow to spread */
+	}
+
+	@media (min-width: 768px) {
+		.browse-banner {
+			padding-bottom: 35%; /* Adjusted aspect ratio for desktop */
+		}
+	}
+
+	/* Content with padding restored */
+	.browse-content {
+		padding: var(--spacing-3);
+	}
+
 	.page-title {
 		color: theme('colors.gold.DEFAULT');
 		font-size: var(--font-size-1); /* 19.8px Level 1 φ-based */
