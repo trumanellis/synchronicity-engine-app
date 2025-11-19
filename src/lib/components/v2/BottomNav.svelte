@@ -78,10 +78,8 @@
 			rgba(107, 207, 126, 0.15) 100%
 		); /* Gradient from transparent to moss green */
 		backdrop-filter: blur(8px);
-		box-shadow:
-			0 -4px 20px rgba(107, 207, 126, 0.3),
-			inset 0 0 30px rgba(107, 207, 126, 0.1);
-		padding: 0; /* Remove padding to fit images */
+		box-shadow: inset 0 0 30px rgba(107, 207, 126, 0.1);
+		padding: 4px 0; /* Tiny vertical margin */
 		display: grid;
 		grid-template-columns: repeat(5, 1fr); /* 5 equal columns */
 		gap: 0; /* Remove gap to fit images edge-to-edge */

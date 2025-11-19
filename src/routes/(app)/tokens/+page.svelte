@@ -166,7 +166,7 @@
 		width: 100%; /* Full screen width */
 		height: 0;
 		padding-bottom: 50%; /* Taller aspect ratio to show full image */
-		background-image: url('/ArtifactsBanner.png');
+		background-image: url('/Tokens+ArtifactsBanner.png');
 		background-size: contain; /* Changed to contain to show full image */
 		background-repeat: no-repeat;
 		background-position: center center;
