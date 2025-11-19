@@ -1113,6 +1113,38 @@
 		opacity: 0;
 	}
 
+	.radial-menu-item::before {
+		content: '';
+		position: absolute;
+		width: 2px;
+		height: 89px;
+		background: linear-gradient(
+			to bottom,
+			rgba(200, 162, 255, 0) 0%,
+			rgba(200, 162, 255, 0.4) 50%,
+			rgba(200, 162, 255, 0) 100%
+		);
+		top: 50%;
+		left: 50%;
+		transform-origin: top center;
+		transform: translate(-50%, -100%) rotate(calc(var(--angle) * -1));
+		box-shadow: 0 0 8px rgba(200, 162, 255, 0.3);
+		animation: lilacPulse 3s ease-in-out infinite;
+		pointer-events: none;
+	}
+
+	@keyframes lilacPulse {
+		0%,
+		100% {
+			opacity: 0.4;
+			box-shadow: 0 0 8px rgba(200, 162, 255, 0.3);
+		}
+		50% {
+			opacity: 0.7;
+			box-shadow: 0 0 12px rgba(200, 162, 255, 0.5);
+		}
+	}
+
 	@keyframes radialFadeIn {
 		from {
 			opacity: 0;
