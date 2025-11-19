@@ -1088,8 +1088,8 @@
 
 	.radial-menu-item {
 		position: absolute;
-		width: 60px;
-		height: 60px;
+		width: 50px;
+		height: 50px;
 		background: rgba(0, 0, 0, 0.9);
 		border: 2px solid theme('colors.cyan.DEFAULT');
 		border-radius: 50%;
@@ -1106,8 +1106,8 @@
 		transform-origin: center center;
 		transform: translate(-50%, -50%)
 			translate(
-				calc(cos(var(--angle)) * 80px),
-				calc(sin(var(--angle)) * -80px)
+				calc(cos(var(--angle)) * 55px),
+				calc(sin(var(--angle)) * -55px)
 			);
 		animation: radialFadeIn 0.3s ease forwards;
 		opacity: 0;
@@ -1118,8 +1118,8 @@
 			opacity: 0;
 			transform: translate(-50%, -50%)
 				translate(
-					calc(cos(var(--angle)) * 40px),
-					calc(sin(var(--angle)) * -40px)
+					calc(cos(var(--angle)) * 30px),
+					calc(sin(var(--angle)) * -30px)
 				)
 				scale(0.5);
 		}
@@ -1127,8 +1127,8 @@
 			opacity: 1;
 			transform: translate(-50%, -50%)
 				translate(
-					calc(cos(var(--angle)) * 80px),
-					calc(sin(var(--angle)) * -80px)
+					calc(cos(var(--angle)) * 55px),
+					calc(sin(var(--angle)) * -55px)
 				)
 				scale(1);
 		}
@@ -1139,10 +1139,10 @@
 		box-shadow: 0 0 20px rgba(0, 255, 209, 0.6);
 		transform: translate(-50%, -50%)
 			translate(
-				calc(cos(var(--angle)) * 85px),
-				calc(sin(var(--angle)) * -85px)
+				calc(cos(var(--angle)) * 58px),
+				calc(sin(var(--angle)) * -58px)
 			)
-			scale(1.1);
+			scale(1.05);
 	}
 
 	.radial-icon {
