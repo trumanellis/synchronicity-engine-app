@@ -12,7 +12,11 @@ import type {
 	GroupChat,
 	ProofOfService,
 	Offering,
-	Achievement
+	Achievement,
+	AttentionSwitchEvent,
+	UserAttentionLog,
+	AttentionDuration,
+	IntentionAttentionSummary
 } from '$types';
 
 // Offerings Data
@@ -831,5 +835,298 @@ export function getUserVisibleSections(userId: string, viewerRole: 'public' | 'm
 		tokens: canView('tokens'),
 		connections: canView('connections'),
 		activity: canView('activity')
+	};
+}
+
+// Attention Switch Events - Mock data for all users
+export const userAttentionLogs: UserAttentionLog[] = [
+	{
+		userId: 'user-truman-001',
+		userName: 'Dr. Truman Ellis',
+		userAvatar: '👨‍🔬',
+		events: [
+			{
+				eventId: 'evt-truman-001',
+				userId: 'user-truman-001',
+				intentionId: 'int-garden-001',
+				intentionTitle: 'Community Garden Infrastructure',
+				timestamp: '2025-11-18T08:15:00Z'
+			},
+			{
+				eventId: 'evt-truman-002',
+				userId: 'user-truman-001',
+				intentionId: 'int-solar-001',
+				intentionTitle: 'Solar Dehydrator Workshop',
+				timestamp: '2025-11-18T10:30:00Z'
+			},
+			{
+				eventId: 'evt-truman-003',
+				userId: 'user-truman-001',
+				intentionId: 'int-garden-001',
+				intentionTitle: 'Community Garden Infrastructure',
+				timestamp: '2025-11-18T11:45:00Z'
+			},
+			{
+				eventId: 'evt-truman-004',
+				userId: 'user-truman-001',
+				intentionId: 'int-mushroom-001',
+				intentionTitle: 'Mushroom Cultivation Network',
+				timestamp: '2025-11-18T14:20:00Z'
+			}
+		]
+	},
+	{
+		userId: 'user-marcus-001',
+		userName: 'Marcus Chen',
+		userAvatar: '🔨',
+		events: [
+			{
+				eventId: 'evt-marcus-001',
+				userId: 'user-marcus-001',
+				intentionId: 'int-garden-001',
+				intentionTitle: 'Community Garden Infrastructure',
+				timestamp: '2025-11-18T07:00:00Z'
+			},
+			{
+				eventId: 'evt-marcus-002',
+				userId: 'user-marcus-001',
+				intentionId: 'int-eucalyptus-001',
+				intentionTitle: 'Eucalyptus Removal Brigade',
+				timestamp: '2025-11-18T09:30:00Z'
+			},
+			{
+				eventId: 'evt-marcus-003',
+				userId: 'user-marcus-001',
+				intentionId: 'int-garden-001',
+				intentionTitle: 'Community Garden Infrastructure',
+				timestamp: '2025-11-18T12:00:00Z'
+			},
+			{
+				eventId: 'evt-marcus-004',
+				userId: 'user-marcus-001',
+				intentionId: 'int-solar-001',
+				intentionTitle: 'Solar Dehydrator Workshop',
+				timestamp: '2025-11-18T15:30:00Z'
+			}
+		]
+	},
+	{
+		userId: 'user-aisha-001',
+		userName: 'Aisha Patel',
+		userAvatar: '🌿',
+		events: [
+			{
+				eventId: 'evt-aisha-001',
+				userId: 'user-aisha-001',
+				intentionId: 'int-mushroom-001',
+				intentionTitle: 'Mushroom Cultivation Network',
+				timestamp: '2025-11-18T06:30:00Z'
+			},
+			{
+				eventId: 'evt-aisha-002',
+				userId: 'user-aisha-001',
+				intentionId: 'int-garden-001',
+				intentionTitle: 'Community Garden Infrastructure',
+				timestamp: '2025-11-18T08:45:00Z'
+			},
+			{
+				eventId: 'evt-aisha-003',
+				userId: 'user-aisha-001',
+				intentionId: 'int-mushroom-001',
+				intentionTitle: 'Mushroom Cultivation Network',
+				timestamp: '2025-11-18T11:15:00Z'
+			},
+			{
+				eventId: 'evt-aisha-004',
+				userId: 'user-aisha-001',
+				intentionId: 'int-eucalyptus-001',
+				intentionTitle: 'Eucalyptus Removal Brigade',
+				timestamp: '2025-11-18T13:00:00Z'
+			},
+			{
+				eventId: 'evt-aisha-005',
+				userId: 'user-aisha-001',
+				intentionId: 'int-mushroom-001',
+				intentionTitle: 'Mushroom Cultivation Network',
+				timestamp: '2025-11-18T15:00:00Z'
+			}
+		]
+	},
+	{
+		userId: 'user-sarah-001',
+		userName: 'Sarah Kim',
+		userAvatar: '🌱',
+		events: [
+			{
+				eventId: 'evt-sarah-001',
+				userId: 'user-sarah-001',
+				intentionId: 'int-garden-001',
+				intentionTitle: 'Community Garden Infrastructure',
+				timestamp: '2025-11-18T07:30:00Z'
+			},
+			{
+				eventId: 'evt-sarah-002',
+				userId: 'user-sarah-001',
+				intentionId: 'int-solar-001',
+				intentionTitle: 'Solar Dehydrator Workshop',
+				timestamp: '2025-11-18T10:00:00Z'
+			},
+			{
+				eventId: 'evt-sarah-003',
+				userId: 'user-sarah-001',
+				intentionId: 'int-garden-001',
+				intentionTitle: 'Community Garden Infrastructure',
+				timestamp: '2025-11-18T13:30:00Z'
+			}
+		]
+	},
+	{
+		userId: 'user-james-001',
+		userName: 'James Rodriguez',
+		userAvatar: '💧',
+		events: [
+			{
+				eventId: 'evt-james-001',
+				userId: 'user-james-001',
+				intentionId: 'int-garden-001',
+				intentionTitle: 'Community Garden Infrastructure',
+				timestamp: '2025-11-18T08:00:00Z'
+			},
+			{
+				eventId: 'evt-james-002',
+				userId: 'user-james-001',
+				intentionId: 'int-eucalyptus-001',
+				intentionTitle: 'Eucalyptus Removal Brigade',
+				timestamp: '2025-11-18T11:00:00Z'
+			},
+			{
+				eventId: 'evt-james-003',
+				userId: 'user-james-001',
+				intentionId: 'int-garden-001',
+				intentionTitle: 'Community Garden Infrastructure',
+				timestamp: '2025-11-18T14:00:00Z'
+			}
+		]
+	},
+	{
+		userId: 'user-miguel-001',
+		userName: 'Miguel Santos',
+		userAvatar: '🪓',
+		events: [
+			{
+				eventId: 'evt-miguel-001',
+				userId: 'user-miguel-001',
+				intentionId: 'int-eucalyptus-001',
+				intentionTitle: 'Eucalyptus Removal Brigade',
+				timestamp: '2025-11-18T06:00:00Z'
+			},
+			{
+				eventId: 'evt-miguel-002',
+				userId: 'user-miguel-001',
+				intentionId: 'int-solar-001',
+				intentionTitle: 'Solar Dehydrator Workshop',
+				timestamp: '2025-11-18T09:00:00Z'
+			},
+			{
+				eventId: 'evt-miguel-003',
+				userId: 'user-miguel-001',
+				intentionId: 'int-eucalyptus-001',
+				intentionTitle: 'Eucalyptus Removal Brigade',
+				timestamp: '2025-11-18T10:30:00Z'
+			},
+			{
+				eventId: 'evt-miguel-004',
+				userId: 'user-miguel-001',
+				intentionId: 'int-garden-001',
+				intentionTitle: 'Community Garden Infrastructure',
+				timestamp: '2025-11-18T13:45:00Z'
+			}
+		]
+	}
+];
+
+// Helper function to get attention log for a user
+export function getUserAttentionLog(userId: string): UserAttentionLog | undefined {
+	return userAttentionLogs.find((log) => log.userId === userId);
+}
+
+// Helper function to get all attention logs (for community view)
+export function getAllUserAttentionLogs(): UserAttentionLog[] {
+	return userAttentionLogs;
+}
+
+// Calculate attention durations from switch events for a specific intention
+export function getIntentionAttentionSummary(intentionId: string): IntentionAttentionSummary {
+	const durations: AttentionDuration[] = [];
+	const userTotals: Map<string, { userName: string; userAvatar: string; totalMinutes: number }> = new Map();
+
+	// Process each user's attention log
+	for (const userLog of userAttentionLogs) {
+		const events = userLog.events;
+
+		// Find all sessions where user focused on this intention
+		for (let i = 0; i < events.length; i++) {
+			const currentEvent = events[i];
+
+			// If this event is for our target intention
+			if (currentEvent.intentionId === intentionId) {
+				const startTime = new Date(currentEvent.timestamp);
+				let endTime: Date;
+				let durationMinutes: number;
+
+				// Find the next event (when they switched away)
+				if (i + 1 < events.length) {
+					// They switched to another intention
+					endTime = new Date(events[i + 1].timestamp);
+				} else {
+					// This is their last event - assume they're still working on it (1 hour default)
+					endTime = new Date(startTime.getTime() + 60 * 60 * 1000);
+				}
+
+				// Calculate duration in minutes
+				durationMinutes = Math.round((endTime.getTime() - startTime.getTime()) / (1000 * 60));
+
+				// Create duration record
+				durations.push({
+					userId: userLog.userId,
+					userName: userLog.userName,
+					userAvatar: userLog.userAvatar,
+					intentionId: intentionId,
+					startTime: currentEvent.timestamp,
+					endTime: endTime.toISOString(),
+					durationMinutes: durationMinutes
+				});
+
+				// Update user totals
+				if (!userTotals.has(userLog.userId)) {
+					userTotals.set(userLog.userId, {
+						userName: userLog.userName,
+						userAvatar: userLog.userAvatar,
+						totalMinutes: 0
+					});
+				}
+				const userTotal = userTotals.get(userLog.userId)!;
+				userTotal.totalMinutes += durationMinutes;
+			}
+		}
+	}
+
+	// Convert user totals to array and sort by total time
+	const userSummaries = Array.from(userTotals.entries())
+		.map(([userId, data]) => ({
+			userId,
+			userName: data.userName,
+			userAvatar: data.userAvatar,
+			totalMinutes: data.totalMinutes
+		}))
+		.sort((a, b) => b.totalMinutes - a.totalMinutes);
+
+	// Sort durations chronologically
+	durations.sort((a, b) => new Date(b.startTime).getTime() - new Date(a.startTime).getTime());
+
+	return {
+		intentionId,
+		userSummaries,
+		durations
 	};
 }

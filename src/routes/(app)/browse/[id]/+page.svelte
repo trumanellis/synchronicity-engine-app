@@ -6,19 +6,26 @@
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
-	import { getIntentionById, getProofsByIntention, currentUser } from '$data/mockData';
-	import type { Intention, ViewMode, ProofOfService } from '$types';
+	import {
+		getIntentionById,
+		getProofsByIntention,
+		currentUser,
+		getIntentionAttentionSummary
+	} from '$data/mockData';
+	import type { Intention, ViewMode, ProofOfService, IntentionAttentionSummary } from '$types';
 
 	// Components
 	import SectionTitle from '$components/core/SectionTitle.svelte';
 	import ActionButton from '$components/core/ActionButton.svelte';
 	import ActivityItem from '$components/core/ActivityItem.svelte';
 	import ProofGallery from '$lib/components/v2/ProofGallery.svelte';
+	import AttentionSpiral from '$lib/components/v2/AttentionSpiral.svelte';
 
 	let currentView: ViewMode = 'discovery';
 	let intention: Intention | undefined;
 	let allProofs: ProofOfService[] = [];
 	let userProofs: ProofOfService[] = [];
+	let attentionSummary: IntentionAttentionSummary | undefined;
 
 	onMount(() => {
 		const intentionId = $page.params.id;
@@ -27,9 +34,30 @@
 			if (intention) {
 				allProofs = getProofsByIntention(intentionId);
 				userProofs = allProofs.filter((p) => p.userId === currentUser.userId);
+				attentionSummary = getIntentionAttentionSummary(intentionId);
 			}
 		}
 	});
+
+	function formatDuration(minutes: number): string {
+		const hours = Math.floor(minutes / 60);
+		const mins = minutes % 60;
+		if (hours > 0) {
+			return mins > 0 ? `${hours}h ${mins}m` : `${hours}h`;
+		}
+		return `${mins}m`;
+	}
+
+	function formatTimestamp(timestamp: string): string {
+		const date = new Date(timestamp);
+		return date.toLocaleString('en-US', {
+			month: 'short',
+			day: 'numeric',
+			hour: 'numeric',
+			minute: '2-digit',
+			hour12: true
+		});
+	}
 
 	function switchView(view: ViewMode) {
 		currentView = view;
@@ -57,20 +85,10 @@
 		<h1 class="intention-title">{intention.title}</h1>
 		<p class="intention-subtitle">{intention.description}</p>
 
-		<div class="stats-row">
-			<div class="stat-box">
-				<div class="stat-label">Hours</div>
-				<div class="stat-value">{intention.stats.totalAttentionHours.toLocaleString()}h</div>
-			</div>
-			<div class="stat-box">
-				<div class="stat-label">People</div>
-				<div class="stat-value">{intention.stats.participantCount}</div>
-			</div>
-			<div class="stat-box">
-				<div class="stat-label">Active</div>
-				<div class="stat-value">{intention.stats.activeDays}d</div>
-			</div>
-		</div>
+		<!-- Collective Attention Spiral -->
+		{#if attentionSummary && attentionSummary.userSummaries.length > 0}
+			<AttentionSpiral {attentionSummary} />
+		{/if}
 
 		<SectionTitle icon="📋" title="Overview" />
 
@@ -111,6 +129,37 @@
 				</div>
 			{/each}
 		</div>
+
+		<!-- Attention Summary -->
+		{#if attentionSummary && attentionSummary.userSummaries.length > 0}
+			<SectionTitle icon="⚡" title="Attention Devoted" />
+
+			<!-- User Summaries -->
+			<div class="attention-users-list">
+				{#each attentionSummary.userSummaries as userSummary}
+					<div class="attention-user-card">
+						<span class="attention-avatar">{userSummary.userAvatar}</span>
+						<span class="attention-user-name">{userSummary.userName}</span>
+						<span class="attention-duration">{formatDuration(userSummary.totalMinutes)}</span>
+					</div>
+				{/each}
+			</div>
+
+			<!-- Attention Log -->
+			<SectionTitle icon="📋" title="Attention Log" />
+			<div class="attention-log">
+				{#each attentionSummary.durations as duration}
+					<div class="attention-log-item">
+						<div class="log-avatar">{duration.userAvatar}</div>
+						<div class="log-content">
+							<div class="log-user">{duration.userName}</div>
+							<div class="log-time">{formatTimestamp(duration.startTime)}</div>
+						</div>
+						<div class="log-duration">{formatDuration(duration.durationMinutes)}</div>
+					</div>
+				{/each}
+			</div>
+		{/if}
 	{:else if currentView === 'activity'}
 		<!-- Activity View -->
 		<SectionTitle icon="📊" title="Recent Activity" />
@@ -427,6 +476,118 @@
 		margin-top: var(--spacing-2); /* 18px φ-based */
 	}
 
+	/* Attention Summary Styles */
+	.attention-users-list {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+		gap: var(--spacing-4); /* 8px φ-based */
+		margin-bottom: var(--spacing-2); /* 18px φ-based */
+	}
+
+	.attention-user-card {
+		display: flex;
+		align-items: center;
+		gap: var(--spacing-4); /* 8px φ-based */
+		background: rgba(0, 0, 0, 0.3);
+		border: 1px solid rgba(0, 255, 209, 0.2);
+		border-radius: var(--spacing-3); /* 12px φ-based */
+		padding: var(--spacing-4); /* 8px φ-based */
+		transition: all 0.2s ease;
+	}
+
+	.attention-user-card:hover {
+		border-color: rgba(0, 255, 209, 0.4);
+		background: rgba(0, 0, 0, 0.4);
+		box-shadow: 0 0 10px rgba(0, 255, 209, 0.2);
+	}
+
+	.attention-avatar {
+		font-size: var(--font-size-1); /* 19.8px Level 1 φ-based */
+		flex-shrink: 0;
+	}
+
+	.attention-user-name {
+		color: theme('colors.cream.DEFAULT');
+		font-size: var(--font-size-2); /* 12.2px Level 2 φ-based */
+		font-weight: 500;
+		flex: 1;
+	}
+
+	.attention-duration {
+		color: theme('colors.gold.DEFAULT');
+		font-size: var(--font-size-3); /* 8px Level 3 φ-based */
+		font-weight: 600;
+		background: rgba(212, 175, 55, 0.1);
+		border: 1px solid rgba(212, 175, 55, 0.3);
+		border-radius: var(--spacing-4); /* 8px φ-based */
+		padding: 0.25rem 0.5rem;
+		white-space: nowrap;
+		text-shadow: 0 0 8px rgba(212, 175, 55, 0.4);
+	}
+
+	/* Attention Log Styles */
+	.attention-log {
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-4); /* 8px φ-based */
+		margin-bottom: var(--spacing-2); /* 18px φ-based */
+	}
+
+	.attention-log-item {
+		display: flex;
+		align-items: center;
+		gap: var(--spacing-4); /* 8px φ-based */
+		background: rgba(0, 0, 0, 0.3);
+		border: 1px solid rgba(0, 255, 209, 0.2);
+		border-left: 3px solid theme('colors.cyan.DEFAULT');
+		border-radius: var(--spacing-3); /* 12px φ-based */
+		padding: var(--spacing-4); /* 8px φ-based */
+		transition: all 0.2s ease;
+	}
+
+	.attention-log-item:hover {
+		border-color: rgba(0, 255, 209, 0.4);
+		background: rgba(0, 0, 0, 0.4);
+		box-shadow: 0 0 10px rgba(0, 255, 209, 0.2);
+	}
+
+	.log-avatar {
+		font-size: var(--font-size-1); /* 19.8px Level 1 φ-based */
+		flex-shrink: 0;
+	}
+
+	.log-content {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		gap: 0.25rem;
+	}
+
+	.log-user {
+		color: theme('colors.cyan.DEFAULT');
+		font-size: var(--font-size-2); /* 12.2px Level 2 φ-based */
+		font-weight: 600;
+	}
+
+	.log-time {
+		color: theme('colors.sage.DEFAULT');
+		font-size: var(--font-size-3); /* 8px Level 3 φ-based */
+		opacity: 0.8;
+	}
+
+	.log-duration {
+		color: theme('colors.gold.DEFAULT');
+		font-size: var(--font-size-2); /* 12.2px Level 2 φ-based */
+		font-weight: 700;
+		background: rgba(212, 175, 55, 0.1);
+		border: 1px solid rgba(212, 175, 55, 0.3);
+		border-radius: var(--spacing-4); /* 8px φ-based */
+		padding: 0.35rem 0.75rem;
+		white-space: nowrap;
+		text-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
+		flex-shrink: 0;
+	}
+
 	@media (max-width: 768px) {
 		.action-buttons {
 			grid-template-columns: 1fr;
@@ -434,6 +595,14 @@
 
 		.view-tabs {
 			grid-template-columns: repeat(2, 1fr);
+		}
+
+		.attention-users-list {
+			grid-template-columns: 1fr;
+		}
+
+		.log-content {
+			min-width: 0; /* Allow text to wrap on mobile */
 		}
 	}
 </style>

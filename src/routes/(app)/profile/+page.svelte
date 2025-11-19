@@ -1,7 +1,18 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { activeTab } from '$stores/navigationStore';
-	import { currentUser, intentions, potentialAttention } from '$lib/data/mockData';
+	import { currentUser, intentions, potentialAttention, getAllUserAttentionLogs } from '$lib/data/mockData';
+
+	function formatTimestamp(timestamp: string): string {
+		const date = new Date(timestamp);
+		return date.toLocaleString('en-US', {
+			month: 'short',
+			day: 'numeric',
+			hour: 'numeric',
+			minute: '2-digit',
+			hour12: true
+		});
+	}
 
 	import BioCard from '$lib/components/v2/BioCard.svelte';
 	import ProfileGallery from '$lib/components/v2/ProfileGallery.svelte';
@@ -17,6 +28,9 @@
 
 	// Mock tags for bio
 	const bioTags = ['#permaculture', '#community', '#design', '#sacred-economics'];
+
+	// Get all user attention logs
+	$: allUserLogs = getAllUserAttentionLogs();
 </script>
 
 <svelte:head>
@@ -56,6 +70,37 @@
 		<!-- Tabbed Gallery: Intentions & Offerings -->
 		<Section spacing="md">
 			<ProfileGallery intentions={userIntentions} offerings={currentUser.offerings} canEdit={true} />
+		</Section>
+
+		<!-- Attention Logs Section -->
+		<Section spacing="md">
+			<Stack gap="sm">
+				<div class="section-header">
+					<div class="section-title">
+						<span>⚡</span>
+						<span>Community Attention Logs</span>
+					</div>
+				</div>
+				<div class="logs-container">
+					{#each allUserLogs as userLog}
+						<div class="user-log-card">
+							<div class="user-log-header">
+								<span class="user-avatar">{userLog.userAvatar}</span>
+								<span class="user-name">{userLog.userName}</span>
+								<span class="event-count">{userLog.events.length} events</span>
+							</div>
+							<div class="events-list">
+								{#each userLog.events as event}
+									<div class="event-item">
+										<div class="event-time">{formatTimestamp(event.timestamp)}</div>
+										<div class="event-intention">{event.intentionTitle}</div>
+									</div>
+								{/each}
+							</div>
+						</div>
+					{/each}
+				</div>
+			</Stack>
 		</Section>
 
 		<!-- Settings Section -->
@@ -214,5 +259,86 @@
 		color: theme('colors.sage.DEFAULT');
 		font-size: var(--font-size-1);
 		flex-shrink: 0;
+	}
+
+	/* Attention Logs Section */
+	.logs-container {
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-3);
+	}
+
+	.user-log-card {
+		background: rgba(0, 0, 0, 0.3);
+		border: 1px solid rgba(0, 255, 209, 0.2);
+		border-radius: var(--spacing-3);
+		padding: var(--spacing-2);
+		transition: all 0.2s ease;
+	}
+
+	.user-log-card:hover {
+		border-color: rgba(0, 255, 209, 0.4);
+		background: rgba(0, 0, 0, 0.4);
+	}
+
+	.user-log-header {
+		display: flex;
+		align-items: center;
+		gap: var(--spacing-3);
+		margin-bottom: var(--spacing-3);
+		padding-bottom: var(--spacing-3);
+		border-bottom: 1px solid rgba(0, 255, 209, 0.1);
+	}
+
+	.user-avatar {
+		font-size: var(--font-size-1);
+		flex-shrink: 0;
+	}
+
+	.user-name {
+		color: theme('colors.cyan.DEFAULT');
+		font-family: theme('fontFamily.exo');
+		font-size: var(--font-size-2);
+		font-weight: 600;
+		flex: 1;
+	}
+
+	.event-count {
+		color: theme('colors.gold.DEFAULT');
+		font-size: var(--font-size-3);
+		font-weight: 600;
+		background: rgba(212, 175, 55, 0.1);
+		border: 1px solid rgba(212, 175, 55, 0.3);
+		border-radius: var(--spacing-4);
+		padding: 0.25rem 0.5rem;
+	}
+
+	.events-list {
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-4);
+	}
+
+	.event-item {
+		display: flex;
+		align-items: center;
+		gap: var(--spacing-3);
+		padding: var(--spacing-4) 0;
+		border-left: 2px solid rgba(0, 255, 209, 0.3);
+		padding-left: var(--spacing-3);
+	}
+
+	.event-time {
+		color: theme('colors.sage.DEFAULT');
+		font-size: var(--font-size-3);
+		min-width: 140px;
+		flex-shrink: 0;
+	}
+
+	.event-intention {
+		color: theme('colors.cream.DEFAULT');
+		font-size: var(--font-size-2);
+		line-height: 1.4;
+		flex: 1;
 	}
 </style>

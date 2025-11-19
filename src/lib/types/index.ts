@@ -300,3 +300,41 @@ export interface PublicProfile extends User {
 	visibleSections: ProfileSection[];
 	canEdit: boolean;
 }
+
+// Attention Switch Event - Logs when users focus on intentions
+export interface AttentionSwitchEvent {
+	eventId: string;
+	userId: string;
+	intentionId: string;
+	intentionTitle: string;
+	timestamp: string; // When they switched their attention to this intention
+}
+
+export interface UserAttentionLog {
+	userId: string;
+	userName: string;
+	userAvatar: string;
+	events: AttentionSwitchEvent[];
+}
+
+// Attention Duration - Calculated from consecutive switch events
+export interface AttentionDuration {
+	userId: string;
+	userName: string;
+	userAvatar: string;
+	intentionId: string;
+	startTime: string;
+	endTime: string;
+	durationMinutes: number;
+}
+
+export interface IntentionAttentionSummary {
+	intentionId: string;
+	userSummaries: Array<{
+		userId: string;
+		userName: string;
+		userAvatar: string;
+		totalMinutes: number;
+	}>;
+	durations: AttentionDuration[];
+}
