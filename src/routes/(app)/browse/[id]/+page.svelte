@@ -289,6 +289,11 @@
 								</button>
 								{#if showRadialMenu}
 									<div class="radial-menu">
+										<div class="radial-arm" style="--angle: 60deg"></div>
+										<div class="radial-arm" style="--angle: 120deg"></div>
+										<div class="radial-arm" style="--angle: 180deg"></div>
+										<div class="radial-arm" style="--angle: 240deg"></div>
+										<div class="radial-arm" style="--angle: 300deg"></div>
 										<button
 											class="radial-menu-item"
 											style="--angle: 60deg"
@@ -1113,21 +1118,22 @@
 		opacity: 0;
 	}
 
-	.radial-menu-item::before {
-		content: '';
+	.radial-arm {
 		position: absolute;
 		width: 2px;
-		height: 89px;
-		background: linear-gradient(
-			to bottom,
-			rgba(200, 162, 255, 0) 0%,
-			rgba(200, 162, 255, 0.4) 50%,
-			rgba(200, 162, 255, 0) 100%
-		);
+		height: 35px;
 		top: 50%;
 		left: 50%;
 		transform-origin: top center;
-		transform: translate(-50%, -100%) rotate(calc(var(--angle) * -1));
+		transform: translate(-50%, -50%)
+			rotate(var(--angle))
+			translateY(18px);
+		background: linear-gradient(
+			to bottom,
+			rgba(200, 162, 255, 0.3) 0%,
+			rgba(200, 162, 255, 0.5) 50%,
+			rgba(200, 162, 255, 0.3) 100%
+		);
 		box-shadow: 0 0 8px rgba(200, 162, 255, 0.3);
 		animation: lilacPulse 3s ease-in-out infinite;
 		pointer-events: none;
