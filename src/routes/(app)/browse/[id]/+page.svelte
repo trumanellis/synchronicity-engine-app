@@ -77,11 +77,6 @@
 {#if intention}
 	{#if currentView === 'discovery'}
 		<!-- Discovery View -->
-		<div class="intention-badge">
-			<span>🔥</span>
-			<span>ACTIVE INTENTION</span>
-		</div>
-
 		<h1 class="intention-title">{intention.title}</h1>
 		<p class="intention-subtitle">{intention.description}</p>
 
