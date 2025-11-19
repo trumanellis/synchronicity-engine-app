@@ -26,6 +26,9 @@
 	let allProofs: ProofOfService[] = [];
 	let userProofs: ProofOfService[] = [];
 	let attentionSummary: IntentionAttentionSummary | undefined;
+	let activeActionTab: 'chat' | 'artifacts' | 'assistant' = 'chat';
+	let aiInput = '';
+	let aiMessages: Array<{ role: 'user' | 'assistant'; text: string }> = [];
 
 	onMount(() => {
 		const intentionId = $page.params.id;
@@ -68,6 +71,110 @@
 			goto(`/browse/${intention.intentionId}/submit-proof`);
 		}
 	}
+
+	function switchActionTab(tab: 'chat' | 'artifacts' | 'assistant') {
+		activeActionTab = tab;
+	}
+
+	function sendAiMessage() {
+		if (aiInput.trim()) {
+			aiMessages = [...aiMessages, { role: 'user', text: aiInput }];
+			const userQuestion = aiInput;
+			aiInput = '';
+
+			// Simulate AI response
+			setTimeout(() => {
+				aiMessages = [
+					...aiMessages,
+					{
+						role: 'assistant',
+						text: `I can help you with "${userQuestion}". This intention focuses on ${intention?.title}. Would you like me to suggest ways to contribute or provide more information about the community's progress?`
+					}
+				];
+			}, 500);
+		}
+	}
+
+	// Mock chat messages
+	const mockChatMessages = [
+		{
+			userId: 'user-1',
+			userName: 'Marcus',
+			avatar: '👨🏾‍🌾',
+			text: "Just finished clearing the eastern section. The new growth is looking good!",
+			timestamp: new Date(Date.now() - 3600000).toISOString()
+		},
+		{
+			userId: 'user-2',
+			userName: 'Sarah',
+			avatar: '🧑🏻‍🌾',
+			text: "Amazing work! I'll be out there tomorrow with tools for the western ridge.",
+			timestamp: new Date(Date.now() - 3000000).toISOString()
+		},
+		{
+			userId: 'user-3',
+			userName: 'Aisha',
+			avatar: '👩🏾‍🌾',
+			text: "Who's coordinating the burn schedule? Want to make sure we're all aligned.",
+			timestamp: new Date(Date.now() - 1800000).toISOString()
+		},
+		{
+			userId: 'user-4',
+			userName: 'James',
+			avatar: '👨🏽‍🌾',
+			text: "I have the permits. Planning for next Tuesday if weather holds.",
+			timestamp: new Date(Date.now() - 1200000).toISOString()
+		}
+	];
+
+	// Mock artifacts
+	const mockArtifacts = [
+		{
+			id: 'doc-1',
+			title: 'Site Assessment Report',
+			type: 'PDF',
+			size: '2.4 MB',
+			uploadedBy: 'Marcus',
+			uploadedAt: 'Nov 15, 2024',
+			icon: '📄'
+		},
+		{
+			id: 'doc-2',
+			title: 'Native Species Guide',
+			type: 'PDF',
+			size: '1.8 MB',
+			uploadedBy: 'Aisha',
+			uploadedAt: 'Nov 12, 2024',
+			icon: '📗'
+		},
+		{
+			id: 'doc-3',
+			title: 'Burn Schedule & Safety',
+			type: 'DOC',
+			size: '456 KB',
+			uploadedBy: 'James',
+			uploadedAt: 'Nov 10, 2024',
+			icon: '📋'
+		},
+		{
+			id: 'doc-4',
+			title: 'Progress Photos - Week 8',
+			type: 'ZIP',
+			size: '12.3 MB',
+			uploadedBy: 'Sarah',
+			uploadedAt: 'Nov 8, 2024',
+			icon: '📸'
+		},
+		{
+			id: 'doc-5',
+			title: 'Equipment Checklist',
+			type: 'XLS',
+			size: '128 KB',
+			uploadedBy: 'Miguel',
+			uploadedAt: 'Nov 5, 2024',
+			icon: '📊'
+		}
+	];
 </script>
 
 <svelte:head>
@@ -91,11 +198,157 @@
 			<p class="content-text">{intention.description}</p>
 		</div>
 
-		<div class="action-buttons mt-6">
-			<ActionButton variant="primary" fullWidth={true} onClick={handleSubmitProof}
-				>Submit Proof of Service</ActionButton
-			>
-			<ActionButton variant="secondary" fullWidth={true}>Join Chat</ActionButton>
+		<!-- Action Tabs -->
+		<div class="action-tabs-container">
+			<div class="action-tabs-nav">
+				<button
+					class="action-tab-button"
+					class:active={activeActionTab === 'chat'}
+					on:click={() => switchActionTab('chat')}
+				>
+					<span>💬</span>
+					<span>Chat</span>
+				</button>
+				<button
+					class="action-tab-button"
+					class:active={activeActionTab === 'artifacts'}
+					on:click={() => switchActionTab('artifacts')}
+				>
+					<span>📁</span>
+					<span>Artifacts</span>
+				</button>
+				<button
+					class="action-tab-button"
+					class:active={activeActionTab === 'assistant'}
+					on:click={() => switchActionTab('assistant')}
+				>
+					<span>🤖</span>
+					<span>AI Assistant</span>
+				</button>
+			</div>
+
+			<div class="action-tab-content">
+				{#if activeActionTab === 'chat'}
+					<!-- Chat Tab -->
+					<div class="chat-container">
+						<div class="chat-messages">
+							{#each mockChatMessages as message}
+								<div class="chat-message">
+									<div class="chat-avatar">{message.avatar}</div>
+									<div class="chat-message-content">
+										<div class="chat-message-header">
+											<span class="chat-user-name">{message.userName}</span>
+											<span class="chat-timestamp">{formatTimestamp(message.timestamp)}</span>
+										</div>
+										<div class="chat-message-text">{message.text}</div>
+									</div>
+								</div>
+							{/each}
+						</div>
+						<div class="chat-input-container">
+							<input
+								type="text"
+								class="chat-input"
+								placeholder="Type a message..."
+								on:click={() => alert('Chat functionality coming soon!')}
+							/>
+							<button class="chat-send-button">Send</button>
+						</div>
+					</div>
+				{:else if activeActionTab === 'artifacts'}
+					<!-- Artifacts Tab -->
+					<div class="artifacts-container">
+						<div class="artifacts-header">
+							<span class="artifacts-count">{mockArtifacts.length} documents</span>
+							<button class="artifacts-upload-button" on:click={() => alert('Upload coming soon!')}>
+								<span>⬆️</span>
+								<span>Upload</span>
+							</button>
+						</div>
+						<div class="artifacts-list">
+							{#each mockArtifacts as artifact}
+								<div class="artifact-card" on:click={() => alert(`Opening ${artifact.title}...`)}>
+									<div class="artifact-icon">{artifact.icon}</div>
+									<div class="artifact-info">
+										<div class="artifact-title">{artifact.title}</div>
+										<div class="artifact-meta">
+											<span>{artifact.type}</span>
+											<span>•</span>
+											<span>{artifact.size}</span>
+											<span>•</span>
+											<span>{artifact.uploadedBy}</span>
+										</div>
+									</div>
+									<div class="artifact-date">{artifact.uploadedAt}</div>
+								</div>
+							{/each}
+						</div>
+					</div>
+				{:else if activeActionTab === 'assistant'}
+					<!-- AI Assistant Tab -->
+					<div class="assistant-container">
+						<div class="assistant-messages">
+							{#if aiMessages.length === 0}
+								<div class="assistant-welcome">
+									<div class="assistant-welcome-icon">🤖</div>
+									<div class="assistant-welcome-text">
+										Hi! I'm your AI assistant for this intention. Ask me anything about the project,
+										how to contribute, or what's happening in the community.
+									</div>
+									<div class="assistant-suggestions">
+										<button
+											class="suggestion-chip"
+											on:click={() => {
+												aiInput = 'How can I help with this intention?';
+												sendAiMessage();
+											}}
+										>
+											How can I help?
+										</button>
+										<button
+											class="suggestion-chip"
+											on:click={() => {
+												aiInput = "What's the current progress?";
+												sendAiMessage();
+											}}
+										>
+											Current progress?
+										</button>
+										<button
+											class="suggestion-chip"
+											on:click={() => {
+												aiInput = 'What skills are needed?';
+												sendAiMessage();
+											}}
+										>
+											Skills needed?
+										</button>
+									</div>
+								</div>
+							{:else}
+								{#each aiMessages as message}
+									<div class="ai-message" class:user={message.role === 'user'}>
+										<div class="ai-message-avatar">
+											{message.role === 'user' ? currentUser.avatar : '🤖'}
+										</div>
+										<div class="ai-message-text">{message.text}</div>
+									</div>
+								{/each}
+							{/if}
+						</div>
+						<div class="assistant-input-container">
+							<input
+								type="text"
+								class="assistant-input"
+								placeholder="Ask me anything..."
+								bind:value={aiInput}
+								on:keydown={(e) => e.key === 'Enter' && sendAiMessage()}
+							/>
+							<button class="assistant-send-button" on:click={sendAiMessage}>Send</button>
+						</div>
+					</div>
+				{/if}
+			</div>
 		</div>
 	{:else if currentView === 'details'}
 		<!-- Details View - Top Contributors -->
@@ -570,6 +823,387 @@
 		flex-shrink: 0;
 	}
 
+	/* Action Tabs Styles */
+	.action-tabs-container {
+		margin-top: var(--spacing-2); /* 18px φ-based */
+		margin-bottom: var(--spacing-2); /* 18px φ-based */
+	}
+
+	.action-tabs-nav {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: var(--spacing-4); /* 8px φ-based */
+		margin-bottom: var(--spacing-3); /* 12px φ-based */
+		border-bottom: 1px solid theme('colors.gold.border');
+		padding-bottom: var(--spacing-3); /* 12px φ-based */
+	}
+
+	.action-tab-button {
+		background: rgba(0, 0, 0, 0.3);
+		border: 1px solid theme('colors.gold.border');
+		border-radius: var(--spacing-4); /* 8px φ-based */
+		padding: var(--spacing-4) var(--spacing-3); /* 8px 12px φ-based */
+		color: theme('colors.sage.DEFAULT');
+		font-family: theme('fontFamily.exo');
+		font-size: var(--font-size-2); /* 12.2px Level 2 φ-based */
+		font-weight: 500;
+		cursor: pointer;
+		transition: all 0.2s ease;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: var(--spacing-4); /* 8px φ-based */
+	}
+
+	.action-tab-button:hover {
+		border-color: theme('colors.gold.DEFAULT');
+		color: theme('colors.gold.DEFAULT');
+		box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+	}
+
+	.action-tab-button.active {
+		background: theme('colors.gold.bg');
+		border-color: theme('colors.gold.DEFAULT');
+		color: theme('colors.gold.DEFAULT');
+		box-shadow: 0 0 15px theme('colors.gold.glow');
+	}
+
+	.action-tab-content {
+		background: rgba(0, 0, 0, 0.3);
+		border: 1px solid theme('colors.gold.border');
+		border-radius: var(--spacing-3); /* 12px φ-based */
+		padding: var(--spacing-2); /* 18px φ-based */
+		min-height: 400px;
+	}
+
+	/* Chat Styles */
+	.chat-container {
+		display: flex;
+		flex-direction: column;
+		height: 400px;
+	}
+
+	.chat-messages {
+		flex: 1;
+		overflow-y: auto;
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-3); /* 12px φ-based */
+		margin-bottom: var(--spacing-3); /* 12px φ-based */
+	}
+
+	.chat-message {
+		display: flex;
+		gap: var(--spacing-3); /* 12px φ-based */
+		align-items: flex-start;
+	}
+
+	.chat-avatar {
+		font-size: var(--font-size-1); /* 19.8px Level 1 φ-based */
+		flex-shrink: 0;
+	}
+
+	.chat-message-content {
+		flex: 1;
+	}
+
+	.chat-message-header {
+		display: flex;
+		align-items: center;
+		gap: var(--spacing-4); /* 8px φ-based */
+		margin-bottom: var(--spacing-4); /* 8px φ-based */
+	}
+
+	.chat-user-name {
+		color: theme('colors.cyan.DEFAULT');
+		font-size: var(--font-size-2); /* 12.2px Level 2 φ-based */
+		font-weight: 600;
+		font-family: theme('fontFamily.exo');
+	}
+
+	.chat-timestamp {
+		color: theme('colors.sage.DEFAULT');
+		font-size: var(--font-size-3); /* 8px Level 3 φ-based */
+		opacity: 0.7;
+	}
+
+	.chat-message-text {
+		color: theme('colors.cream.DEFAULT');
+		font-size: var(--font-size-2); /* 12.2px Level 2 φ-based */
+		line-height: 1.5;
+	}
+
+	.chat-input-container {
+		display: flex;
+		gap: var(--spacing-4); /* 8px φ-based */
+		border-top: 1px solid theme('colors.gold.border');
+		padding-top: var(--spacing-3); /* 12px φ-based */
+	}
+
+	.chat-input {
+		flex: 1;
+		background: rgba(0, 0, 0, 0.4);
+		border: 1px solid theme('colors.gold.border');
+		border-radius: var(--spacing-4); /* 8px φ-based */
+		padding: var(--spacing-4) var(--spacing-3); /* 8px 12px φ-based */
+		color: theme('colors.cream.DEFAULT');
+		font-family: theme('fontFamily.exo');
+		font-size: var(--font-size-2); /* 12.2px Level 2 φ-based */
+		outline: none;
+	}
+
+	.chat-input:focus {
+		border-color: theme('colors.gold.DEFAULT');
+		box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+	}
+
+	.chat-send-button {
+		background: theme('colors.gold.bg');
+		border: 1px solid theme('colors.gold.DEFAULT');
+		border-radius: var(--spacing-4); /* 8px φ-based */
+		padding: var(--spacing-4) var(--spacing-2); /* 8px 18px φ-based */
+		color: theme('colors.gold.DEFAULT');
+		font-family: theme('fontFamily.exo');
+		font-size: var(--font-size-2); /* 12.2px Level 2 φ-based */
+		font-weight: 600;
+		cursor: pointer;
+		transition: all 0.2s ease;
+	}
+
+	.chat-send-button:hover {
+		box-shadow: 0 0 15px theme('colors.gold.glow');
+	}
+
+	/* Artifacts Styles */
+	.artifacts-container {
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-3); /* 12px φ-based */
+	}
+
+	.artifacts-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding-bottom: var(--spacing-3); /* 12px φ-based */
+		border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+	}
+
+	.artifacts-count {
+		color: theme('colors.sage.DEFAULT');
+		font-size: var(--font-size-2); /* 12.2px Level 2 φ-based */
+		font-family: theme('fontFamily.exo');
+	}
+
+	.artifacts-upload-button {
+		background: theme('colors.gold.bg');
+		border: 1px solid theme('colors.gold.DEFAULT');
+		border-radius: var(--spacing-4); /* 8px φ-based */
+		padding: var(--spacing-4) var(--spacing-3); /* 8px 12px φ-based */
+		color: theme('colors.gold.DEFAULT');
+		font-family: theme('fontFamily.exo');
+		font-size: var(--font-size-3); /* 8px Level 3 φ-based */
+		font-weight: 600;
+		cursor: pointer;
+		transition: all 0.2s ease;
+		display: flex;
+		align-items: center;
+		gap: var(--spacing-4); /* 8px φ-based */
+	}
+
+	.artifacts-upload-button:hover {
+		box-shadow: 0 0 15px theme('colors.gold.glow');
+	}
+
+	.artifacts-list {
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-4); /* 8px φ-based */
+		max-height: 340px;
+		overflow-y: auto;
+	}
+
+	.artifact-card {
+		display: flex;
+		align-items: center;
+		gap: var(--spacing-3); /* 12px φ-based */
+		background: rgba(0, 0, 0, 0.3);
+		border: 1px solid rgba(212, 175, 55, 0.2);
+		border-radius: var(--spacing-4); /* 8px φ-based */
+		padding: var(--spacing-3); /* 12px φ-based */
+		cursor: pointer;
+		transition: all 0.2s ease;
+	}
+
+	.artifact-card:hover {
+		border-color: theme('colors.gold.DEFAULT');
+		background: rgba(0, 0, 0, 0.4);
+		box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+	}
+
+	.artifact-icon {
+		font-size: var(--font-size-0); /* 32px Level 0 φ-based */
+		flex-shrink: 0;
+	}
+
+	.artifact-info {
+		flex: 1;
+	}
+
+	.artifact-title {
+		color: theme('colors.cream.DEFAULT');
+		font-size: var(--font-size-2); /* 12.2px Level 2 φ-based */
+		font-weight: 600;
+		font-family: theme('fontFamily.exo');
+		margin-bottom: var(--spacing-4); /* 8px φ-based */
+	}
+
+	.artifact-meta {
+		color: theme('colors.sage.DEFAULT');
+		font-size: var(--font-size-3); /* 8px Level 3 φ-based */
+		display: flex;
+		gap: var(--spacing-4); /* 8px φ-based */
+	}
+
+	.artifact-date {
+		color: theme('colors.sage.DEFAULT');
+		font-size: var(--font-size-3); /* 8px Level 3 φ-based */
+		flex-shrink: 0;
+	}
+
+	/* AI Assistant Styles */
+	.assistant-container {
+		display: flex;
+		flex-direction: column;
+		height: 400px;
+	}
+
+	.assistant-messages {
+		flex: 1;
+		overflow-y: auto;
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-3); /* 12px φ-based */
+		margin-bottom: var(--spacing-3); /* 12px φ-based */
+	}
+
+	.assistant-welcome {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		text-align: center;
+		padding: var(--spacing-1); /* 30px φ-based */
+		gap: var(--spacing-3); /* 12px φ-based */
+	}
+
+	.assistant-welcome-icon {
+		font-size: 48px;
+	}
+
+	.assistant-welcome-text {
+		color: theme('colors.cream.DEFAULT');
+		font-size: var(--font-size-2); /* 12.2px Level 2 φ-based */
+		line-height: 1.6;
+		max-width: 400px;
+	}
+
+	.assistant-suggestions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--spacing-4); /* 8px φ-based */
+		justify-content: center;
+	}
+
+	.suggestion-chip {
+		background: theme('colors.gold.bg');
+		border: 1px solid theme('colors.gold.DEFAULT');
+		border-radius: var(--spacing-3); /* 12px φ-based */
+		padding: var(--spacing-4) var(--spacing-3); /* 8px 12px φ-based */
+		color: theme('colors.gold.DEFAULT');
+		font-family: theme('fontFamily.exo');
+		font-size: var(--font-size-3); /* 8px Level 3 φ-based */
+		font-weight: 500;
+		cursor: pointer;
+		transition: all 0.2s ease;
+	}
+
+	.suggestion-chip:hover {
+		box-shadow: 0 0 15px theme('colors.gold.glow');
+	}
+
+	.ai-message {
+		display: flex;
+		gap: var(--spacing-3); /* 12px φ-based */
+		align-items: flex-start;
+	}
+
+	.ai-message.user {
+		flex-direction: row-reverse;
+	}
+
+	.ai-message-avatar {
+		font-size: var(--font-size-1); /* 19.8px Level 1 φ-based */
+		flex-shrink: 0;
+	}
+
+	.ai-message-text {
+		background: rgba(0, 0, 0, 0.4);
+		border: 1px solid rgba(212, 175, 55, 0.3);
+		border-radius: var(--spacing-3); /* 12px φ-based */
+		padding: var(--spacing-3); /* 12px φ-based */
+		color: theme('colors.cream.DEFAULT');
+		font-size: var(--font-size-2); /* 12.2px Level 2 φ-based */
+		line-height: 1.5;
+		max-width: 70%;
+	}
+
+	.ai-message.user .ai-message-text {
+		background: theme('colors.gold.bg');
+		border-color: theme('colors.gold.DEFAULT');
+	}
+
+	.assistant-input-container {
+		display: flex;
+		gap: var(--spacing-4); /* 8px φ-based */
+		border-top: 1px solid theme('colors.gold.border');
+		padding-top: var(--spacing-3); /* 12px φ-based */
+	}
+
+	.assistant-input {
+		flex: 1;
+		background: rgba(0, 0, 0, 0.4);
+		border: 1px solid theme('colors.gold.border');
+		border-radius: var(--spacing-4); /* 8px φ-based */
+		padding: var(--spacing-4) var(--spacing-3); /* 8px 12px φ-based */
+		color: theme('colors.cream.DEFAULT');
+		font-family: theme('fontFamily.exo');
+		font-size: var(--font-size-2); /* 12.2px Level 2 φ-based */
+		outline: none;
+	}
+
+	.assistant-input:focus {
+		border-color: theme('colors.gold.DEFAULT');
+		box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+	}
+
+	.assistant-send-button {
+		background: theme('colors.gold.bg');
+		border: 1px solid theme('colors.gold.DEFAULT');
+		border-radius: var(--spacing-4); /* 8px φ-based */
+		padding: var(--spacing-4) var(--spacing-2); /* 8px 18px φ-based */
+		color: theme('colors.gold.DEFAULT');
+		font-family: theme('fontFamily.exo');
+		font-size: var(--font-size-2); /* 12.2px Level 2 φ-based */
+		font-weight: 600;
+		cursor: pointer;
+		transition: all 0.2s ease;
+	}
+
+	.assistant-send-button:hover {
+		box-shadow: 0 0 15px theme('colors.gold.glow');
+	}
+
 	@media (max-width: 768px) {
 		.action-buttons {
 			grid-template-columns: 1fr;
@@ -585,6 +1219,14 @@
 
 		.log-content {
 			min-width: 0; /* Allow text to wrap on mobile */
+		}
+
+		.action-tabs-nav {
+			grid-template-columns: 1fr;
+		}
+
+		.ai-message-text {
+			max-width: 85%;
 		}
 	}
 </style>
