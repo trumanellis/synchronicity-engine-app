@@ -102,18 +102,24 @@
 		<div class="success-spinner">Redirecting to Browse...</div>
 	</div>
 {:else}
-	<Stack gap="lg">
-		<!-- Page Header -->
-		<Section spacing="sm">
-			<Stack gap="sm">
-				<h1 class="page-title">Create Intention</h1>
-				<p class="page-subtitle">Share what you need or what you can offer</p>
-			</Stack>
-		</Section>
+	<div class="create-page-wrapper">
+		<!-- Banner at top of page - full width, outside padding -->
+		<div class="create-banner" />
 
-		<!-- Form -->
-		<form on:submit={handleSubmit} class="create-form">
-			<Stack gap="lg">
+		<!-- Content with padding -->
+		<div class="create-content">
+			<Stack gap="md">
+				<!-- Page Header -->
+				<Section spacing="none">
+					<Stack gap="sm">
+						<h1 class="page-title">Create Intention</h1>
+						<p class="page-subtitle">Share what you need or what you can offer</p>
+					</Stack>
+				</Section>
+
+				<!-- Form -->
+				<form on:submit={handleSubmit} class="create-form">
+					<Stack gap="md">
 			<!-- Title -->
 			<FormField
 				label="Title"
@@ -130,7 +136,7 @@
 				bind:value={description}
 				placeholder="Describe your intention in detail. What help do you need or what can you offer?"
 				required={true}
-				rows={6}
+				rows={4}
 				maxLength={500}
 			/>
 
@@ -185,12 +191,51 @@
 					{isSubmitting ? 'Publishing...' : 'Publish Intention'}
 				</ActionButton>
 			</div>
+					</Stack>
+				</form>
 			</Stack>
-		</form>
-	</Stack>
+		</div>
+	</div>
 {/if}
 
 <style>
+	/* Create page wrapper - no padding */
+	.create-page-wrapper {
+		margin: calc(var(--spacing-3) * -1); /* Negative margin to cancel PageContainer padding */
+		overflow: visible; /* Allow glow to extend beyond container */
+	}
+
+	/* Banner at top of create page - full screen width */
+	.create-banner {
+		position: relative;
+		width: 100%; /* Full screen width */
+		height: 0;
+		padding-bottom: 50%; /* Aspect ratio to show full image */
+		background-image: url('/CreateIntention.png');
+		background-size: contain; /* Show full image */
+		background-repeat: no-repeat;
+		background-position: center center;
+		opacity: 0.9; /* Prominent but not overwhelming */
+		pointer-events: none;
+		margin-bottom: 0;
+		z-index: 1;
+		filter: drop-shadow(0 0 15px rgba(0, 255, 209, 0.5))
+			drop-shadow(0 0 25px rgba(0, 255, 209, 0.3))
+			drop-shadow(0 0 35px rgba(0, 255, 209, 0.2));
+		overflow: visible; /* Allow glow to spread */
+	}
+
+	@media (min-width: 768px) {
+		.create-banner {
+			padding-bottom: 35%; /* Adjusted aspect ratio for desktop */
+		}
+	}
+
+	/* Content with padding restored */
+	.create-content {
+		padding: var(--spacing-3);
+	}
+
 	.page-title {
 		color: theme('colors.gold.DEFAULT');
 		font-size: var(--font-size-1); /* 19.8px Level 1 φ-based */
@@ -201,7 +246,7 @@
 
 	.page-subtitle {
 		color: theme('colors.sage.DEFAULT');
-		font-size: var(--font-size-2); /* 12.2px Level 2 φ-based */
+		font-size: var(--font-size-3); /* 8px Level 3 φ-based - more compact */
 		margin: 0;
 		opacity: 0.85;
 	}
@@ -220,25 +265,25 @@
 	.info-box {
 		background: theme('colors.gold.bg');
 		border: 2px solid theme('colors.gold.border');
-		border-radius: var(--spacing-3); /* 12px φ-based */
-		padding: var(--spacing-3); /* 12px φ-based */
+		border-radius: var(--spacing-4); /* 8px φ-based - more compact */
+		padding: var(--spacing-4); /* 8px φ-based - more compact */
 		box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
 	}
 
 	.info-box-title {
 		color: theme('colors.gold.DEFAULT');
 		font-weight: 600;
-		font-size: var(--font-size-2); /* 12.2px Level 2 φ-based */
-		margin-bottom: var(--spacing-4); /* 8px φ-based */
+		font-size: var(--font-size-3); /* 8px Level 3 φ-based - more compact */
+		margin-bottom: 4px; /* More compact */
 		display: flex;
 		align-items: center;
-		gap: var(--spacing-4); /* 8px φ-based */
+		gap: 4px; /* More compact */
 	}
 
 	.info-box-content {
 		color: theme('colors.cream.DEFAULT');
 		font-size: var(--font-size-3); /* 8px Level 3 φ-based */
-		line-height: 1.6;
+		line-height: 1.5; /* Tighter line height */
 		opacity: 0.9;
 	}
 

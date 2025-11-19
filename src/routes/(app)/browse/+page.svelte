@@ -23,7 +23,10 @@
 	import SearchBar from '$lib/components/v1/SearchBar.svelte';
 	import FilterChips from '$lib/components/v1/FilterChips.svelte';
 	import SectionTitle from '$lib/components/v1/SectionTitle.svelte';
-	import IntentionCard from '$lib/components/v1/IntentionCard.svelte';
+
+	// V2 Components
+	import ContentCardGallery from '$lib/components/v2/ContentCardGallery.svelte';
+	import { intentionToCard } from '$lib/utils/cardTransformers';
 
 	// V0 Components (not yet rebuilt)
 	import EmptyState from '$components/core/EmptyState.svelte';
@@ -57,6 +60,12 @@
 
 	$: hasActiveFilters = $activeFilter !== 'All' || $searchQuery !== '';
 	$: intentionsCount = $filteredIntentions.length;
+
+	// Transform intentions to card format
+	$: intentionCards = $filteredIntentions.map((intention) => ({
+		...intentionToCard(intention),
+		onClick: () => handleViewIntention(intention.intentionId)
+	}));
 </script>
 
 <svelte:head>
@@ -96,19 +105,10 @@
 		</Row>
 	</Section>
 
-	<!-- Intentions Grid -->
+	<!-- Intentions Gallery -->
 	<Section spacing="lg">
 		{#if $filteredIntentions.length > 0}
-			<div class="grid-3-cols">
-				{#each $filteredIntentions as intention (intention.intentionId)}
-					<div class="animate-fade-in">
-						<IntentionCard
-							{intention}
-							onClick={() => handleViewIntention(intention.intentionId)}
-						/>
-					</div>
-				{/each}
-			</div>
+			<ContentCardGallery items={intentionCards} />
 		{:else}
 			<EmptyState
 				icon="🔍"
