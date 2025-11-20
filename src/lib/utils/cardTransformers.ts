@@ -3,7 +3,7 @@
  * Enables reusability of ContentCard across different content types
  */
 
-import type { Intention, ProofOfService, Token } from '$types';
+import type { Intention, ProofOfService, Token, Offering } from '$types';
 import { formatTimeAgo, userTokens } from '$data/mockData';
 
 /**
@@ -158,4 +158,42 @@ export function proofsToCards(proofs: ProofOfService[]) {
  */
 export function tokensToCards(tokens: Token[]) {
 	return tokens.map(tokenToCard);
+}
+
+/**
+ * Transform Offering to ContentCard format
+ */
+export function offeringToCard(offering: Offering) {
+	// Determine availability icon and color
+	const availabilityIcon =
+		offering.availability === 'available' ? '✓' :
+		offering.availability === 'limited' ? '⏱️' : '✕';
+
+	return {
+		imageUrl: offering.media && offering.media.length > 0 ? offering.media[0] : null,
+		imageAlt: offering.title,
+		imagePlaceholder: '🎁',
+		title: offering.title,
+		subtitle: offering.description.slice(0, 100) + (offering.description.length > 100 ? '...' : ''),
+		tags: [offering.category, ...(offering.tags || [])],
+		metrics: [
+			{
+				icon: availabilityIcon,
+				value: offering.availability.toUpperCase(),
+				label: 'status'
+			}
+		],
+		date: '',
+		actionText: 'Request Service',
+		actionIcon: '💬',
+		variant: 'default',
+		onClick: undefined // Will be set by parent component
+	} as const;
+}
+
+/**
+ * Batch transform offerings to cards
+ */
+export function offeringsToCards(offerings: Offering[]) {
+	return offerings.map(offeringToCard);
 }

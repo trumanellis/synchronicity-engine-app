@@ -16,7 +16,9 @@ import type {
 	AttentionSwitchEvent,
 	UserAttentionLog,
 	AttentionDuration,
-	IntentionAttentionSummary
+	IntentionAttentionSummary,
+	Article,
+	ItineraryItem
 } from '$types';
 
 // Offerings Data
@@ -140,7 +142,8 @@ export const currentUser: User = {
 		tokens: 'members',
 		connections: 'connections',
 		activity: 'public'
-	}
+	},
+	substackUrl: 'https://aeonmyths.substack.com'
 };
 
 // User's active intention (most recent joined)
@@ -1280,4 +1283,168 @@ export function getIntentionAttentionSummary(intentionId: string): IntentionAtte
 		userSummaries,
 		durations
 	};
+}
+
+// Mock Substack Articles Data
+export const mockArticles: Article[] = [
+	{
+		id: 'article-001',
+		title: 'The Sacred Geometry of Gift Economies',
+		subtitle: 'Exploring how #AguaLila principles mirror natural flow patterns',
+		preview:
+			'In observing water systems at Agua Lila, we noticed something profound: the way water moves through our landscape follows patterns remarkably similar to gift economies. Water doesn\'t accumulate in one place indefinitely—it flows, nourishes, and continues its journey. This natural wisdom offers insights for building regenerative community systems.',
+		substackUrl: 'https://aeonmyths.substack.com/p/sacred-geometry-gift-economies',
+		imageUrl: '/AguaLila.png',
+		hashtags: ['AguaLila', 'Philosophy', 'GiftEconomy'],
+		publishedDate: '2024-11-01T10:00:00Z',
+		rawContent:
+			'Full article content with HTML formatting would go here. This is a placeholder for the complete article text extracted from Substack.',
+		readingTime: 8
+	},
+	{
+		id: 'article-002',
+		title: 'Building Regenerative Community Infrastructure',
+		subtitle: 'From chicken coops to composting systems—the #Infrastructure of abundance',
+		preview:
+			'Real community resilience isn\'t built on ideology alone. It requires practical infrastructure that supports regenerative living. At Agua Lila, we\'ve learned that every physical system we build—from water catchment to animal shelters—teaches us about designing for abundance rather than scarcity.',
+		substackUrl: 'https://aeonmyths.substack.com/p/regenerative-infrastructure',
+		imageUrl: '/CommunityGarden.png',
+		hashtags: ['Infrastructure', 'Community', 'Permaculture'],
+		publishedDate: '2024-10-25T14:30:00Z',
+		rawContent: 'Full article content with HTML formatting would go here.',
+		readingTime: 10
+	},
+	{
+		id: 'article-003',
+		title: 'Computational Mysticism: Code as Sacred Practice',
+		subtitle: 'How #Technology can serve spiritual evolution',
+		preview:
+			'We often think of technology and spirituality as opposites. But what if code could be a form of prayer? What if algorithms could encode our deepest values? At the intersection of computational thinking and mystical practice, we discover tools for building systems that reflect our highest aspirations.',
+		substackUrl: 'https://aeonmyths.substack.com/p/computational-mysticism',
+		imageUrl: undefined,
+		hashtags: ['Technology', 'Philosophy', 'Mysticism'],
+		publishedDate: '2024-10-15T09:00:00Z',
+		rawContent: 'Full article content with HTML formatting would go here.',
+		readingTime: 12
+	},
+	{
+		id: 'article-004',
+		title: 'The Attention Economy of the Sacred',
+		subtitle: 'Reimagining value in #AguaLila communities',
+		preview:
+			'What if attention—our most precious resource—became the basis of a new economy? Not the extractive attention economy of social media, but a sacred attention economy where focus and presence create real value. This is the foundation of our time-based community currency experiments.',
+		substackUrl: 'https://aeonmyths.substack.com/p/attention-economy-sacred',
+		imageUrl: undefined,
+		hashtags: ['AguaLila', 'Economics', 'Community'],
+		publishedDate: '2024-10-05T16:45:00Z',
+		rawContent: 'Full article content with HTML formatting would go here.',
+		readingTime: 7
+	},
+	{
+		id: 'article-005',
+		title: 'Mycorrhizal Networks and Decentralized Systems',
+		subtitle: 'What #Mushrooms teach us about P2P coordination',
+		preview:
+			'Beneath the forest floor, mushrooms form vast networks that share resources across entire ecosystems. These mycorrhizal networks operate without central control, yet coordinate complex exchanges. They\'re nature\'s peer-to-peer systems—and they offer profound lessons for building decentralized communities.',
+		substackUrl: 'https://aeonmyths.substack.com/p/mycorrhizal-networks',
+		imageUrl: '/MushroomCultivation.png',
+		hashtags: ['Mushrooms', 'Permaculture', 'Technology'],
+		publishedDate: '2024-09-28T11:20:00Z',
+		rawContent: 'Full article content with HTML formatting would go here.',
+		readingTime: 9
+	}
+];
+
+// Helper function to get articles by hashtag
+export function getArticlesByHashtag(hashtag: string): Article[] {
+	if (hashtag === 'all') return mockArticles;
+	return mockArticles.filter((article) => article.hashtags.includes(hashtag));
+}
+
+// Helper function to search articles
+export function searchArticles(query: string): Article[] {
+	const lowerQuery = query.toLowerCase();
+	return mockArticles.filter(
+		(article) =>
+			article.title.toLowerCase().includes(lowerQuery) ||
+			article.subtitle.toLowerCase().includes(lowerQuery) ||
+			article.preview.toLowerCase().includes(lowerQuery) ||
+			article.hashtags.some((tag) => tag.toLowerCase().includes(lowerQuery))
+	);
+}
+
+// Helper function to get unique hashtags from all articles
+export function getAllArticleHashtags(): string[] {
+	const hashtagSet = new Set<string>();
+	mockArticles.forEach((article) => {
+		article.hashtags.forEach((tag) => hashtagSet.add(tag));
+	});
+	return Array.from(hashtagSet).sort();
+}
+
+// Itinerary Data
+export const itineraryItems: ItineraryItem[] = [
+	{
+		id: 'itin-001',
+		type: 'trip',
+		title: 'Água Lila Residency',
+		location: 'Água Lila, Portugal',
+		locationIcon: '🌱',
+		description: 'In residence building regenerative systems and facilitating community workshops. Available for consultations on gift economies and P2P coordination.',
+		startDate: '2025-11-15T00:00:00Z',
+		endDate: '2025-12-20T00:00:00Z',
+		visibility: 'public'
+	},
+	{
+		id: 'itin-002',
+		type: 'event',
+		title: 'New Moon Gathering',
+		location: 'Oak Temple, Colorado',
+		locationIcon: '🌙',
+		description: 'Monthly ceremony and community coordination meeting. Open to all temple members.',
+		startDate: '2026-01-17T00:00:00Z',
+		time: '7:00 PM',
+		visibility: 'public'
+	},
+	{
+		id: 'itin-003',
+		type: 'trip',
+		title: 'Traveling through Bali',
+		location: 'Bali, Indonesia',
+		locationIcon: '🌍',
+		description: 'Exploring regenerative communities and teaching computational modeling workshops. Limited availability for remote consulting.',
+		startDate: '2026-01-01T00:00:00Z',
+		endDate: '2026-01-31T00:00:00Z',
+		visibility: 'public'
+	},
+	{
+		id: 'itin-004',
+		type: 'event',
+		title: 'Gift Economy Workshop',
+		location: 'Online / Virtual',
+		locationIcon: '💻',
+		description: 'Teaching the foundations of time-based currencies and attention economies. Interactive session with Q&A.',
+		startDate: '2025-12-10T00:00:00Z',
+		time: '3:00 PM UTC',
+		visibility: 'public'
+	}
+];
+
+// Helper function to get visible itinerary items
+export function getVisibleItineraryItems(viewerRole: 'public' | 'members' | 'connections' | 'friends' = 'public'): ItineraryItem[] {
+	return itineraryItems.filter((item) => {
+		if (item.visibility === 'public') return true;
+		if (item.visibility === 'members' && ['members', 'connections', 'friends'].includes(viewerRole)) return true;
+		if (item.visibility === 'connections' && ['connections', 'friends'].includes(viewerRole)) return true;
+		if (item.visibility === 'friends' && viewerRole === 'friends') return true;
+		return false;
+	});
+}
+
+// Helper function to get upcoming itinerary items (sorted by date)
+export function getUpcomingItinerary(): ItineraryItem[] {
+	const now = new Date();
+	return itineraryItems
+		.filter((item) => new Date(item.endDate || item.startDate) >= now)
+		.sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
 }

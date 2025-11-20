@@ -52,7 +52,7 @@
 	}
 
 	/* Desktop: sidebar */
-	@media (min-width: 768px) {
+	@media (min-width: 1024px) {
 		.v2-layout {
 			margin-left: 5rem;
 		}
@@ -75,6 +75,13 @@
 		scrollbar-width: thin;
 	}
 
+	/* Desktop: no bottom nav, no extra padding needed */
+	@media (min-width: 1024px) {
+		.content-section {
+			padding-bottom: var(--spacing-3);
+		}
+	}
+
 	.hero-section {
 		/* Fixed at bottom - just the bottom nav now */
 		position: fixed;
@@ -91,10 +98,10 @@
 		z-index: 100;
 	}
 
-	/* Desktop: account for sidebar */
-	@media (min-width: 768px) {
+	/* Desktop: nav is sidebar, so hide this fixed bottom section */
+	@media (min-width: 1024px) {
 		.hero-section {
-			left: 5rem;
+			display: none;
 		}
 	}
 

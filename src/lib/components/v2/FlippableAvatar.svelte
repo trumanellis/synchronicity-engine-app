@@ -19,6 +19,9 @@
 
 	const currentSize = sizes[size];
 
+	// Detect if avatar is an image URL or emoji/text
+	$: isImageUrl = avatar.startsWith('/') || avatar.startsWith('http');
+
 	onMount(async () => {
 		// Generate QR code on mount
 		try {
@@ -56,7 +59,11 @@
 		<!-- Front: Avatar -->
 		<div class="flip-card-front">
 			<div class="avatar-circle">
-				<span class="avatar-emoji" style="font-size: {currentSize.emoji}">{avatar}</span>
+				{#if isImageUrl}
+					<img src={avatar} alt={username} class="avatar-image" />
+				{:else}
+					<span class="avatar-emoji" style="font-size: {currentSize.emoji}">{avatar}</span>
+				{/if}
 			</div>
 		</div>
 
@@ -144,6 +151,13 @@
 		display: block;
 		line-height: 1;
 		filter: drop-shadow(0 0 12px rgba(212, 175, 55, 0.8));
+	}
+
+	.avatar-image {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		display: block;
 	}
 
 	.qr-container {

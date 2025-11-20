@@ -202,7 +202,7 @@
 		position: relative;
 		width: 100%; /* Full screen width */
 		height: 0;
-		padding-bottom: 35%; /* More compact aspect ratio */
+		padding-bottom: 50%; /* Taller aspect ratio to show full image */
 		background-image: url('/CreateIntentionBanner.png');
 		background-size: contain; /* Changed to contain to show full image */
 		background-repeat: no-repeat;
@@ -231,7 +231,7 @@
 
 	@media (min-width: 768px) {
 		.create-banner {
-			padding-bottom: 25%; /* More compact for desktop */
+			padding-bottom: 35%; /* Adjusted aspect ratio for desktop */
 		}
 	}
 

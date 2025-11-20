@@ -90,6 +90,27 @@
 		height: auto; /* Auto height to fit content */
 	}
 
+	/* Desktop: Left Sidebar Layout */
+	@media (min-width: 1024px) {
+		.bottom-nav {
+			position: fixed;
+			left: 0;
+			top: 0;
+			bottom: 0;
+			width: 5rem;
+			height: 100vh;
+			grid-template-columns: 1fr; /* Single column */
+			grid-template-rows: repeat(5, 1fr); /* 5 equal rows */
+			padding: 0 4px;
+			background: linear-gradient(
+				to right,
+				rgba(107, 207, 126, 0) 0%,
+				rgba(107, 207, 126, 0.15) 23%,
+				rgba(107, 207, 126, 0.15) 100%
+			); /* Gradient from transparent to moss green (horizontal) */
+		}
+	}
+
 	.nav-item {
 		display: flex;
 		align-items: center;

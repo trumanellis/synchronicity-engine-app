@@ -5,6 +5,9 @@
 	 * Uses golden ratio proportions for image:text sections
 	 */
 
+	import type { VisibilityLevel } from '$types';
+	import VisibilitySelector from './VisibilitySelector.svelte';
+
 	// Props for flexibility
 	export let imageUrl: string | null = null;
 	export let imageAlt: string = '';
@@ -18,6 +21,9 @@
 	export let actionIcon: string = '→';
 	export let onClick: (() => void) | undefined = undefined;
 	export let variant: 'default' | 'featured' = 'default';
+	export let canEdit: boolean = false;
+	export let visibility: VisibilityLevel | undefined = undefined;
+	export let onVisibilityChange: ((newVisibility: VisibilityLevel) => void) | undefined = undefined;
 </script>
 
 <button class="content-card card-golden-ratio" on:click={onClick} disabled={!onClick}>
@@ -38,7 +44,7 @@
 				</div>
 			{/if}
 		</div>
-		<!-- Tags positioned outside circular frame -->
+		<!-- Tags positioned over image -->
 		{#if tags.length > 0}
 			<div class="tags-overlay">
 				{#each tags.slice(0, 3) as tag}
@@ -54,8 +60,17 @@
 	<!-- Content Section - 1 proportion (smaller) -->
 	<div class="golden-ratio-text">
 		<div class="card-content">
-			<!-- Title at top -->
-			<h3 class="card-title">{title}</h3>
+			<!-- Title and Visibility Selector -->
+			<div class="title-row">
+				<h3 class="card-title">{title}</h3>
+				{#if canEdit && visibility !== undefined && onVisibilityChange}
+					<VisibilitySelector
+						visibility={visibility}
+						onChange={onVisibilityChange}
+						compact={true}
+					/>
+				{/if}
+			</div>
 
 			<!-- Subtitle -->
 			{#if subtitle}
@@ -120,14 +135,14 @@
 		cursor: default;
 	}
 
-	/* Image Section - Circular crop */
+	/* Image Section - Rounded rectangle */
 	.image-container {
 		width: 100%;
-		aspect-ratio: 1 / 1; /* Square for perfect circle */
+		aspect-ratio: 1 / 1; /* Square container */
 		position: relative;
 		overflow: hidden;
 		background: rgba(0, 0, 0, 0.4);
-		border-radius: 50%; /* Circular cropping */
+		border-radius: var(--spacing-3); /* Match card border radius */
 		border: 2px solid theme('colors.moss.border');
 	}
 
@@ -234,6 +249,14 @@
 		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
 	}
 
+	/* Title row with optional visibility selector */
+	.title-row {
+		display: flex;
+		align-items: flex-start;
+		justify-content: space-between;
+		gap: 4px;
+	}
+
 	/* Title at top of card */
 	.card-title {
 		color: theme('colors.gold.DEFAULT');
@@ -246,6 +269,7 @@
 		display: -webkit-box;
 		-webkit-line-clamp: 2;
 		-webkit-box-orient: vertical;
+		flex: 1;
 	}
 
 	.card-subtitle {

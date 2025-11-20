@@ -13,6 +13,7 @@ export interface User {
 	offerings: Offering[];
 	achievements: Achievement[];
 	profileVisibility: Record<string, VisibilityLevel>;
+	substackUrl?: string; // Optional Substack publication URL
 }
 
 export interface UserTemple {
@@ -84,6 +85,7 @@ export interface Intention {
 	stats: IntentionStats;
 	topContributors: Contributor[];
 	recentActivity: Activity[];
+	visibility?: VisibilityLevel; // Optional visibility setting for profile display
 }
 
 export interface IntentionStats {
@@ -276,6 +278,7 @@ export interface Offering {
 	media?: string[];
 	availability: 'available' | 'limited' | 'unavailable';
 	tags?: string[];
+	visibility?: VisibilityLevel; // Optional visibility setting for profile display
 }
 
 export interface Achievement {
@@ -337,4 +340,37 @@ export interface IntentionAttentionSummary {
 		totalMinutes: number;
 	}>;
 	durations: AttentionDuration[];
+}
+
+// Substack Article Types
+export interface Article {
+	id: string; // Unique ID generated from URL
+	title: string;
+	subtitle: string; // First paragraph or excerpt
+	preview: string; // First 2 paragraphs for preview
+	substackUrl: string; // Link to full article on Substack
+	imageUrl?: string; // Featured image URL
+	hashtags: string[]; // Extracted hashtags (e.g., ["AguaLila", "Philosophy"])
+	publishedDate: string; // ISO 8601 format
+	rawContent: string; // Full article HTML content
+	readingTime: number; // Estimated reading time in minutes
+}
+
+export interface ArticleFilters {
+	selectedHashtag: string; // 'all' or specific hashtag
+	searchTerm: string; // Search query
+}
+
+// Itinerary Types
+export interface ItineraryItem {
+	id: string;
+	type: 'trip' | 'event';
+	title: string;
+	location: string;
+	locationIcon: string; // Emoji icon for location
+	description: string;
+	startDate: string; // ISO 8601 format
+	endDate?: string; // Optional for events (single day)
+	time?: string; // For events (e.g., "7:00 PM")
+	visibility: VisibilityLevel;
 }

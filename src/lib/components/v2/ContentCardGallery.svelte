@@ -3,6 +3,7 @@
 	 * ContentCardGallery v2 - Wrapper for ContentCard grid display
 	 * Handles loading states, empty states, and responsive grid layout
 	 */
+	import type { VisibilityLevel } from '$types';
 	import ContentCard from './ContentCard.svelte';
 
 	export let items: Array<{
@@ -18,6 +19,9 @@
 		actionIcon?: string;
 		variant?: 'default' | 'featured';
 		onClick?: () => void;
+		canEdit?: boolean;
+		visibility?: VisibilityLevel;
+		onVisibilityChange?: (newVisibility: VisibilityLevel) => void;
 	}> = [];
 	export let loading: boolean = false;
 	export let emptyIcon: string = '📋';
@@ -56,6 +60,9 @@
 					actionIcon={item.actionIcon ?? '→'}
 					variant={item.variant ?? 'default'}
 					onClick={item.onClick}
+					canEdit={item.canEdit ?? false}
+					visibility={item.visibility}
+					onVisibilityChange={item.onVisibilityChange}
 				/>
 			</div>
 		{/each}

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { activeTab } from '$stores/navigationStore';
-	import { currentUser, intentions, potentialAttention, getUpcomingItinerary } from '$lib/data/mockData';
+	import { intentions, potentialAttention, getUpcomingItinerary, getVisibleItineraryItems } from '$lib/data/mockData';
 
 	import BioCard from '$lib/components/v2/BioCard.svelte';
 	import ItinerarySection from '$lib/components/v2/ItinerarySection.svelte';
@@ -10,87 +10,107 @@
 	import Stack from '$lib/components/layout/Stack.svelte';
 	import Section from '$lib/components/layout/Section.svelte';
 
+	import type { PageData } from './$types';
+
+	export let data: PageData;
+
+	$: user = data.user;
+	$: isPublicView = data.isPublicView;
+
 	onMount(() => {
 		activeTab.set('profile');
 	});
 
-	// Internal view - show everything
-	$: user = currentUser;
-	$: isPublicView = false;
-
 	// Get user's intentions (ones they have potential attention for)
+	// For public view, only show if visibility allows
 	$: userIntentions = intentions.filter((i) => potentialAttention[i.intentionId] !== undefined);
 
-	// Get upcoming itinerary items (all items for internal view)
-	$: upcomingItinerary = getUpcomingItinerary();
+	// Get upcoming itinerary items (filtered by public visibility for public view)
+	$: upcomingItinerary = isPublicView ? getVisibleItineraryItems('public') : getUpcomingItinerary();
 
 	// Mock tags for bio
 	const bioTags = ['#permaculture', '#community', '#design', '#sacred-economics'];
+
+	// Determine if sections should be visible based on user's visibility settings
+	function isVisible(section: string): boolean {
+		if (!isPublicView) return true; // Internal view sees everything
+
+		const visibility = user.profileVisibility[section];
+		return visibility === 'public';
+	}
 </script>
 
 <svelte:head>
-	<title>My Profile - Synchronicity Engine</title>
+	<title>{user.name} - Synchronicity Engine</title>
 </svelte:head>
 
 <div class="profile-page">
 	<Stack gap="md">
 		<!-- Bio Card -->
 		<Section spacing="md">
-			<BioCard user={user} canEdit={true} tags={bioTags} />
+			<BioCard user={user} canEdit={!isPublicView} tags={bioTags} />
 		</Section>
 
 		<!-- Itinerary Section -->
-		{#if upcomingItinerary.length > 0}
+		{#if upcomingItinerary.length > 0 && isVisible('activity')}
 			<Section spacing="md">
-				<ItinerarySection items={upcomingItinerary} canEdit={true} />
+				<ItinerarySection items={upcomingItinerary} canEdit={!isPublicView} />
 			</Section>
 		{/if}
 
 		<!-- Tabbed Gallery: Intentions & Offerings -->
-		<Section spacing="md">
-			<ProfileGallery intentions={userIntentions} offerings={user.offerings} canEdit={true} />
-		</Section>
-
-		<!-- Substack Articles Gallery -->
-		{#if user.substackUrl}
+		{#if isVisible('intentions') || isVisible('offerings')}
 			<Section spacing="md">
-				<SubstackGallery substackUrl={user.substackUrl} canEdit={true} />
+				<ProfileGallery
+					intentions={isVisible('intentions') ? userIntentions : []}
+					offerings={isVisible('offerings') ? user.offerings : []}
+					canEdit={!isPublicView}
+				/>
 			</Section>
 		{/if}
 
-		<!-- Settings Section -->
-		<Section spacing="md">
-			<Stack gap="sm">
-				<div class="section-header">
-					<div class="section-title">
-						<span>⚙️</span>
-						<span>Settings</span>
-					</div>
-				</div>
+		<!-- Substack Articles Gallery -->
+		{#if user.substackUrl && isVisible('activity')}
+			<Section spacing="md">
+				<SubstackGallery substackUrl={user.substackUrl} canEdit={!isPublicView} />
+			</Section>
+		{/if}
+
+		<!-- Settings Section - Only visible in internal view -->
+		{#if !isPublicView}
+			<Section spacing="md">
 				<Stack gap="sm">
-					<button class="settings-button" on:click={() => alert('Privacy settings')}>
-						<span class="settings-icon">🔒</span>
-						<span class="settings-label">Privacy & Visibility</span>
-						<span class="settings-arrow">›</span>
-					</button>
-					<button class="settings-button" on:click={() => alert('Payment methods')}>
-						<span class="settings-icon">💳</span>
-						<span class="settings-label">Payment Methods</span>
-						<span class="settings-arrow">›</span>
-					</button>
-					<button class="settings-button" on:click={() => alert('Notifications')}>
-						<span class="settings-icon">🔔</span>
-						<span class="settings-label">Notifications</span>
-						<span class="settings-arrow">›</span>
-					</button>
-					<button class="settings-button danger" on:click={() => alert('Logout')}>
-						<span class="settings-icon">🚪</span>
-						<span class="settings-label">Logout</span>
-						<span class="settings-arrow">›</span>
-					</button>
+					<div class="section-header">
+						<div class="section-title">
+							<span>⚙️</span>
+							<span>Settings</span>
+						</div>
+					</div>
+					<Stack gap="sm">
+						<button class="settings-button" on:click={() => alert('Privacy settings')}>
+							<span class="settings-icon">🔒</span>
+							<span class="settings-label">Privacy & Visibility</span>
+							<span class="settings-arrow">›</span>
+						</button>
+						<button class="settings-button" on:click={() => alert('Payment methods')}>
+							<span class="settings-icon">💳</span>
+							<span class="settings-label">Payment Methods</span>
+							<span class="settings-arrow">›</span>
+						</button>
+						<button class="settings-button" on:click={() => alert('Notifications')}>
+							<span class="settings-icon">🔔</span>
+							<span class="settings-label">Notifications</span>
+							<span class="settings-arrow">›</span>
+						</button>
+						<button class="settings-button danger" on:click={() => alert('Logout')}>
+							<span class="settings-icon">🚪</span>
+							<span class="settings-label">Logout</span>
+							<span class="settings-arrow">›</span>
+						</button>
+					</Stack>
 				</Stack>
-			</Stack>
-		</Section>
+			</Section>
+		{/if}
 	</Stack>
 </div>
 
