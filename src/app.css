@@ -268,7 +268,7 @@ html::before {
 	/* 3-Column Grid Layout */
 	.grid-3-cols {
 		display: grid;
-		grid-template-columns: repeat(3, 1fr);
+		grid-template-columns: repeat(2, 1fr); /* Default: Always at least 2 columns */
 		gap: var(--spacing-4); /* 8px φ-based - tighter spacing */
 		width: 100%;
 	}
@@ -305,14 +305,6 @@ html::before {
 		flex: 1; /* 1 proportion - smaller section */
 		min-height: 0;
 		overflow: hidden;
-	}
-
-	/* Mobile: 2 columns for compact gallery view */
-	@media (max-width: 640px) {
-		.grid-3-cols {
-			grid-template-columns: repeat(2, 1fr);
-			gap: var(--spacing-4); /* 8px φ-based */
-		}
 	}
 
 	/* Tablet: 3 columns */

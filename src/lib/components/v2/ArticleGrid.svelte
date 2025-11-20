@@ -29,17 +29,24 @@
 {/if}
 
 <style>
-	/* Grid Layout - Auto-fill with minimum card size */
+	/* Grid Layout - Default 2 columns on mobile */
 	.articles-grid {
 		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr));
+		grid-template-columns: repeat(2, 1fr);
 		gap: var(--spacing-4); /* 8px φ-based */
 	}
 
-	/* Mobile: Force single column for very narrow screens */
-	@media (max-width: 360px) {
+	/* Tablet: 3 columns */
+	@media (min-width: 641px) {
 		.articles-grid {
-			grid-template-columns: 1fr;
+			grid-template-columns: repeat(3, 1fr);
+		}
+	}
+
+	/* Desktop: 4 columns */
+	@media (min-width: 1025px) {
+		.articles-grid {
+			grid-template-columns: repeat(4, 1fr);
 		}
 	}
 

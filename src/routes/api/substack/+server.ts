@@ -14,10 +14,14 @@ const parser = new Parser({
 
 // Extract hashtags from content
 function extractHashtags(content: string): string[] {
-	// Match hashtags that start with a letter, followed by letters, numbers, or underscores
+	// Decode HTML entities first (e.g., &#198; → Æ)
+	const decodedContent = decodeHtmlEntities(content);
+
+	// Match hashtags that start with a letter (including Unicode like Æ, é, ñ),
+	// followed by letters, numbers, or underscores
 	// Minimum length of 2 characters to avoid single-letter tags
-	const hashtagRegex = /#([A-Za-z][A-Za-z0-9_]*)/g;
-	const matches = content.matchAll(hashtagRegex);
+	const hashtagRegex = /#([\p{L}][\p{L}\p{N}_]*)/gu;
+	const matches = decodedContent.matchAll(hashtagRegex);
 	const hashtags = Array.from(matches, (match) => match[1])
 		.filter(tag => tag.length >= 2) // Filter out single-letter tags
 		.filter(tag => !/^\d+$/.test(tag)); // Filter out pure number tags

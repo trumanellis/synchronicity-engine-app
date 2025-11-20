@@ -49,7 +49,7 @@
 		<div class="info-column">
 			<div class="username">{user.name}</div>
 			<div class="bio-tagline">{user.bio}</div>
-			<div class="profile-url">syncengine.earth/{user.username}</div>
+			<a href="/{user.username}" class="profile-url">syncengine.earth/{user.username}</a>
 
 			<!-- About Section -->
 			{#if tags.length > 0}
@@ -138,6 +138,16 @@
 		color: theme('colors.cyan.DEFAULT');
 		font-size: var(--font-size-2);
 		opacity: 0.8;
+		text-decoration: none;
+		cursor: pointer;
+		transition: all 0.2s ease;
+		display: inline-block;
+	}
+
+	.profile-url:hover {
+		opacity: 1;
+		text-shadow: 0 0 10px rgba(0, 255, 209, 0.5);
+		transform: translateX(2px);
 	}
 
 	.about-section {
