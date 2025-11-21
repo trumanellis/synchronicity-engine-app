@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import Avatar from '$components/core/Avatar.svelte';
 	import type { IntentionAttentionSummary } from '$types';
 
 	export let attentionSummary: IntentionAttentionSummary;
@@ -245,7 +246,7 @@
 	{#if hoveredUser}
 		<div class="tooltip" style="left: {tooltipX}px; top: {tooltipY}px;">
 			<div class="tooltip-header">
-				<span class="tooltip-avatar">{hoveredUser.userAvatar}</span>
+				<Avatar avatar={hoveredUser.userAvatar} name={hoveredUser.userName} size="small" />
 				<span class="tooltip-name">{hoveredUser.userName}</span>
 			</div>
 			<div class="tooltip-time">{formatDuration(hoveredUser.totalMinutes)} devoted</div>
@@ -298,11 +299,6 @@
 		align-items: center;
 		gap: var(--spacing-4); /* 8px φ-based */
 		margin-bottom: var(--spacing-4); /* 8px φ-based */
-	}
-
-	.tooltip-avatar {
-		font-size: var(--font-size-1); /* 19.8px Level 1 φ-based */
-		flex-shrink: 0;
 	}
 
 	.tooltip-name {
