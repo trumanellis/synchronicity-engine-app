@@ -1,8 +1,9 @@
 <script lang="ts">
-	import type { Intention, Offering } from '$types';
+	import type { Intention, Offering, VisibilityLevel } from '$types';
 	import TabSwitcher from './TabSwitcher.svelte';
-	import ContentCardGallery from './ContentCardGallery.svelte';
-	import { intentionToCard, offeringToCard } from '$lib/utils/cardTransformers';
+	import CardGallery from './CardGallery.svelte';
+	import IntentionCard from './IntentionCard.svelte';
+	import OfferingCard from './OfferingCard.svelte';
 
 	export let intentions: Intention[] = [];
 	export let offerings: Offering[] = [];
@@ -11,45 +12,29 @@
 	// Tab state
 	let activeTab = 'intentions';
 
-	function handleIntentionVisibilityChange(intentionId: string, newVisibility: any) {
+	function handleIntentionVisibilityChange(intentionId: string, newVisibility: VisibilityLevel) {
 		console.log(`Changing visibility for intention ${intentionId} to ${newVisibility}`);
 		// TODO: Implement API call to update intention visibility
 		alert(`Visibility changed to ${newVisibility} (API integration coming soon)`);
 	}
 
-	function handleOfferingVisibilityChange(offeringId: string, newVisibility: any) {
+	function handleOfferingVisibilityChange(offeringId: string, newVisibility: VisibilityLevel) {
 		console.log(`Changing visibility for offering ${offeringId} to ${newVisibility}`);
 		// TODO: Implement API call to update offering visibility
 		alert(`Visibility changed to ${newVisibility} (API integration coming soon)`);
 	}
 
-	// Transform intentions to card format
-	$: intentionCards = intentions.map((intention) => ({
-		...intentionToCard(intention),
-		onClick: () => (window.location.href = `/browse/${intention.intentionId}`),
-		canEdit,
-		visibility: intention.visibility || 'public',
-		onVisibilityChange: canEdit
-			? (newVisibility: any) => handleIntentionVisibilityChange(intention.intentionId, newVisibility)
-			: undefined
-	}));
+	function handleIntentionClick(intentionId: string) {
+		window.location.href = `/browse/${intentionId}`;
+	}
 
-	// Transform offerings to card format
-	$: offeringCards = offerings.map((offering) => ({
-		...offeringToCard(offering),
-		onClick: () => {
-			if (canEdit) {
-				alert('Edit offering feature coming soon');
-			} else {
-				alert('Request service feature coming soon');
-			}
-		},
-		canEdit,
-		visibility: offering.visibility || 'public',
-		onVisibilityChange: canEdit
-			? (newVisibility: any) => handleOfferingVisibilityChange(offering.offeringId, newVisibility)
-			: undefined
-	}));
+	function handleOfferingClick(offeringId: string) {
+		if (canEdit) {
+			alert('Edit offering feature coming soon');
+		} else {
+			alert('Request service feature coming soon');
+		}
+	}
 
 	$: tabs = [
 		{
@@ -71,11 +56,49 @@
 	<TabSwitcher {tabs} bind:activeTab />
 
 	{#if activeTab === 'intentions'}
-		<ContentCardGallery items={intentionCards} />
+		<CardGallery columns={3} gap="var(--spacing-4)">
+			{#each intentions as intention (intention.intentionId)}
+				<IntentionCard
+					{intention}
+					size="large"
+					{canEdit}
+					onClick={() => handleIntentionClick(intention.intentionId)}
+					onVisibilityChange={canEdit ? (newVisibility) => handleIntentionVisibilityChange(intention.intentionId, newVisibility) : undefined}
+				/>
+			{/each}
+		</CardGallery>
+
+		{#if intentions.length === 0}
+			<div class="empty-state">
+				<div class="empty-icon">🎯</div>
+				<p class="empty-text">
+					{canEdit ? 'No intentions yet. Create your first intention to share your goals!' : 'No intentions to display.'}
+				</p>
+			</div>
+		{/if}
 	{/if}
 
 	{#if activeTab === 'offerings'}
-		<ContentCardGallery items={offeringCards} />
+		<CardGallery columns={3} gap="var(--spacing-4)">
+			{#each offerings as offering (offering.offeringId)}
+				<OfferingCard
+					{offering}
+					size="large"
+					{canEdit}
+					onClick={() => handleOfferingClick(offering.offeringId)}
+					onVisibilityChange={canEdit ? (newVisibility) => handleOfferingVisibilityChange(offering.offeringId, newVisibility) : undefined}
+				/>
+			{/each}
+		</CardGallery>
+
+		{#if offerings.length === 0}
+			<div class="empty-state">
+				<div class="empty-icon">🎁</div>
+				<p class="empty-text">
+					{canEdit ? 'No offerings yet. Create your first offering to share your skills!' : 'No offerings to display.'}
+				</p>
+			</div>
+		{/if}
 	{/if}
 </div>
 
@@ -84,5 +107,27 @@
 		display: flex;
 		flex-direction: column;
 		gap: var(--spacing-4);
+	}
+
+	.empty-state {
+		padding: var(--spacing-0);
+		text-align: center;
+		background: rgba(0, 0, 0, 0.2);
+		border: 2px dashed rgba(135, 169, 107, 0.3);
+		border-radius: var(--spacing-3);
+	}
+
+	.empty-icon {
+		font-size: 4rem;
+		margin-bottom: var(--spacing-3);
+		opacity: 0.5;
+	}
+
+	.empty-text {
+		color: theme('colors.sage.DEFAULT');
+		font-size: var(--font-size-2);
+		line-height: 1.6;
+		opacity: 0.8;
+		margin: 0;
 	}
 </style>

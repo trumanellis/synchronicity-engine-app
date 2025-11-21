@@ -1,196 +1,314 @@
 <script lang="ts">
-	import type { Offering } from '$types';
+	import type { Offering, VisibilityLevel } from '$types';
+	import FlipCard from './FlipCard.svelte';
+	import VisibilitySelector from './VisibilitySelector.svelte';
 
 	export let offering: Offering;
-	export let compact: boolean = false;
+	export let size: 'small' | 'medium' | 'large' = 'large';
+	export let canEdit: boolean = false;
+	export let onClick: (() => void) | undefined = undefined;
+	export let onVisibilityChange: ((newVisibility: VisibilityLevel) => void) | undefined = undefined;
 
-	const availabilityConfig = {
-		available: { icon: '✓', label: 'Available', color: 'cyan' },
-		limited: { icon: '⏱️', label: 'Limited', color: 'gold' },
-		unavailable: { icon: '✕', label: 'Unavailable', color: 'sage' }
-	};
+	$: categoryIcon = getCategoryIcon(offering.category);
+	$: statusInfo = getStatusInfo(offering.status);
 
-	const config = availabilityConfig[offering.availability];
+	function getCategoryIcon(category: string): string {
+		const icons: Record<string, string> = {
+			'Skill Sharing': '🎓',
+			'Tool Lending': '🔧',
+			'Space Sharing': '🏠',
+			'Food Sharing': '🍲',
+			'Knowledge': '📚',
+			'Service': '🤝',
+			'Resource': '🌱'
+		};
+		return icons[category] || '🎁';
+	}
+
+	function getStatusInfo(status: string) {
+		const statusConfig = {
+			active: { icon: '✓', label: 'Available', color: 'cyan' },
+			completed: { icon: '✓', label: 'Completed', color: 'gold' },
+			archived: { icon: '✕', label: 'Archived', color: 'sage' }
+		};
+		return statusConfig[status as keyof typeof statusConfig] || statusConfig.active;
+	}
+
+	function handleNavigate() {
+		if (onClick) {
+			onClick();
+		}
+	}
 </script>
 
-<div class="offering-card" class:compact>
-	<!-- Header -->
-	<div class="offering-header">
-		<h3 class="offering-title">{offering.title}</h3>
-		<div class="availability-badge {config.color}">
-			<span class="badge-icon">{config.icon}</span>
-			<span class="badge-label">{config.label}</span>
+<div>
+	<FlipCard {size} tapHintText="Tap for details" ariaLabelFront="View offering details" ariaLabelBack="Show offering preview">
+		<div slot="front" class="offering-front">
+			<div class="offering-icon-wrapper">
+				<span class="offering-icon">{categoryIcon}</span>
+			</div>
+			<div class="offering-title-front">{offering.title}</div>
+			<div class="offering-category">{offering.category}</div>
+			<div class="status-badge {statusInfo.color}">
+				<span>{statusInfo.icon}</span>
+				<span>{statusInfo.label}</span>
+			</div>
 		</div>
-	</div>
 
-	<!-- Description -->
-	<p class="offering-description">{offering.description}</p>
+		<div slot="back" let:isExpanded class="offering-back">
+			<div class="offering-content" class:expanded={isExpanded}>
+				<div class="back-header">
+					<h3 class="offering-title">{offering.title}</h3>
+					{#if canEdit && offering.visibility !== undefined && onVisibilityChange}
+						<VisibilitySelector
+							visibility={offering.visibility}
+							onChange={onVisibilityChange}
+							compact={true}
+						/>
+					{/if}
+				</div>
 
-	<!-- Category -->
-	<div class="offering-category">
-		<span class="category-icon">🏷️</span>
-		<span class="category-label">{offering.category}</span>
-	</div>
+				<p class="offering-description">{offering.description}</p>
 
-	<!-- Tags -->
-	{#if offering.tags && offering.tags.length > 0}
-		<div class="offering-tags">
-			{#each offering.tags as tag}
-				<span class="tag">{tag}</span>
-			{/each}
+				<div class="offering-details">
+					<div class="detail-item">
+						<span class="detail-icon">📍</span>
+						<span class="detail-text">{offering.location.name}</span>
+					</div>
+					<div class="detail-item">
+						<span class="detail-icon">🏷️</span>
+						<span class="detail-text">{offering.category}</span>
+					</div>
+					<div class="detail-item">
+						<span class="detail-icon">📊</span>
+						<span class="detail-text">{offering.stats.totalRecipients} recipients • {offering.stats.timesShared} shares • {offering.stats.activeDays} days</span>
+					</div>
+					<div class="detail-item">
+						<span class="detail-icon">📅</span>
+						<span class="detail-text">{new Date(offering.createdAt).toLocaleDateString()}</span>
+					</div>
+				</div>
+
+				{#if offering.status === 'active'}
+					<button class="request-button" on:click|stopPropagation={handleNavigate}>
+						<span class="button-icon">💬</span>
+						<span class="button-label">{canEdit ? 'Edit Offering' : 'Request Service'}</span>
+					</button>
+				{/if}
+			</div>
 		</div>
-	{/if}
-
-	<!-- Contact button (if available) -->
-	{#if offering.availability !== 'unavailable'}
-		<button class="request-button">
-			<span class="button-icon">💬</span>
-			<span class="button-label">Request Service</span>
-		</button>
-	{/if}
+	</FlipCard>
 </div>
 
 <style>
-	.offering-card {
-		background: rgba(212, 175, 55, 0.1);
-		border: 2px solid rgba(212, 175, 55, 0.5);
-		border-radius: var(--spacing-3);
-		padding: var(--spacing-2);
+	.offering-front {
+		width: 100%;
+		height: 100%;
+		background: linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(212, 175, 55, 0.05));
+		border-radius: 16px;
 		display: flex;
 		flex-direction: column;
-		gap: var(--spacing-4);
+		align-items: center;
+		justify-content: center;
+		padding: var(--spacing-2);
+		text-align: center;
+		gap: var(--spacing-3);
+		position: relative;
+	}
+
+	.offering-icon-wrapper {
+		width: 80px;
+		height: 80px;
+		border-radius: 50%;
+		background: rgba(212, 175, 55, 0.2);
+		border: 2px solid rgba(212, 175, 55, 0.4);
+		display: flex;
+		align-items: center;
+		justify-content: center;
 		transition: all 0.3s ease;
 	}
 
-	.offering-card:hover {
-		border-color: theme('colors.gold.DEFAULT');
-		box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
-		transform: translateY(-2px);
+	.offering-icon {
+		font-size: 3rem;
+		filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
 	}
 
-	.offering-card.compact {
-		padding: var(--spacing-3);
-		gap: var(--spacing-3);
+	.offering-title-front {
+		color: theme('colors.gold.DEFAULT');
+		font-size: var(--font-size-2);
+		font-weight: 700;
+		text-shadow: 0 0 10px rgba(212, 175, 55, 0.6);
+		line-height: 1.2;
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
 	}
 
-	.offering-header {
+	.offering-category {
+		background: rgba(0, 255, 209, 0.15);
+		border: 1px solid rgba(0, 255, 209, 0.4);
+		border-radius: var(--spacing-4);
+		padding: 0.25rem 0.75rem;
+		font-size: 0.7rem;
+		color: theme('colors.cyan.DEFAULT');
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+	}
+
+	.status-badge {
+		position: absolute;
+		top: var(--spacing-3);
+		right: var(--spacing-3);
 		display: flex;
-		align-items: start;
+		align-items: center;
+		gap: 4px;
+		padding: 0.25rem 0.5rem;
+		border-radius: var(--spacing-4);
+		font-size: 0.65rem;
+		font-weight: 600;
+		backdrop-filter: blur(8px);
+	}
+
+	.status-badge.cyan {
+		background: rgba(0, 255, 209, 0.2);
+		color: theme('colors.cyan.DEFAULT');
+		border: 1px solid rgba(0, 255, 209, 0.5);
+	}
+
+	.status-badge.gold {
+		background: rgba(212, 175, 55, 0.2);
+		color: theme('colors.gold.DEFAULT');
+		border: 1px solid rgba(212, 175, 55, 0.5);
+	}
+
+	.status-badge.sage {
+		background: rgba(132, 169, 140, 0.1);
+		color: theme('colors.sage.DEFAULT');
+		border: 1px solid rgba(132, 169, 140, 0.3);
+	}
+
+	.offering-back {
+		width: 100%;
+		height: 100%;
+		background: theme('colors.bg.deep');
+		padding: var(--spacing-2);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.offering-content {
+		text-align: left;
+		max-width: 90%;
+		transition: all 1s cubic-bezier(0.4, 0.0, 0.2, 1);
+		transform: scale(0.55);
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-4);
+	}
+
+	.offering-content.expanded {
+		transform: scale(1);
+		max-width: 600px;
+		gap: var(--spacing-2);
+	}
+
+	.back-header {
+		display: flex;
+		align-items: flex-start;
 		justify-content: space-between;
 		gap: var(--spacing-4);
 	}
 
 	.offering-title {
 		color: theme('colors.gold.DEFAULT');
-		font-size: var(--font-size-1);
-		font-weight: 600;
+		font-size: var(--font-size-2);
+		font-weight: 700;
 		margin: 0;
+		text-shadow: 0 0 10px rgba(212, 175, 55, 0.6);
 		flex: 1;
 	}
 
-	.availability-badge {
-		display: inline-flex;
-		align-items: center;
-		gap: 0.35rem;
-		padding: 0.25rem 0.65rem;
-		border-radius: 0.5rem;
-		font-size: 0.7rem;
-		font-weight: 600;
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
-		flex-shrink: 0;
-	}
-
-	.availability-badge.cyan {
-		background: rgba(0, 255, 209, 0.15);
-		color: theme('colors.cyan.DEFAULT');
-		border: 2px solid theme('colors.cyan.DEFAULT');
-	}
-
-	.availability-badge.gold {
-		background: rgba(212, 175, 55, 0.2);
-		color: theme('colors.gold.DEFAULT');
-		border: 2px solid theme('colors.gold.DEFAULT');
-	}
-
-	.availability-badge.sage {
-		background: rgba(132, 169, 140, 0.1);
-		color: theme('colors.sage.DEFAULT');
-		border: 2px solid rgba(132, 169, 140, 0.3);
-	}
-
-	.badge-icon {
-		font-size: var(--font-size-3);
-	}
-
-	.badge-label {
-		font-size: var(--font-size-3);
+	.offering-content.expanded .offering-title {
+		font-size: var(--font-size-0);
 	}
 
 	.offering-description {
 		color: theme('colors.cream.DEFAULT');
-		font-size: var(--font-size-2);
+		font-size: 0.7rem;
 		line-height: 1.5;
 		margin: 0;
+		opacity: 0.9;
+		display: -webkit-box;
+		-webkit-line-clamp: 3;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
 	}
 
-	.offering-category {
+	.offering-content.expanded .offering-description {
+		font-size: var(--font-size-2);
+		-webkit-line-clamp: unset;
+	}
+
+	.offering-details {
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+	}
+
+	.offering-content.expanded .offering-details {
+		gap: var(--spacing-4);
+	}
+
+	.detail-item {
 		display: flex;
 		align-items: center;
-		gap: 0.5rem;
-		padding: var(--spacing-4);
-		background: theme('colors.bg.deep');
-		border-radius: var(--spacing-4);
-		border: 1px solid theme('colors.gold.border');
+		gap: var(--spacing-4);
+		color: theme('colors.sage.DEFAULT');
+		font-size: 0.65rem;
 	}
 
-	.category-icon {
+	.offering-content.expanded .detail-item {
+		font-size: var(--font-size-3);
+	}
+
+	.detail-icon {
+		font-size: 0.9rem;
+		flex-shrink: 0;
+	}
+
+	.offering-content.expanded .detail-icon {
 		font-size: var(--font-size-1);
 	}
 
-	.category-label {
-		color: theme('colors.sage.DEFAULT');
-		font-size: var(--font-size-3);
-		font-weight: 500;
-	}
-
-	.offering-tags {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 0.5rem;
-	}
-
-	.tag {
-		padding: 0.25rem 0.75rem;
-		background: theme('colors.bg.deep');
-		border: 1px solid theme('colors.gold.border');
-		border-radius: 1rem;
-		color: theme('colors.sage.DEFAULT');
-		font-size: var(--font-size-3);
-		font-weight: 500;
-		transition: all 0.2s ease;
-	}
-
-	.tag:hover {
-		border-color: theme('colors.gold.DEFAULT');
-		color: theme('colors.gold.DEFAULT');
+	.detail-text {
+		line-height: 1.3;
 	}
 
 	.request-button {
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		gap: 0.5rem;
-		padding: var(--spacing-4) var(--spacing-2);
+		gap: 0.35rem;
+		padding: 0.35rem 0.75rem;
 		background: theme('colors.gold.DEFAULT');
 		color: theme('colors.bg.deep');
 		border: none;
 		border-radius: var(--spacing-4);
 		font-family: theme('fontFamily.exo');
 		font-weight: 600;
-		font-size: var(--font-size-2);
+		font-size: 0.7rem;
 		cursor: pointer;
 		transition: all 0.3s ease;
+		align-self: center;
+	}
+
+	.offering-content.expanded .request-button {
+		padding: var(--spacing-4) var(--spacing-2);
+		font-size: var(--font-size-2);
+		gap: 0.5rem;
 	}
 
 	.request-button:hover {
@@ -199,10 +317,14 @@
 	}
 
 	.button-icon {
+		font-size: 0.9rem;
+	}
+
+	.offering-content.expanded .button-icon {
 		font-size: var(--font-size-1);
 	}
 
 	.button-label {
-		font-size: var(--font-size-2);
+		font-size: inherit;
 	}
 </style>

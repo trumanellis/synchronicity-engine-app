@@ -20,6 +20,7 @@
 	import ActivityItem from '$components/core/ActivityItem.svelte';
 	import ProofGallery from '$lib/components/v2/ProofGallery.svelte';
 	import AttentionSpiral from '$lib/components/v2/AttentionSpiral.svelte';
+	import EntityDetailHeader from '$lib/components/v2/EntityDetailHeader.svelte';
 
 	let intention: Intention | undefined;
 	let allProofs: ProofOfService[] = [];
@@ -60,6 +61,25 @@
 			minute: '2-digit',
 			hour12: true
 		});
+	}
+
+	// Simple Markdown to HTML converter for basic formatting
+	function markdownToHtml(markdown: string): string {
+		if (!markdown) return '';
+
+		// Convert paragraph breaks
+		let html = markdown
+			.split('\n\n')
+			.map(para => `<p>${para}</p>`)
+			.join('');
+
+		// Convert **bold** to <strong>
+		html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+
+		// Convert *italic* to <em>
+		html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
+
+		return html;
 	}
 
 	function handleSubmitProof() {
@@ -203,21 +223,55 @@
 </svelte:head>
 
 {#if intention}
-	<!-- Title and Description -->
-	<h1 class="intention-title">{intention.title}</h1>
-	<p class="intention-subtitle">{intention.description}</p>
+	<!-- Entity Detail Header with Golden Ratio Layout -->
+	<EntityDetailHeader
+		useIntentionCard={true}
+		{intention}
+		{attentionSummary}
+		intentionCardSize="large"
+	>
+		<!-- Left Column Content: Stats and Meta Info -->
+		<div slot="left-column" class="left-column-content">
+			<!-- Stats Row -->
+			<div class="stats-row-inline">
+				<div class="stat-box-inline">
+					<span class="stat-icon">👥</span>
+					<span class="stat-value-inline">{intention.stats.participantCount}</span>
+					<span class="stat-label-inline">participants</span>
+				</div>
+				<div class="stat-box-inline">
+					<span class="stat-icon">⏱️</span>
+					<span class="stat-value-inline">{intention.stats.totalAttentionHours}h</span>
+					<span class="stat-label-inline">gratitude</span>
+				</div>
+				<div class="stat-box-inline">
+					<span class="stat-icon">📅</span>
+					<span class="stat-value-inline">{intention.stats.activeDays}</span>
+					<span class="stat-label-inline">days active</span>
+				</div>
+			</div>
 
-	<!-- Featured Image -->
-	{#if intention.media && intention.media.length > 0}
-		<div class="featured-image-container">
-			<img src={intention.media[0]} alt={intention.title} class="featured-image" />
+			<!-- Category & Location -->
+			<div class="meta-info">
+				<div class="meta-item">
+					<span class="meta-icon">🏷️</span>
+					<span class="meta-text">{intention.category}</span>
+				</div>
+				<div class="meta-item">
+					<span class="meta-icon">📍</span>
+					<span class="meta-text">{intention.location.name}</span>
+				</div>
+			</div>
 		</div>
-	{/if}
 
-	<!-- Collective Attention Spiral -->
-	{#if attentionSummary && attentionSummary.userSummaries.length > 0}
-		<AttentionSpiral {attentionSummary} />
-	{/if}
+		<!-- Right Column Content: Title and Description -->
+		<div class="scrollable-content">
+			<h1 class="intention-title">{intention.title}</h1>
+			<div class="intention-description">
+				{@html markdownToHtml(intention.description)}
+			</div>
+		</div>
+	</EntityDetailHeader>
 
 	<!-- Action Tabs -->
 	<div class="action-tabs-container">
@@ -469,17 +523,34 @@
 		color: theme('colors.gold.DEFAULT');
 		font-size: var(--font-size-0); /* 32px Level 0 φ-based */
 		font-weight: 700;
-		margin-bottom: var(--spacing-4); /* 8px φ-based */
+		margin: 0;
 		text-shadow: 0 0 15px theme('colors.gold.glow');
-		line-height: 1.3;
+		line-height: 1.2;
 	}
 
-	.intention-subtitle {
-		color: theme('colors.sage.DEFAULT');
+	.intention-description {
+		color: theme('colors.cream.DEFAULT');
 		font-size: var(--font-size-2); /* 12.2px Level 2 φ-based */
-		line-height: 1.6;
-		margin-bottom: var(--spacing-2); /* 18px φ-based */
+		line-height: 1.7;
 		opacity: 0.9;
+	}
+
+	.intention-description :global(p) {
+		margin: 0 0 var(--spacing-4) 0;
+	}
+
+	.intention-description :global(p:last-child) {
+		margin-bottom: 0;
+	}
+
+	.intention-description :global(strong) {
+		color: theme('colors.gold.DEFAULT');
+		font-weight: 700;
+	}
+
+	.intention-description :global(em) {
+		color: theme('colors.cyan.DEFAULT');
+		font-style: italic;
 	}
 
 	.featured-image-container {
@@ -526,41 +597,104 @@
 		opacity: 0.85;
 	}
 
-	.stats-row {
-		display: grid;
-		grid-template-columns: repeat(3, 1fr);
-		gap: var(--spacing-4); /* 8px φ-based */
-		margin-bottom: var(--spacing-2); /* 18px φ-based */
+	/* Left Column Content */
+	.left-column-content {
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-4);
+		margin-top: var(--spacing-3);
 	}
 
-	.stat-box {
-		background: rgba(0, 0, 0, 0.4);
-		border: 1px solid theme('colors.gold.border');
-		border-radius: var(--spacing-3); /* 12px φ-based */
-		padding: var(--spacing-4); /* 8px φ-based */
-		text-align: center;
+	/* Inline Stats Row - display in one horizontal row */
+	.stats-row-inline {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		gap: 6px;
+		width: 100%;
+		margin: 0;
+	}
+
+	.stat-box-inline {
+		display: flex;
+		align-items: center;
+		gap: 4px;
+		background: rgba(0, 0, 0, 0.5);
+		backdrop-filter: blur(8px);
+		border: 1px solid rgba(0, 255, 209, 0.3);
+		border-radius: 999px;
+		padding: 0.35rem 0.65rem;
+		font-size: 0.7rem;
+		color: theme('colors.cyan.DEFAULT');
+		font-weight: 600;
 		transition: all 0.2s ease;
+		flex: 0 1 auto;
 	}
 
-	.stat-box:hover {
-		border-color: theme('colors.gold.DEFAULT');
-		box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+	.stat-box-inline:hover {
+		border-color: rgba(0, 255, 209, 0.5);
+		background: rgba(0, 0, 0, 0.6);
+		box-shadow: 0 0 10px rgba(0, 255, 209, 0.2);
+		transform: translateY(-1px);
 	}
 
-	.stat-label {
-		color: theme('colors.sage.DEFAULT');
-		font-size: var(--font-size-3); /* 8px Level 3 φ-based */
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
-		margin-bottom: 0.25rem;
+	.stat-icon {
+		font-size: 0.85rem;
+		flex-shrink: 0;
+	}
+
+	.stat-value-inline {
+		color: theme('colors.gold.DEFAULT');
+		font-weight: 700;
+		flex-shrink: 0;
+	}
+
+	.stat-label-inline {
+		color: theme('colors.cream.DEFAULT');
+		font-size: 0.65rem;
 		opacity: 0.8;
 	}
 
-	.stat-value {
-		color: theme('colors.gold.DEFAULT');
-		font-size: var(--font-size-1); /* 19.8px Level 1 φ-based */
-		font-weight: 700;
-		text-shadow: 0 0 10px theme('colors.gold.glow');
+	/* Meta Information - Badge Style */
+	.meta-info {
+		display: flex;
+		flex-direction: column;
+		gap: 6px;
+	}
+
+	.meta-item {
+		display: inline-flex;
+		align-items: center;
+		gap: 5px;
+		background: linear-gradient(135deg, rgba(135, 169, 107, 0.15), rgba(135, 169, 107, 0.05));
+		border: 2px solid theme('colors.moss.border');
+		border-radius: 999px;
+		padding: 0.4rem 0.85rem;
+		color: theme('colors.sage.DEFAULT');
+		font-size: 0.7rem;
+		transition: all 0.3s ease;
+		box-shadow: 0 0 10px rgba(135, 169, 107, 0.1);
+		width: fit-content;
+	}
+
+	.meta-item:hover {
+		border-color: theme('colors.moss.DEFAULT');
+		background: linear-gradient(135deg, rgba(135, 169, 107, 0.25), rgba(135, 169, 107, 0.15));
+		box-shadow: 0 0 15px theme('colors.moss.glow');
+		transform: translateY(-1px);
+	}
+
+	.meta-icon {
+		font-size: 0.9rem;
+		flex-shrink: 0;
+	}
+
+	.meta-text {
+		color: theme('colors.cream.DEFAULT');
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.03em;
+		font-size: 0.65rem;
 	}
 
 	.content-box {

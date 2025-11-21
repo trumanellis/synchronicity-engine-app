@@ -135,7 +135,12 @@
 
 			{#if qrDataUrl}
 				<div class="qr-bottom-section">
-					<!-- Public Contact Info (above QR) -->
+					<div class="qr-wrapper">
+						<img src={qrDataUrl} alt="Profile QR Code" class="qr-image-bottom" />
+					</div>
+					<div class="profile-url">syncengine.earth/{username}</div>
+
+					<!-- Public Contact Info (below URL) -->
 					{#if publicContacts.length > 0}
 						<div class="public-contacts">
 							{#each publicContacts as contact}
@@ -146,12 +151,6 @@
 							{/each}
 						</div>
 					{/if}
-
-					<div class="qr-wrapper">
-						<img src={qrDataUrl} alt="Profile QR Code" class="qr-image-bottom" />
-						<img src="/synchronicity engine SE.png" alt="Sync Engine Logo" class="qr-overlay" />
-					</div>
-					<div class="profile-url">syncengine.earth/{username}</div>
 				</div>
 				{:else}
 					<div class="qr-loading">Generating QR...</div>
@@ -251,13 +250,19 @@
 		width: 100%;
 		height: 100%;
 		backface-visibility: hidden;
-		border-radius: var(--spacing-4);
-		transition: border-radius 1s cubic-bezier(0.4, 0.0, 0.2, 1);
+		border-radius: 16px;
+		transition:
+			border-radius 1s cubic-bezier(0.4, 0.0, 0.2, 1),
+			box-shadow 1s cubic-bezier(0.4, 0.0, 0.2, 1);
 	}
 
 	.bio-card-wrapper.expanded .flip-card-front,
 	.bio-card-wrapper.expanded .flip-card-back {
-		border-radius: 0;
+		border-radius: 32px;
+		box-shadow:
+			0 0 40px rgba(212, 175, 55, 0.8),
+			0 0 80px rgba(212, 175, 55, 0.6),
+			0 0 120px rgba(212, 175, 55, 0.4);
 	}
 
 	.flip-card-front {
@@ -269,7 +274,6 @@
 		transform: rotateY(180deg);
 		background: theme('colors.bg.deep');
 		border: none;
-		box-shadow: none;
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -290,7 +294,6 @@
 
 	.bio-card-wrapper.expanded .flip-card-back {
 		padding: 0;
-		box-shadow: none;
 	}
 
 	.bio-card-wrapper.expanded .background-blur {
@@ -304,15 +307,21 @@
 		height: 100%;
 		background: linear-gradient(135deg, theme('colors.bg.mid') 0%, theme('colors.bg.front') 100%);
 		border: none;
-		border-radius: var(--spacing-4);
+		border-radius: 16px;
 		box-shadow: none;
 		position: relative;
 		overflow: hidden;
-		transition: border-radius 1s cubic-bezier(0.4, 0.0, 0.2, 1);
+		transition:
+			border-radius 1s cubic-bezier(0.4, 0.0, 0.2, 1),
+			box-shadow 1s cubic-bezier(0.4, 0.0, 0.2, 1);
 	}
 
 	.bio-card-wrapper.expanded .avatar-circle {
-		border-radius: 0;
+		border-radius: 32px;
+		box-shadow:
+			0 0 35px rgba(212, 175, 55, 0.6),
+			0 0 70px rgba(212, 175, 55, 0.4),
+			0 0 105px rgba(212, 175, 55, 0.2);
 	}
 
 	.avatar-emoji {
@@ -344,12 +353,15 @@
 		width: 100%;
 		height: auto;
 		max-width: 100%;
-		border-radius: var(--spacing-4);
+		border-radius: 16px;
 		background: #87a96b;
 		padding: 3px;
 		opacity: 0.66;
 		border: 3px solid #87a96b;
-		box-shadow: 0 0 30px rgba(135, 169, 107, 0.5);
+		box-shadow:
+			0 0 25px rgba(135, 169, 107, 0.7),
+			0 0 45px rgba(135, 169, 107, 0.5),
+			0 0 65px rgba(135, 169, 107, 0.3);
 		transition: all 0.6s cubic-bezier(0.4, 0.0, 0.2, 1) 0.2s;
 	}
 
@@ -367,9 +379,12 @@
 
 	.bio-card-wrapper.expanded .qr-image-bottom {
 		padding: 3px;
-		border-radius: 16px;
+		border-radius: 20px;
 		border: 3px solid #87a96b;
-		box-shadow: 0 0 60px rgba(135, 169, 107, 0.7);
+		box-shadow:
+			0 0 35px rgba(135, 169, 107, 0.8),
+			0 0 70px rgba(135, 169, 107, 0.6),
+			0 0 105px rgba(135, 169, 107, 0.4);
 		width: 31.8vw;
 		height: 31.8vw;
 		max-width: 100%;
@@ -397,6 +412,13 @@
 		flex-direction: column;
 		align-items: center;
 		gap: 0;
+		transition: all 1s cubic-bezier(0.4, 0.0, 0.2, 1);
+	}
+
+	/* Small flipped card state - scale content to fit small card */
+	.bio-card-wrapper:not(.expanded) .bio-card-container.flipped .qr-bottom-section {
+		transform: scale(0.55);
+		transform-origin: center center;
 	}
 
 	.bio-card-wrapper.expanded .qr-bottom-section {
@@ -411,6 +433,7 @@
 		justify-content: flex-end;
 		padding: var(--spacing-1);
 		gap: var(--spacing-3);
+		transform: scale(1);
 	}
 
 	.qr-loading {
@@ -453,10 +476,15 @@
 		transform: rotateY(190deg);
 	}
 
-	/* Focus state for accessibility */
-	.bio-card-container:focus {
+	/* Focus state for accessibility - only when not expanded */
+	.bio-card-wrapper:not(.expanded) .bio-card-container:focus {
 		outline: 2px solid rgba(255, 255, 255, 0.3);
 		outline-offset: 4px;
+	}
+
+	/* Remove focus outline when expanded */
+	.bio-card-wrapper.expanded .bio-card-container:focus {
+		outline: none;
 	}
 
 	.profile-url {
@@ -490,6 +518,13 @@
 		z-index: 10;
 		pointer-events: none;
 		letter-spacing: 0.05em;
+		transition: all 1s cubic-bezier(0.4, 0.0, 0.2, 1);
+	}
+
+	/* Small flipped card state - scale name header */
+	.bio-card-wrapper:not(.expanded) .bio-card-container.flipped .name-header {
+		font-size: 0.6rem;
+		top: 4px;
 	}
 
 	.bio-card-wrapper.expanded .name-header {
@@ -503,7 +538,7 @@
 		grid-template-columns: 1fr 1fr;
 		gap: 3px;
 		width: 100%;
-		margin-bottom: var(--spacing-4);
+		margin-top: var(--spacing-4);
 		z-index: 10;
 	}
 
@@ -536,7 +571,7 @@
 	.bio-card-wrapper.expanded .public-contacts {
 		grid-template-columns: 1fr 1fr;
 		gap: var(--spacing-4);
-		margin-bottom: var(--spacing-2);
+		margin-top: var(--spacing-2);
 	}
 
 	.bio-card-wrapper.expanded .contact-item {

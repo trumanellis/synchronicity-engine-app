@@ -98,6 +98,11 @@
 		position: relative;
 	}
 
+	/* Remove focus outline from embedded BioCard */
+	.avatar-column :global(.bio-card-container):focus {
+		outline: none !important;
+	}
+
 	.avatar-column :global(.bio-card-container) :global(.flip-card) {
 		position: absolute;
 		top: 0;

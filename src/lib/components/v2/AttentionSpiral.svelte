@@ -3,6 +3,7 @@
 	import type { IntentionAttentionSummary } from '$types';
 
 	export let attentionSummary: IntentionAttentionSummary;
+	export let backgroundImage: string | undefined = undefined;
 
 	let canvas: HTMLCanvasElement;
 	let ctx: CanvasRenderingContext2D;
@@ -229,7 +230,10 @@
 	});
 </script>
 
-<div class="spiral-container">
+<div class="spiral-container" style={backgroundImage ? `--bg-image: url(${backgroundImage})` : ''}>
+	{#if backgroundImage}
+		<div class="spiral-background"></div>
+	{/if}
 	<canvas
 		bind:this={canvas}
 		width="500"
@@ -256,11 +260,25 @@
 		justify-content: center;
 		align-items: center;
 		margin-bottom: var(--spacing-2); /* 18px φ-based */
+		overflow: hidden;
+		border-radius: var(--spacing-3);
+	}
+
+	.spiral-background {
+		position: absolute;
+		inset: 0;
+		background-image: var(--bg-image);
+		background-size: cover;
+		background-position: center;
+		filter: blur(8px) brightness(0.3);
+		z-index: 0;
 	}
 
 	canvas {
 		background: transparent;
 		cursor: crosshair;
+		position: relative;
+		z-index: 1;
 	}
 
 	.tooltip {

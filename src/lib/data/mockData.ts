@@ -327,7 +327,7 @@ export const intentions: Intention[] = [
 		intentionId: 'int-garden-001',
 		title: 'Community Garden Infrastructure',
 		description:
-			'Building raised beds, irrigation systems, and tool sheds for shared food production spaces. Current focus: 8 gardens across 3 neighborhoods need raised beds, composting systems, and water catchment infrastructure.',
+			'**Building the foundation for local food sovereignty** through collaborative infrastructure development. We\'re creating raised beds, irrigation systems, and tool sheds that transform vacant lots into thriving food production spaces. Currently focusing on *8 gardens across 3 neighborhoods* that need raised beds, composting systems, and water catchment infrastructure.\n\nOur approach combines **permaculture design principles** with community-led construction. Each garden receives custom infrastructure based on site conditions—from hugelkultur-based raised beds that retain moisture, to gravity-fed irrigation systems that eliminate the need for pumps. We prioritize using *reclaimed and locally-sourced materials* wherever possible, turning construction waste into community assets.\n\nThis isn\'t just about building physical infrastructure—it\'s about **cultivating resilient food systems** and strengthening neighborhood bonds. Every tool shed becomes a community gathering point, every compost bin teaches the cycle of regeneration, and every irrigation line connects people to the water that sustains us all. Join us in building the *practical foundations* of abundance.',
 		category: 'Organic Food & Nutrition',
 		createdBy: 'user-marcus-001',
 		createdAt: '2024-10-28T14:30:00Z',
@@ -340,7 +340,8 @@ export const intentions: Intention[] = [
 		stats: {
 			totalAttentionHours: 2847,
 			participantCount: 156,
-			activeDays: 12
+			activeDays: 12,
+			percentManifested: 75
 		},
 		topContributors: [
 			{
@@ -390,12 +391,54 @@ export const intentions: Intention[] = [
 				icon: '🔄',
 				meta: '💧 Pipeline for 3 gardens now operational'
 			}
-		]
+		],
+		attentionSummary: {
+			intentionId: 'int-garden-001',
+			userSummaries: [
+				{
+					userId: 'user-marcus-001',
+					userName: 'Marcus Chen',
+					userAvatar: '🔨',
+					totalMinutes: 390
+				},
+				{
+					userId: 'user-aisha-001',
+					userName: 'Aisha Patel',
+					userAvatar: '🌿',
+					totalMinutes: 165
+				},
+				{
+					userId: 'user-james-001',
+					userName: 'James Rodriguez',
+					userAvatar: '💧',
+					totalMinutes: 480
+				},
+				{
+					userId: 'user-sarah-001',
+					userName: 'Sarah Kim',
+					userAvatar: '🌱',
+					totalMinutes: 345
+				},
+				{
+					userId: 'user-truman-001',
+					userName: 'Dr. Truman Ellis',
+					userAvatar: '/Truman.jpeg',
+					totalMinutes: 210
+				},
+				{
+					userId: 'user-miguel-001',
+					userName: 'Miguel Santos',
+					userAvatar: '🪓',
+					totalMinutes: 165
+				}
+			],
+			durations: []
+		}
 	},
 	{
 		intentionId: 'int-eucalyptus-001',
 		title: 'Eucalyptus Removal Brigade',
-		description: 'Clear invasive eucalyptus fire-trees from sacred valley restoration site. Removing non-native species that drain water table and increase wildfire risk. Clearing 15 acres to restore native oak and cork tree ecosystem.',
+		description: '**Healing the land** by removing invasive eucalyptus trees that threaten both water security and fire safety in our sacred valley. These aggressive non-native species drain the water table, create dangerous fire fuel loads, and suppress native vegetation. We\'re systematically clearing *15 acres* to restore the natural oak and cork tree ecosystem that once thrived here.\n\nOur removal process is careful and **resource-conscious**—we\'re not just cutting and burning. Trees are safely felled using proper forestry techniques, then milled into lumber for community construction projects. Branches become mulch for native plantings, and stumps are treated to prevent resprouting. We work in coordination with *ecological assessments* to protect existing native saplings and prepare sites for reforestation.\n\nThis intensive land stewardship work requires **strong backs and sharp minds**. Whether you\'re experienced with chainsaw operation or new to forest restoration, there\'s a role for you. We\'re not just removing trees—we\'re participating in *ecological healing* that will benefit generations. The valley is calling us to help restore its natural balance.',
 		category: 'Land Stewardship',
 		createdBy: 'temple-agua-lila',
 		createdAt: '2024-09-15T10:00:00Z',
@@ -408,7 +451,8 @@ export const intentions: Intention[] = [
 		stats: {
 			totalAttentionHours: 3892,
 			participantCount: 89,
-			activeDays: 56
+			activeDays: 56,
+			percentManifested: 62
 		},
 		topContributors: [
 			{
@@ -476,7 +520,7 @@ export const intentions: Intention[] = [
 	{
 		intentionId: 'int-mushroom-001',
 		title: 'Mushroom Cultivation Network',
-		description: 'Share techniques, spores, and growing spaces for food sovereignty. Building community knowledge around oyster, shiitake, and medicinal mushroom cultivation. Creating spore library and teaching workshops on log inoculation and substrate preparation.',
+		description: '**Cultivating food sovereignty** through the ancient practice of mushroom growing, adapted for modern community needs. We\'re building a regional network of growers who share *techniques, spores, and growing spaces* to make nutritious protein accessible to everyone. Our focus includes oyster and shiitake mushrooms for food, plus medicinal varieties like reishi and lion\'s mane.\n\nThe heart of our network is a **community spore library** and hands-on education program. We teach workshops on log inoculation, substrate preparation, and fruiting chamber construction using recycled materials. Whether you have a shady backyard, a basement corner, or access to fresh hardwood logs, we\'ll help you start producing mushrooms. Our collective knowledge grows with *every successful harvest*.\n\nMushrooms teach us about **mycelial wisdom**—the power of networks, decomposition as transformation, and thriving in the shadows. This isn\'t just agriculture; it\'s participating in nature\'s most elegant recycling system. Join us in spreading *fungal abundance* through the community, one inoculated log at a time.',
 		category: 'Organic Food & Nutrition',
 		createdBy: 'user-fungal-001',
 		createdAt: '2024-10-05T16:45:00Z',
@@ -489,7 +533,8 @@ export const intentions: Intention[] = [
 		stats: {
 			totalAttentionHours: 2134,
 			participantCount: 56,
-			activeDays: 35
+			activeDays: 35,
+			percentManifested: 88
 		},
 		topContributors: [
 			{
@@ -540,7 +585,7 @@ export const intentions: Intention[] = [
 	{
 		intentionId: 'int-solar-001',
 		title: 'Solar Dehydrator Workshop',
-		description: 'Build and share solar food dehydrators for off-grid food preservation. Teaching community members to construct passive solar dehydrators using recycled materials. Perfect for drying herbs, fruits, vegetables, and medicinal plants without electricity. Building skills for resilient food storage systems.',
+		description: '**Harnessing the sun\'s power** for food preservation without electricity or fossil fuels. We\'re teaching community members to construct passive solar dehydrators using *recycled glass, reclaimed wood, and simple materials*. These elegant systems dry herbs, fruits, vegetables, and medicinal plants using nothing but solar heat and natural convection.\n\nOur workshops are **hands-on building experiences** where participants construct their own dehydrator to take home. We cover design principles, optimal angle calculations for your latitude, material selection, and food preservation techniques. By the end, you\'ll understand the physics of solar drying and have *practical skills* for off-grid food storage. No previous carpentry experience required—just curiosity and commitment.\n\nThis is appropriate technology at its finest: **simple, effective, and empowering**. A well-built solar dehydrator can preserve hundreds of pounds of produce annually, capturing summer\'s abundance for winter\'s scarcity. Join us in building *resilient food systems* that don\'t depend on the grid. Your harvest—and your community—will thank you.',
 		category: 'Off-Grid & Sustainable Living',
 		createdBy: 'user-solar-001',
 		createdAt: '2024-11-01T09:00:00Z',
@@ -553,7 +598,8 @@ export const intentions: Intention[] = [
 		stats: {
 			totalAttentionHours: 2145,
 			participantCount: 43,
-			activeDays: 8
+			activeDays: 8,
+			percentManifested: 45
 		},
 		topContributors: [
 			{

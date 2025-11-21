@@ -118,12 +118,14 @@ export interface Intention {
 	topContributors: Contributor[];
 	recentActivity: Activity[];
 	visibility?: VisibilityLevel; // Optional visibility setting for profile display
+	attentionSummary?: IntentionAttentionSummary; // Optional attention spiral data
 }
 
 export interface IntentionStats {
 	totalAttentionHours: number;
 	participantCount: number;
 	activeDays: number;
+	percentManifested: number; // 0-100 percentage of intention completion/manifestation
 }
 
 export interface Contributor {
