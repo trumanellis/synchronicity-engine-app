@@ -1,13 +1,57 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import QRCode from 'qrcode';
+	import type { User } from '$types';
 
 	export let avatar: string;
 	export let username: string;
 	export let name: string;
+	export let user: User | undefined = undefined;
 	export let size: 'small' | 'medium' | 'large' = 'large';
 
+	// Get public contact info
+	$: publicContacts = user?.contactInfo ? Object.entries(user.contactInfo)
+		.filter(([key, value]) => {
+			if (key === 'visibility') return false;
+			const visibility = user.contactInfo?.visibility?.[key as keyof typeof user.contactInfo.visibility];
+			return visibility === 'public' && value;
+		})
+		.map(([key, value]) => ({
+			key,
+			value,
+			icon: getContactIcon(key)
+		})) : [];
+
+	function getContactIcon(key: string): string {
+		const icons: Record<string, string> = {
+			email: '📧',
+			phone: '📞',
+			whatsapp: '💬',
+			telegram: '✈️',
+			discord: '🎮',
+			instagram: '📷',
+			facebook: '👥',
+			twitter: '𝕏',
+			linkedin: '💼',
+			youtube: '📹',
+			tiktok: '🎵',
+			website: '🌐'
+		};
+		return icons[key] || '🔗';
+	}
+
+	function formatContactValue(key: string, value: string): string {
+		if (key === 'instagram' || key === 'twitter' || key === 'tiktok' || key === 'telegram') {
+			return `@${value}`;
+		}
+		if (key === 'website' && !value.startsWith('http')) {
+			return value;
+		}
+		return value;
+	}
+
 	let isFlipped = false;
+	let isExpanded = false;
 	let qrDataUrl = '';
 	let container: HTMLDivElement;
 
@@ -41,13 +85,25 @@
 	});
 
 	function handleFlip() {
-		isFlipped = !isFlipped;
+		if (!isFlipped) {
+			// Opening: flip first, then expand
+			isFlipped = true;
+			setTimeout(() => {
+				isExpanded = true;
+			}, 1400); // Wait for flip to complete
+		} else {
+			// Closing: flip back first, then shrink
+			isFlipped = false;
+			setTimeout(() => {
+				isExpanded = false;
+			}, 1400); // Wait for flip to complete
+		}
 	}
 </script>
 
 <div
 	class="bio-card-wrapper"
-	class:expanded={isFlipped}
+	class:expanded={isExpanded}
 >
 	<div
 		class="bio-card-container"
@@ -76,8 +132,21 @@
 			<div class="flip-card-back" style="--avatar-bg: url({avatar})">
 				<div class="name-header">{name}</div>
 				<div class="background-blur"></div>
+
 			{#if qrDataUrl}
 				<div class="qr-bottom-section">
+					<!-- Public Contact Info (above QR) -->
+					{#if publicContacts.length > 0}
+						<div class="public-contacts">
+							{#each publicContacts as contact}
+								<div class="contact-item">
+									<span class="contact-emoji">{contact.icon}</span>
+									<span class="contact-text">{formatContactValue(contact.key, contact.value)}</span>
+								</div>
+							{/each}
+						</div>
+					{/if}
+
 					<div class="qr-wrapper">
 						<img src={qrDataUrl} alt="Profile QR Code" class="qr-image-bottom" />
 						<img src="/syncengineSE.png" alt="Sync Engine Logo" class="qr-overlay" />
@@ -97,7 +166,7 @@
 	</div>
 
 	<!-- Backdrop overlay when expanded -->
-	{#if isFlipped}
+	{#if isExpanded}
 		<div class="backdrop" on:click={handleFlip}></div>
 	{/if}
 </div>
@@ -131,7 +200,7 @@
 		background: rgba(0, 0, 0, 0.7);
 		backdrop-filter: blur(8px);
 		z-index: -1;
-		animation: fadeIn 0.4s ease;
+		animation: fadeIn 1s ease;
 	}
 
 	@keyframes fadeIn {
@@ -150,7 +219,11 @@
 		cursor: pointer;
 		position: relative;
 		margin: 0 auto;
-		transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+		transition:
+			width 1s cubic-bezier(0.4, 0.0, 0.2, 1),
+			height 1s cubic-bezier(0.4, 0.0, 0.2, 1),
+			max-width 1s cubic-bezier(0.4, 0.0, 0.2, 1),
+			max-height 1s cubic-bezier(0.4, 0.0, 0.2, 1);
 	}
 
 	.bio-card-wrapper.expanded .bio-card-container {
@@ -165,7 +238,7 @@
 		height: 100%;
 		position: relative;
 		transform-style: preserve-3d;
-		transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+		transition: transform 1.4s cubic-bezier(0.4, 0.0, 0.2, 1);
 	}
 
 	.bio-card-container.flipped .flip-card {
@@ -179,7 +252,7 @@
 		height: 100%;
 		backface-visibility: hidden;
 		border-radius: var(--spacing-4);
-		transition: border-radius 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+		transition: border-radius 1s cubic-bezier(0.4, 0.0, 0.2, 1);
 	}
 
 	.bio-card-wrapper.expanded .flip-card-front,
@@ -235,7 +308,7 @@
 		box-shadow: none;
 		position: relative;
 		overflow: hidden;
-		transition: border-radius 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+		transition: border-radius 1s cubic-bezier(0.4, 0.0, 0.2, 1);
 	}
 
 	.bio-card-wrapper.expanded .avatar-circle {
@@ -277,7 +350,7 @@
 		opacity: 0.66;
 		border: 3px solid #87a96b;
 		box-shadow: 0 0 30px rgba(135, 169, 107, 0.5);
-		transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+		transition: all 0.6s cubic-bezier(0.4, 0.0, 0.2, 1) 0.2s;
 	}
 
 	.qr-overlay {
@@ -310,7 +383,7 @@
 		text-transform: uppercase;
 		letter-spacing: 0.05em;
 		text-shadow: 0 0 8px rgba(212, 175, 55, 0.6);
-		transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+		transition: all 0.6s cubic-bezier(0.4, 0.0, 0.2, 1) 0.2s;
 	}
 
 	.bio-card-wrapper.expanded .qr-label {
@@ -422,5 +495,61 @@
 	.bio-card-wrapper.expanded .name-header {
 		font-size: var(--font-size-0);
 		top: var(--spacing-0);
+	}
+
+	/* Public Contact Info */
+	.public-contacts {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 3px;
+		width: 100%;
+		margin-bottom: var(--spacing-4);
+		z-index: 10;
+	}
+
+	.contact-item {
+		display: flex;
+		align-items: center;
+		gap: 4px;
+		background: rgba(0, 0, 0, 0.5);
+		backdrop-filter: blur(4px);
+		border-radius: 3px;
+		padding: 2px 6px;
+		font-size: 0.65rem;
+		line-height: 1.2;
+	}
+
+	.contact-emoji {
+		font-size: 0.8rem;
+		flex-shrink: 0;
+	}
+
+	.contact-text {
+		color: theme('colors.cream.DEFAULT');
+		font-family: theme('fontFamily.exo');
+		font-weight: 500;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	.bio-card-wrapper.expanded .public-contacts {
+		grid-template-columns: 1fr 1fr;
+		gap: var(--spacing-4);
+		margin-bottom: var(--spacing-2);
+	}
+
+	.bio-card-wrapper.expanded .contact-item {
+		font-size: var(--font-size-2);
+		padding: var(--spacing-4) var(--spacing-3);
+		border-radius: var(--spacing-4);
+	}
+
+	.bio-card-wrapper.expanded .contact-emoji {
+		font-size: var(--font-size-1);
+	}
+
+	.bio-card-wrapper.expanded .contact-text {
+		font-size: var(--font-size-2);
 	}
 </style>

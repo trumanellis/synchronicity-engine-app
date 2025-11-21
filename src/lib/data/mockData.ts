@@ -255,7 +255,19 @@ export const currentUser: User = {
 		connections: 'connections',
 		activity: 'public'
 	},
-	substackUrl: 'https://aeonmyths.substack.com'
+	substackUrl: 'https://aeonmyths.substack.com',
+	contactInfo: {
+		phone: '+351 912 345 678',
+		instagram: 'dr.true.man',
+		telegram: 'OdinPacifica',
+		website: 'aeonmyths.substack.com',
+		visibility: {
+			phone: 'private',
+			instagram: 'public',
+			telegram: 'connections',
+			website: 'public'
+		}
+	}
 };
 
 // User's active intention (most recent joined)

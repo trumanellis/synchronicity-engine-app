@@ -1,7 +1,6 @@
 <script lang="ts">
 	import type { User } from '$types';
 	import BioCard from './BioCard.svelte';
-	import VisibilitySelector from './VisibilitySelector.svelte';
 
 	export let user: User;
 	export let canEdit: boolean = false;
@@ -27,7 +26,7 @@
 	<div class="profile-header">
 		<!-- Left: Avatar at full width (38.2%) -->
 		<div class="avatar-column">
-			<BioCard avatar={user.avatar} username={user.username} name={user.name} size="large" />
+			<BioCard avatar={user.avatar} username={user.username} name={user.name} user={user} size="large" />
 
 			<!-- Achievement Badges -->
 			<div class="badges-section">
