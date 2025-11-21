@@ -15,6 +15,7 @@
 	import type { Intention, ProofOfService, IntentionAttentionSummary } from '$types';
 
 	// Components
+	import Avatar from '$components/core/Avatar.svelte';
 	import SectionTitle from '$components/core/SectionTitle.svelte';
 	import ActionButton from '$components/core/ActionButton.svelte';
 	import ActivityItem from '$components/core/ActivityItem.svelte';
@@ -309,7 +310,7 @@
 					<div class="chat-messages">
 						{#each mockChatMessages as message}
 							<div class="chat-message">
-								<div class="chat-avatar">{message.avatar}</div>
+								<Avatar avatar={message.avatar} name={message.userName} size="medium" />
 								<div class="chat-message-content">
 									<div class="chat-message-header">
 										<span class="chat-user-name">{message.userName}</span>
@@ -462,9 +463,11 @@
 						{:else}
 							{#each aiMessages as message}
 								<div class="ai-message" class:user={message.role === 'user'}>
-									<div class="ai-message-avatar">
-										{message.role === 'user' ? currentUser.avatar : '🤖'}
-									</div>
+									<Avatar
+										avatar={message.role === 'user' ? currentUser.avatar : '🤖'}
+										name={message.role === 'user' ? currentUser.name : 'AI Assistant'}
+										size="medium"
+									/>
 									<div class="ai-message-text">{message.text}</div>
 								</div>
 							{/each}
@@ -1016,11 +1019,6 @@
 		align-items: flex-start;
 	}
 
-	.chat-avatar {
-		font-size: var(--font-size-1); /* 19.8px Level 1 φ-based */
-		flex-shrink: 0;
-	}
-
 	.chat-message-content {
 		flex: 1;
 	}
@@ -1393,11 +1391,6 @@
 
 	.ai-message.user {
 		flex-direction: row-reverse;
-	}
-
-	.ai-message-avatar {
-		font-size: var(--font-size-1); /* 19.8px Level 1 φ-based */
-		flex-shrink: 0;
 	}
 
 	.ai-message-text {
