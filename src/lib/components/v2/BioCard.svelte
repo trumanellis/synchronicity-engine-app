@@ -149,7 +149,7 @@
 
 					<div class="qr-wrapper">
 						<img src={qrDataUrl} alt="Profile QR Code" class="qr-image-bottom" />
-						<img src="/syncengineSE.png" alt="Sync Engine Logo" class="qr-overlay" />
+						<img src="/synchronicity engine SE.png" alt="Sync Engine Logo" class="qr-overlay" />
 					</div>
 					<div class="profile-url">syncengine.earth/{username}</div>
 				</div>
