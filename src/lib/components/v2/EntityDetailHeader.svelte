@@ -57,7 +57,7 @@
 		display: grid;
 		grid-template-columns: 38.2% 61.8%;
 		gap: var(--spacing-2);
-		align-items: flex-start;
+		align-items: stretch;
 		margin-bottom: var(--spacing-2);
 	}
 
@@ -164,10 +164,10 @@
 	}
 
 	.content-column {
-		height: 0;
-		padding-bottom: 161.8%; /* Match golden rectangle height of left column */
 		position: relative;
 		overflow: hidden;
+		display: flex;
+		flex-direction: column;
 	}
 
 	/* Scrollable wrapper for content */
