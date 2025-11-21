@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Minimal Solar Cross - Cyan (#00FFD1) -->
+  <circle cx="100" cy="100" r="75" stroke="#00FFD1" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <line x1="100" y1="25" x2="100" y2="175" stroke="#00FFD1" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <line x1="25" y1="100" x2="175" y2="100" stroke="#00FFD1" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

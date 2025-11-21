@@ -164,26 +164,31 @@ export function tokensToCards(tokens: Token[]) {
  * Transform Offering to ContentCard format
  */
 export function offeringToCard(offering: Offering) {
-	// Determine availability icon and color
-	const availabilityIcon =
-		offering.availability === 'available' ? '✓' :
-		offering.availability === 'limited' ? '⏱️' : '✕';
+	// Determine status icon
+	const statusIcon =
+		offering.status === 'active' ? '✓' :
+		offering.status === 'completed' ? '✕' : '📦';
 
 	return {
 		imageUrl: offering.media && offering.media.length > 0 ? offering.media[0] : null,
 		imageAlt: offering.title,
-		imagePlaceholder: '🎁',
+		imagePlaceholder: getCategoryEmoji(offering.category),
 		title: offering.title,
 		subtitle: offering.description.slice(0, 100) + (offering.description.length > 100 ? '...' : ''),
-		tags: [offering.category, ...(offering.tags || [])],
+		tags: [offering.category, offering.location.name],
 		metrics: [
 			{
-				icon: availabilityIcon,
-				value: offering.availability.toUpperCase(),
+				icon: statusIcon,
+				value: offering.status.toUpperCase(),
 				label: 'status'
+			},
+			{
+				icon: '👥',
+				value: offering.stats.totalRecipients,
+				label: 'recipients'
 			}
 		],
-		date: '',
+		date: formatTimeAgo(offering.createdAt),
 		actionText: 'Request Service',
 		actionIcon: '💬',
 		variant: 'default',

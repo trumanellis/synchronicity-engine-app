@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="280" height="280" viewBox="0 0 280 280" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Define the black glow filter -->
+  <defs>
+    <filter id="strongBlackGlow" x="-100%" y="-100%" width="300%" height="300%">
+      <!-- Create multiple blur layers for stronger glow -->
+      <feGaussianBlur in="SourceAlpha" stdDeviation="12" result="blur1"/>
+      <feGaussianBlur in="SourceAlpha" stdDeviation="8" result="blur2"/>
+      <feGaussianBlur in="SourceAlpha" stdDeviation="4" result="blur3"/>
+      
+      <!-- Color the blurs black -->
+      <feFlood flood-color="#000000" result="color"/>
+      
+      <!-- Combine all blur layers -->
+      <feComposite in="color" in2="blur1" operator="in" result="shadow1"/>
+      <feComposite in="color" in2="blur2" operator="in" result="shadow2"/>
+      <feComposite in="color" in2="blur3" operator="in" result="shadow3"/>
+      
+      <!-- Merge everything -->
+      <feMerge>
+        <feMergeNode in="shadow1"/>
+        <feMergeNode in="shadow2"/>
+        <feMergeNode in="shadow3"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- White solar cross with black glow filter -->
+  <g filter="url(#strongBlackGlow)">
+    <circle cx="140" cy="140" r="90" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+    <line x1="140" y1="50" x2="140" y2="230" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+    <line x1="50" y1="140" x2="230" y2="140" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

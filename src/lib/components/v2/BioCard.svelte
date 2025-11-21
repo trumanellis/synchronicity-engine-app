@@ -1,137 +1,389 @@
 <script lang="ts">
-	import type { User } from '$types';
-	import FlippableAvatar from './FlippableAvatar.svelte';
+	import { onMount } from 'svelte';
+	import QRCode from 'qrcode';
 
-	export let user: User;
-	export let canEdit: boolean = false;
-	export let tags: string[] = [];
+	export let avatar: string;
+	export let username: string;
+	export let name: string;
+	export let size: 'small' | 'medium' | 'large' = 'large';
 
-	function handleShare() {
-		const url = `https://syncengine.earth/${user.username}`;
-		if (navigator.share) {
-			navigator.share({
-				title: `${user.name}'s Profile`,
-				text: user.bio,
-				url: url
+	let isFlipped = false;
+	let qrDataUrl = '';
+	let container: HTMLDivElement;
+
+	// Size variants (compact design) - Golden rectangle with height > width
+	const sizes = {
+		small: { width: '80px', height: '130px', emoji: '3.5rem', qr: 70 },
+		medium: { width: '140px', height: '227px', emoji: '4rem', qr: 110 },
+		large: { width: '180px', height: '291px', emoji: '7rem', qr: 170 }
+	};
+
+	const currentSize = sizes[size];
+
+	// Detect if avatar is an image URL or emoji/text
+	$: isImageUrl = avatar && (avatar.startsWith('/') || avatar.startsWith('http'));
+
+	onMount(async () => {
+		// Generate QR code on mount
+		try {
+			const url = `https://syncengine.earth/${username}`;
+			qrDataUrl = await QRCode.toDataURL(url, {
+				width: currentSize.qr * 6,
+				margin: 1,
+				color: {
+					dark: '#0a0e0f', // Dark pattern
+					light: '#D4AF37' // Gold background
+				}
 			});
-		} else {
-			navigator.clipboard.writeText(url);
-			alert('Profile link copied to clipboard!');
+		} catch (err) {
+			console.error('Failed to generate QR code:', err);
 		}
+	});
+
+	function handleFlip() {
+		isFlipped = !isFlipped;
 	}
 </script>
 
-<div class="bio-card">
-	<!-- Two Column Layout: 38.2% / 61.8% (Golden Ratio) -->
-	<div class="profile-header">
-		<!-- Left: Avatar at full width (38.2%) -->
-		<div class="avatar-column">
-			<FlippableAvatar avatar={user.avatar} username={user.username} size="large" />
-
-			<!-- Achievement Badges -->
-			<div class="badges-section">
-				<div class="badge founding-member">
-					<div class="badge-icon">🌟</div>
-					<div class="badge-label">Founding Member</div>
-				</div>
-				<div class="badge temple-steward">
-					<div class="badge-icon">🏛️</div>
-					<div class="badge-label">Temple Steward</div>
-				</div>
-				<div class="badge initiated">
-					<div class="badge-icon">✨</div>
-					<div class="badge-label">Initiated</div>
+<div
+	class="bio-card-wrapper"
+	class:expanded={isFlipped}
+>
+	<div
+		class="bio-card-container"
+		class:flipped={isFlipped}
+		on:click={handleFlip}
+		on:keypress={(e) => e.key === 'Enter' && handleFlip()}
+		bind:this={container}
+		style="--width: {currentSize.width}; --height: {currentSize.height}"
+		role="button"
+		tabindex="0"
+		aria-label={isFlipped ? 'Show profile photo' : 'Show QR code'}
+	>
+		<div class="flip-card">
+			<!-- Front: Avatar -->
+			<div class="flip-card-front">
+				<div class="avatar-circle">
+					{#if isImageUrl}
+						<img src={avatar} alt={username} class="avatar-image" />
+					{:else}
+						<span class="avatar-emoji" style="font-size: {currentSize.emoji}">{avatar}</span>
+					{/if}
 				</div>
 			</div>
-		</div>
 
-		<!-- Right: Name, Bio, Profile Link, About, Stats (61.8%) -->
-		<div class="info-column">
-			<div class="username">{user.name}</div>
-			<div class="bio-tagline">{user.bio}</div>
-			<a href="/{user.username}" class="profile-url">syncengine.earth/{user.username}</a>
-
-			<!-- About Section -->
-			{#if tags.length > 0}
-				<div class="about-section">
-					<div class="tags-container">
-						{#each tags as tag}
-							<div class="tag">{tag}</div>
-						{/each}
+			<!-- Back: QR Code -->
+			<div class="flip-card-back" style="--avatar-bg: url({avatar})">
+				<div class="name-header">{name}</div>
+				<div class="background-blur"></div>
+			{#if qrDataUrl}
+				<div class="qr-bottom-section">
+					<div class="qr-wrapper">
+						<img src={qrDataUrl} alt="Profile QR Code" class="qr-image-bottom" />
+						<img src="/syncengineSE.png" alt="Sync Engine Logo" class="qr-overlay" />
 					</div>
+					<div class="profile-url">syncengine.earth/{username}</div>
 				</div>
-			{/if}
-
-			<!-- Stats List -->
-			<div class="stats-list">
-				<div class="stat-item">Tokens of Gratitude: <span class="stat-value">{user.stats.totalHoursEarned}h</span></div>
-				<div class="stat-item">Intentions Fulfilled: <span class="stat-value">{user.stats.fulfillmentsCompleted}</span></div>
-				<div class="stat-item">Temple: <span class="stat-value">{user.temple.templeName}</span></div>
+				{:else}
+					<div class="qr-loading">Generating QR...</div>
+				{/if}
 			</div>
 		</div>
+
+		<!-- Tap hint for first-time users -->
+		{#if !isFlipped}
+			<div class="tap-hint">Tap to reveal QR</div>
+		{/if}
 	</div>
+
+	<!-- Backdrop overlay when expanded -->
+	{#if isFlipped}
+		<div class="backdrop" on:click={handleFlip}></div>
+	{/if}
 </div>
 
 <style>
-	.bio-card {
-		/* Layout container */
-	}
-
-	/* Two Column Layout with Golden Ratio */
-	.profile-header {
-		display: grid;
-		grid-template-columns: 38.2% 61.8%;
-		gap: var(--spacing-2);
-		align-items: flex-start;
-		margin-bottom: var(--spacing-2);
-	}
-
-	.avatar-column {
-		width: 100%;
-	}
-
-	/* Make avatar full width */
-	.avatar-column :global(.flippable-avatar-container) {
-		width: 100% !important;
-		height: 0 !important;
-		padding-bottom: 100%;
+	.bio-card-wrapper {
 		position: relative;
+		z-index: 1;
 	}
 
-	.avatar-column :global(.flippable-avatar-container) :global(.flip-card) {
+	.bio-card-wrapper.expanded {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		z-index: 9999;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		pointer-events: none;
+	}
+
+	.bio-card-wrapper.expanded .bio-card-container {
+		pointer-events: all;
+	}
+
+	.backdrop {
+		position: fixed;
+		inset: 0;
+		background: rgba(0, 0, 0, 0.7);
+		backdrop-filter: blur(8px);
+		z-index: -1;
+		animation: fadeIn 0.4s ease;
+	}
+
+	@keyframes fadeIn {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
+	}
+
+	.bio-card-container {
+		width: var(--width);
+		height: var(--height);
+		perspective: 1000px;
+		cursor: pointer;
+		position: relative;
+		margin: 0 auto;
+		transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+	}
+
+	.bio-card-wrapper.expanded .bio-card-container {
+		width: 100vw;
+		max-width: 100vw;
+		height: 100vh;
+		max-height: 100vh;
+	}
+
+	.flip-card {
+		width: 100%;
+		height: 100%;
+		position: relative;
+		transform-style: preserve-3d;
+		transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+	}
+
+	.bio-card-container.flipped .flip-card {
+		transform: rotateY(180deg);
+	}
+
+	.flip-card-front,
+	.flip-card-back {
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		backface-visibility: hidden;
+		border-radius: var(--spacing-4);
+		transition: border-radius 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+	}
+
+	.bio-card-wrapper.expanded .flip-card-front,
+	.bio-card-wrapper.expanded .flip-card-back {
+		border-radius: 0;
+	}
+
+	.flip-card-front {
+		z-index: 2;
+		transform: rotateY(0deg);
+	}
+
+	.flip-card-back {
+		transform: rotateY(180deg);
+		background: theme('colors.bg.deep');
+		border: none;
+		box-shadow: none;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 15px;
+		position: relative;
+		overflow: hidden;
+	}
+
+	.background-blur {
+		position: absolute;
+		inset: 0;
+		background-image: var(--avatar-bg);
+		background-size: cover;
+		background-position: center;
+		opacity: 0.55;
+		z-index: 0;
+	}
+
+	.bio-card-wrapper.expanded .flip-card-back {
+		padding: 0;
+		box-shadow: none;
+	}
+
+	.bio-card-wrapper.expanded .background-blur {
+		opacity: 0.55;
+		background-size: cover;
+		background-repeat: no-repeat;
+	}
+
+	.avatar-circle {
+		width: 100%;
+		height: 100%;
+		background: linear-gradient(135deg, theme('colors.bg.mid') 0%, theme('colors.bg.front') 100%);
+		border: none;
+		border-radius: var(--spacing-4);
+		box-shadow: none;
+		position: relative;
+		overflow: hidden;
+		transition: border-radius 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+	}
+
+	.bio-card-wrapper.expanded .avatar-circle {
+		border-radius: 0;
+	}
+
+	.avatar-emoji {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 100%;
+		height: 100%;
+		line-height: 1;
+		filter: drop-shadow(0 0 12px rgba(212, 175, 55, 0.8));
+	}
+
+	.avatar-image {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		display: block;
 		position: absolute;
 		top: 0;
 		left: 0;
+	}
+
+	.qr-wrapper {
+		position: relative;
+		display: inline-block;
+	}
+
+	.qr-image-bottom {
 		width: 100%;
-		height: 100%;
+		height: auto;
+		max-width: 100%;
+		border-radius: var(--spacing-4);
+		background: #87a96b;
+		padding: 3px;
+		opacity: 0.66;
+		border: 3px solid #87a96b;
+		box-shadow: 0 0 30px rgba(135, 169, 107, 0.5);
+		transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 	}
 
-	.avatar-column :global(.flippable-avatar-container) :global(.tap-hint) {
-		bottom: -24px;
+	.qr-overlay {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		width: 33%;
+		height: 33%;
+		object-fit: contain;
+		opacity: 0.33;
+		pointer-events: none;
 	}
 
-	.info-column {
+	.bio-card-wrapper.expanded .qr-image-bottom {
+		padding: 3px;
+		border-radius: 16px;
+		border: 3px solid #87a96b;
+		box-shadow: 0 0 60px rgba(135, 169, 107, 0.7);
+		width: 31.8vw;
+		height: 31.8vw;
+		max-width: 100%;
+		object-fit: contain;
+	}
+
+	.qr-label {
+		color: theme('colors.gold.DEFAULT');
+		font-size: var(--font-size-3);
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		text-shadow: 0 0 8px rgba(212, 175, 55, 0.6);
+		transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+	}
+
+	.bio-card-wrapper.expanded .qr-label {
+		font-size: var(--font-size-2);
+		margin-top: 0;
+		margin-bottom: var(--spacing-2);
+	}
+
+	.qr-bottom-section {
 		display: flex;
 		flex-direction: column;
-		gap: 4px;
-		text-align: left;
-		justify-content: flex-start;
-		padding-top: 0;
+		align-items: center;
+		gap: 0;
 	}
 
-	.username {
+	.bio-card-wrapper.expanded .qr-bottom-section {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		height: 63.6%;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: flex-end;
+		padding: var(--spacing-1);
+		gap: var(--spacing-3);
+	}
+
+	.qr-loading {
 		color: theme('colors.gold.DEFAULT');
-		font-size: var(--font-size-0);
-		font-weight: 700;
-		text-shadow: 0 0 15px rgba(212, 175, 55, 0.6);
-		line-height: 1.2;
+		font-size: var(--font-size-2);
+		opacity: 0.7;
+		position: relative;
+		z-index: 1;
 	}
 
-	.bio-tagline {
-		color: theme('colors.cream.DEFAULT');
-		font-size: var(--font-size-1);
-		line-height: 1.4;
-		opacity: 0.9;
+	.tap-hint {
+		position: absolute;
+		bottom: -30px;
+		left: 50%;
+		transform: translateX(-50%);
+		color: theme('colors.sage.DEFAULT');
+		font-size: var(--font-size-3);
+		opacity: 0.6;
+		white-space: nowrap;
+		pointer-events: none;
+		animation: fade-pulse 2s ease-in-out infinite;
+	}
+
+	@keyframes fade-pulse {
+		0%,
+		100% {
+			opacity: 0.4;
+		}
+		50% {
+			opacity: 0.8;
+		}
+	}
+
+	/* Hover effects - only when not expanded */
+	.bio-card-wrapper:not(.expanded) .bio-card-container:hover .flip-card {
+		transform: rotateY(10deg);
+	}
+
+	.bio-card-wrapper:not(.expanded) .bio-card-container.flipped:hover .flip-card {
+		transform: rotateY(190deg);
+	}
+
+	/* Focus state for accessibility */
+	.bio-card-container:focus {
+		outline: 2px solid rgba(255, 255, 255, 0.3);
+		outline-offset: 4px;
 	}
 
 	.profile-url {
@@ -139,154 +391,36 @@
 		font-size: var(--font-size-2);
 		opacity: 0.8;
 		text-decoration: none;
-		cursor: pointer;
-		transition: all 0.2s ease;
-		display: inline-block;
-	}
-
-	.profile-url:hover {
-		opacity: 1;
-		text-shadow: 0 0 10px rgba(0, 255, 209, 0.5);
-		transform: translateX(2px);
-	}
-
-	.about-section {
-		margin-top: var(--spacing-3);
-	}
-
-	.tags-container {
-		display: flex;
-		flex-wrap: wrap;
-		gap: var(--spacing-4);
-	}
-
-	.tag {
-		background: rgba(0, 255, 209, 0.15);
-		border: 1px solid rgba(0, 255, 209, 0.4);
-		border-radius: var(--spacing-4);
-		padding: 0.35rem 0.75rem;
-		font-size: var(--font-size-3);
-		color: theme('colors.cyan.DEFAULT');
-	}
-
-	.stats-list {
-		display: flex;
-		flex-direction: row;
-		flex-wrap: wrap;
-		gap: var(--spacing-4);
-		margin-top: var(--spacing-3);
-	}
-
-	.stat-item {
-		display: inline-flex;
-		align-items: center;
-		background: rgba(0, 0, 0, 0.4);
-		border: 1px solid rgba(0, 255, 209, 0.3);
-		border-radius: var(--spacing-4);
-		padding: 6px var(--spacing-3);
-		color: theme('colors.sage.DEFAULT');
-		font-size: var(--font-size-3);
-		line-height: 1.4;
-		width: fit-content;
-		transition: all 0.2s ease;
-	}
-
-	.stat-item:hover {
-		border-color: rgba(0, 255, 209, 0.5);
-		background: rgba(0, 0, 0, 0.5);
-		box-shadow: 0 0 8px rgba(0, 255, 209, 0.2);
-	}
-
-	.stat-value {
-		color: theme('colors.gold.DEFAULT');
-		font-weight: 600;
-		margin-left: 4px;
-	}
-
-	/* Achievement Badges */
-	.badges-section {
-		display: flex;
-		flex-wrap: wrap;
-		gap: var(--spacing-4);
-		margin-top: var(--spacing-0);
-		justify-content: center;
-	}
-
-	.badge {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		gap: 2px;
-		width: 60px;
-		height: 60px;
-		padding: var(--spacing-4);
-		border-radius: 50%;
-		transition: all 0.3s ease;
-		cursor: pointer;
-		position: relative;
-	}
-
-	.badge::before {
-		content: '';
-		position: absolute;
-		inset: 0;
-		border-radius: 50%;
-		padding: 2px;
-		background: linear-gradient(135deg, var(--badge-color-1), var(--badge-color-2));
-		-webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-		-webkit-mask-composite: xor;
-		mask-composite: exclude;
-		opacity: 0.6;
-	}
-
-	.badge:hover {
-		transform: translateY(-2px) scale(1.05);
-		box-shadow: 0 4px 20px var(--badge-glow);
-	}
-
-	.badge:hover::before {
-		opacity: 1;
-	}
-
-	/* Badge color schemes - aligned with app theme */
-	.badge.founding-member {
-		--badge-color-1: #D4AF37;
-		--badge-color-2: #C9A961;
-		--badge-glow: rgba(212, 175, 55, 0.3);
-		background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(201, 169, 97, 0.08));
-	}
-
-	.badge.temple-steward {
-		--badge-color-1: #8B7355;
-		--badge-color-2: #A89076;
-		--badge-glow: rgba(139, 115, 85, 0.3);
-		background: linear-gradient(135deg, rgba(139, 115, 85, 0.12), rgba(168, 144, 118, 0.08));
-	}
-
-	.badge.initiated {
-		--badge-color-1: #00FFD1;
-		--badge-color-2: #7FC8BD;
-		--badge-glow: rgba(0, 255, 209, 0.25);
-		background: linear-gradient(135deg, rgba(0, 255, 209, 0.1), rgba(127, 200, 189, 0.08));
-	}
-
-	.badge-icon {
-		font-size: 1.5rem;
-		line-height: 1;
-		filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
-	}
-
-	.badge-label {
-		font-size: 0.5rem;
-		font-weight: 600;
 		text-align: center;
-		color: theme('colors.cream.DEFAULT');
-		text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-		line-height: 1;
-		max-width: 100%;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		white-space: nowrap;
+		transition: all 0.2s ease;
+		position: relative;
+		z-index: 1;
+	}
+
+	.bio-card-wrapper.expanded .profile-url {
+		font-size: var(--font-size-1);
+	}
+
+	.name-header {
+		position: absolute;
+		top: var(--spacing-1);
+		left: 0;
+		right: 0;
+		text-align: center;
+		color: #ffffff;
+		font-size: var(--font-size-2);
+		font-weight: 700;
+		text-shadow:
+			0 0 10px rgba(255, 255, 255, 0.8),
+			0 0 20px rgba(255, 255, 255, 0.6),
+			0 0 30px rgba(255, 255, 255, 0.4);
+		z-index: 10;
+		pointer-events: none;
+		letter-spacing: 0.05em;
+	}
+
+	.bio-card-wrapper.expanded .name-header {
+		font-size: var(--font-size-0);
+		top: var(--spacing-0);
 	}
 </style>

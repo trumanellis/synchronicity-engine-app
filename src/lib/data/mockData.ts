@@ -28,25 +28,137 @@ export const offerings: Offering[] = [
 		title: 'Irrigation System Design',
 		description: 'I design and install gravity-fed water systems for gardens and farms. Expertise in permaculture hydrology, catchment systems, and efficient distribution.',
 		category: 'Off-Grid & Sustainable Living',
+		createdBy: 'user-truman-001',
+		createdAt: '2024-08-20T10:00:00Z',
+		status: 'active',
+		location: {
+			name: 'Água Lila & Regional',
+			coords: [40.2033, -8.4103]
+		},
 		media: ['ipfs://Qm...irrigation-portfolio'],
-		availability: 'available',
-		tags: ['permaculture', 'water-systems', 'engineering']
+		stats: {
+			totalRecipients: 12,
+			timesShared: 8,
+			activeDays: 45
+		},
+		topRecipients: [
+			{
+				userId: 'user-james-001',
+				name: 'James Rodriguez',
+				avatar: '💧',
+				hours: 6,
+				role: 'Garden Coordinator'
+			},
+			{
+				userId: 'user-marcus-001',
+				name: 'Marcus Chen',
+				avatar: '🔨',
+				hours: 4,
+				role: 'Builder'
+			}
+		],
+		recentActivity: [
+			{
+				activityId: 'act-offer-001-01',
+				type: 'fulfillment_completed',
+				userId: 'user-truman-001',
+				userName: 'Dr. Truman Ellis',
+				timestamp: '2025-11-02T09:15:00Z',
+				text: 'Designed gravity-fed system for Riverside garden',
+				icon: '✓',
+				meta: '💧 6-hour consultation • 3 gardens connected'
+			}
+		],
+		visibility: 'public'
 	},
 	{
 		offeringId: 'offer-002',
 		title: 'Computational Modeling Workshops',
 		description: 'Teaching agent-based modeling for ecological and social systems. Perfect for understanding complex dynamics in regenerative communities.',
 		category: 'Self & Spiritual Development',
-		availability: 'limited',
-		tags: ['education', 'modeling', 'systems-thinking']
+		createdBy: 'user-truman-001',
+		createdAt: '2024-09-05T14:30:00Z',
+		status: 'active',
+		location: {
+			name: 'Online & In-Person',
+			coords: [40.2033, -8.4103]
+		},
+		media: [],
+		stats: {
+			totalRecipients: 24,
+			timesShared: 6,
+			activeDays: 28
+		},
+		topRecipients: [
+			{
+				userId: 'user-aisha-001',
+				name: 'Aisha Patel',
+				avatar: '🌿',
+				hours: 3,
+				role: 'Student'
+			},
+			{
+				userId: 'user-sarah-001',
+				name: 'Sarah Kim',
+				avatar: '🌱',
+				hours: 3,
+				role: 'Student'
+			}
+		],
+		recentActivity: [
+			{
+				activityId: 'act-offer-002-01',
+				type: 'fulfillment_completed',
+				userId: 'user-truman-001',
+				userName: 'Dr. Truman Ellis',
+				timestamp: '2025-10-18T15:00:00Z',
+				text: 'Taught modeling workshop with 8 participants',
+				icon: '✓',
+				meta: '📊 Agent-based modeling • Ecosystem dynamics'
+			}
+		],
+		visibility: 'public'
 	},
 	{
 		offeringId: 'offer-003',
 		title: 'Gift Economy Platform Development',
 		description: 'Building decentralized tools for P2P coordination. Experienced with blockchain, distributed systems, and community currencies.',
 		category: 'Community Abundance',
-		availability: 'available',
-		tags: ['coding', 'blockchain', 'p2p']
+		createdBy: 'user-truman-001',
+		createdAt: '2024-08-15T16:00:00Z',
+		status: 'active',
+		location: {
+			name: 'Remote / Global',
+			coords: [40.2033, -8.4103]
+		},
+		media: [],
+		stats: {
+			totalRecipients: 5,
+			timesShared: 3,
+			activeDays: 67
+		},
+		topRecipients: [
+			{
+				userId: 'temple-agua-lila',
+				name: 'Agua Lila Community',
+				avatar: '🛕',
+				hours: 156,
+				role: 'Primary Client'
+			}
+		],
+		recentActivity: [
+			{
+				activityId: 'act-offer-003-01',
+				type: 'fulfillment_completed',
+				userId: 'user-truman-001',
+				userName: 'Dr. Truman Ellis',
+				timestamp: '2025-11-09T18:30:00Z',
+				text: 'Deployed attention tracking features for temple coordination',
+				icon: '✓',
+				meta: '💻 Full-stack development • Synchronicity Engine'
+			}
+		],
+		visibility: 'public'
 	}
 ];
 
@@ -210,14 +322,13 @@ export const intentions: Intention[] = [
 		status: 'active',
 		location: {
 			name: 'Multiple sites',
-			proximity: 'local'
+			coords: [40.2050, -8.4120]
 		},
 		media: ['/CommunityGarden.png'],
 		stats: {
 			totalAttentionHours: 2847,
 			participantCount: 156,
-			activeDays: 12,
-			impactLevel: 'high'
+			activeDays: 12
 		},
 		topContributors: [
 			{
@@ -279,14 +390,13 @@ export const intentions: Intention[] = [
 		status: 'active',
 		location: {
 			name: 'Água Lila Valley',
-			proximity: 'on-site'
+			coords: [40.2033, -8.4103]
 		},
 		media: ['/EucalyptusRemoval.png'],
 		stats: {
 			totalAttentionHours: 3892,
 			participantCount: 89,
-			activeDays: 56,
-			impactLevel: 'high'
+			activeDays: 56
 		},
 		topContributors: [
 			{
@@ -361,14 +471,13 @@ export const intentions: Intention[] = [
 		status: 'active',
 		location: {
 			name: 'Regional network',
-			proximity: 'nearby'
+			coords: [40.2100, -8.4050]
 		},
 		media: ['/MushroomCultivation.png'],
 		stats: {
 			totalAttentionHours: 2134,
 			participantCount: 56,
-			activeDays: 35,
-			impactLevel: 'medium'
+			activeDays: 35
 		},
 		topContributors: [
 			{
@@ -426,14 +535,13 @@ export const intentions: Intention[] = [
 		status: 'active',
 		location: {
 			name: 'Workshop Barn',
-			proximity: 'on-site'
+			coords: [40.2040, -8.4095]
 		},
 		media: ['/SolarDehydrator.png'],
 		stats: {
 			totalAttentionHours: 2145,
 			participantCount: 43,
-			activeDays: 8,
-			impactLevel: 'medium'
+			activeDays: 8
 		},
 		topContributors: [
 			{

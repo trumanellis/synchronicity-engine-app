@@ -14,6 +14,38 @@ export interface User {
 	achievements: Achievement[];
 	profileVisibility: Record<string, VisibilityLevel>;
 	substackUrl?: string; // Optional Substack publication URL
+	contactInfo?: ContactInfo; // Optional contact information
+}
+
+export interface ContactInfo {
+	email?: string;
+	phone?: string;
+	whatsapp?: string;
+	telegram?: string;
+	discord?: string;
+	instagram?: string;
+	facebook?: string;
+	twitter?: string;
+	linkedin?: string;
+	youtube?: string;
+	tiktok?: string;
+	website?: string;
+	visibility?: ContactVisibility;
+}
+
+export interface ContactVisibility {
+	email?: VisibilityLevel;
+	phone?: VisibilityLevel;
+	whatsapp?: VisibilityLevel;
+	telegram?: VisibilityLevel;
+	discord?: VisibilityLevel;
+	instagram?: VisibilityLevel;
+	facebook?: VisibilityLevel;
+	twitter?: VisibilityLevel;
+	linkedin?: VisibilityLevel;
+	youtube?: VisibilityLevel;
+	tiktok?: VisibilityLevel;
+	website?: VisibilityLevel;
 }
 
 export interface UserTemple {
@@ -79,7 +111,7 @@ export interface Intention {
 	status: 'active' | 'fulfilled' | 'archived';
 	location: {
 		name: string;
-		proximity: 'local' | 'nearby' | 'regional' | 'on-site';
+		coords: [number, number]; // [latitude, longitude]
 	};
 	media?: string[];
 	stats: IntentionStats;
@@ -92,7 +124,6 @@ export interface IntentionStats {
 	totalAttentionHours: number;
 	participantCount: number;
 	activeDays: number;
-	impactLevel: 'low' | 'medium' | 'high';
 }
 
 export interface Contributor {
@@ -275,10 +306,24 @@ export interface Offering {
 	title: string;
 	description: string;
 	category: string;
+	createdBy: string;
+	createdAt: string;
+	status: 'active' | 'completed' | 'archived';
+	location: {
+		name: string;
+		coords: [number, number]; // [latitude, longitude]
+	};
 	media?: string[];
-	availability: 'available' | 'limited' | 'unavailable';
-	tags?: string[];
+	stats: OfferingStats;
+	topRecipients: Contributor[];
+	recentActivity: Activity[];
 	visibility?: VisibilityLevel; // Optional visibility setting for profile display
+}
+
+export interface OfferingStats {
+	totalRecipients: number;
+	timesShared: number;
+	activeDays: number;
 }
 
 export interface Achievement {

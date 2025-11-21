@@ -3,7 +3,7 @@
 	import { activeTab } from '$stores/navigationStore';
 	import { intentions, potentialAttention, getUpcomingItinerary, getVisibleItineraryItems } from '$lib/data/mockData';
 
-	import BioCard from '$lib/components/v2/BioCard.svelte';
+	import ProfileCard from '$lib/components/v2/ProfileCard.svelte';
 	import ItinerarySection from '$lib/components/v2/ItinerarySection.svelte';
 	import ProfileGallery from '$lib/components/v2/ProfileGallery.svelte';
 	import SubstackGallery from '$lib/components/v2/SubstackGallery.svelte';
@@ -48,7 +48,7 @@
 	<Stack gap="md">
 		<!-- Bio Card -->
 		<Section spacing="md">
-			<BioCard user={user} canEdit={!isPublicView} tags={bioTags} />
+			<ProfileCard user={user} canEdit={!isPublicView} tags={bioTags} />
 		</Section>
 
 		<!-- Itinerary Section -->
