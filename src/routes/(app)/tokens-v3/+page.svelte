@@ -15,6 +15,9 @@
 	import { calculateCoinSize } from '$lib/utils/logarithmicScale';
 	import { packCircles, getPackedHeight, type PackedCircle } from '$lib/utils/circlePacking';
 
+	// Time formatting
+	import { formatTimeSignificant } from '$lib/utils/timeFormatting';
+
 	// Sort tokens by attention hours (descending)
 	$: sortedTokens = [...userTokens].sort((a, b) => b.computed.hours - a.computed.hours);
 
@@ -23,6 +26,13 @@
 
 	// Filter tokens for the Hand (only flipped ones)
 	$: handTokens = sortedTokens.filter((token) => flippedTokens.has(token.tokenId));
+
+	// Calculate sum of attention hours for heads coins in each panel
+	$: walletHeadsSum = sortedTokens
+		.filter((token) => !flippedTokens.has(token.tokenId))
+		.reduce((sum, token) => sum + token.computed.hours, 0);
+
+	$: handHeadsSum = handTokens.reduce((sum, token) => sum + token.computed.hours, 0);
 
 	// Container dimensions
 	let walletContainerWidth = 1000;
@@ -141,6 +151,7 @@
 <div class="tokens-v3-page">
 	<!-- Wallet Panel (Top 68.2%) -->
 	<div class="wallet-panel">
+		<div class="panel-sum">{formatTimeSignificant(walletHeadsSum, 3)}</div>
 		<div class="panel-content">
 			{#if sortedTokens.length > 0}
 				<div class="coins-container" bind:this={walletContainerElement}>
@@ -180,6 +191,7 @@
 
 	<!-- Hand Panel (Bottom 31.8%) -->
 	<div class="hand-panel">
+		<div class="panel-sum">{formatTimeSignificant(handHeadsSum, 3)}</div>
 		<div class="panel-content">
 			{#if handTokens.length > 0}
 				<div class="coins-container" bind:this={handContainerElement}>
@@ -200,7 +212,7 @@
 									imageUrl={getTokenImage(token)}
 									title={token.title}
 									description={token.description}
-									isFlipped={true}
+									isFlipped={false}
 									onFlip={(isFlipped) => handleCoinFlip(token.tokenId, isFlipped)}
 								/>
 							</div>
@@ -337,5 +349,21 @@
 		font-size: var(--font-size-2);
 		margin: 0;
 		opacity: 0.8;
+	}
+
+	/* Panel sum display */
+	.panel-sum {
+		position: absolute;
+		top: var(--spacing-3);
+		right: var(--spacing-3);
+		color: theme('colors.gold.DEFAULT');
+		font-size: var(--font-size-1);
+		font-weight: 600;
+		z-index: 10;
+		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+		padding: var(--spacing-2) var(--spacing-3);
+		background: rgba(0, 0, 0, 0.3);
+		border-radius: 8px;
+		backdrop-filter: blur(4px);
 	}
 </style>
