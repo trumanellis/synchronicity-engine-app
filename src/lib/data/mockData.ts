@@ -674,7 +674,7 @@ export const userTokens: Token[] = [
 		submittedBy: 'user-truman-001',
 		steward: 'user-truman-001',
 		parent: null,
-		title: 'Timber Framing Token',
+		title: 'Timber Framing',
 		description: 'Built tool shed at Oak Street Garden using reclaimed cedar',
 		media: ['ipfs://Qm...shed1', 'ipfs://Qm...shed2'],
 		timestamp: '2024-10-25T11:30:00Z',
@@ -701,7 +701,7 @@ export const userTokens: Token[] = [
 			totalValueMs: 57600000,
 			supporters: 8,
 			challengers: 0,
-			hours: 16
+			hours: 21014
 		},
 		status: 'available',
 		category: 'Infrastructure',
@@ -713,7 +713,7 @@ export const userTokens: Token[] = [
 		submittedBy: 'user-truman-001',
 		steward: 'user-truman-001',
 		parent: null,
-		title: 'Irrigation Consultation Token',
+		title: 'Irrigation Consultation',
 		description: 'Designed gravity-fed water system for Riverside community garden',
 		timestamp: '2024-11-02T09:15:00Z',
 		computed: {
@@ -721,7 +721,7 @@ export const userTokens: Token[] = [
 			totalValueMs: 21600000,
 			supporters: 5,
 			challengers: 0,
-			hours: 6
+			hours: 3600
 		},
 		status: 'available'
 	},
@@ -731,7 +731,7 @@ export const userTokens: Token[] = [
 		submittedBy: 'user-marcus-001',
 		steward: 'user-marcus-001',
 		parent: null,
-		title: 'Seed Planting Token',
+		title: 'Seed Planting',
 		description: 'Planted heirloom vegetables across 12 raised beds',
 		timestamp: '2024-11-05T08:00:00Z',
 		computed: {
@@ -739,7 +739,7 @@ export const userTokens: Token[] = [
 			totalValueMs: 28800000,
 			supporters: 6,
 			challengers: 0,
-			hours: 8
+			hours: 100.5
 		},
 		status: 'available'
 	},
@@ -749,7 +749,7 @@ export const userTokens: Token[] = [
 		submittedBy: 'user-aisha-001',
 		steward: 'user-aisha-001',
 		parent: null,
-		title: 'Composting System Token',
+		title: 'Composting System',
 		description: 'Built three-bin composting system with worm castings',
 		timestamp: '2024-11-03T10:30:00Z',
 		computed: {
@@ -757,7 +757,7 @@ export const userTokens: Token[] = [
 			totalValueMs: 43200000,
 			supporters: 9,
 			challengers: 0,
-			hours: 12
+			hours: 16
 		},
 		status: 'available'
 	},
@@ -767,7 +767,7 @@ export const userTokens: Token[] = [
 		submittedBy: 'user-james-001',
 		steward: 'user-james-001',
 		parent: null,
-		title: 'Garden Fencing Token',
+		title: 'Garden Fencing',
 		description: 'Installed deer fencing around perimeter with natural materials',
 		timestamp: '2024-11-01T07:00:00Z',
 		computed: {
@@ -775,7 +775,187 @@ export const userTokens: Token[] = [
 			totalValueMs: 14400000,
 			supporters: 4,
 			challengers: 0,
-			hours: 4
+			hours: 0.753
+		},
+		status: 'available'
+	},
+	{
+		tokenId: 'tok-workshop-001',
+		intentionId: 'int-mushroom-001',
+		submittedBy: 'user-aisha-001',
+		steward: 'user-aisha-001',
+		parent: null,
+		title: 'Spore Cultivation Workshop',
+		description: 'Taught mushroom cultivation techniques to community members',
+		timestamp: '2024-11-06T14:00:00Z',
+		computed: {
+			totalDurationMs: 10800000,
+			totalValueMs: 10800000,
+			supporters: 7,
+			challengers: 0,
+			hours: 3.5
+		},
+		status: 'available'
+	},
+	{
+		tokenId: 'tok-forestry-001',
+		intentionId: 'int-eucalyptus-001',
+		submittedBy: 'user-miguel-001',
+		steward: 'user-miguel-001',
+		parent: null,
+		title: 'Eucalyptus Processing',
+		description: 'Milled fallen eucalyptus into usable lumber',
+		timestamp: '2024-10-15T08:30:00Z',
+		computed: {
+			totalDurationMs: 288000000,
+			totalValueMs: 288000000,
+			supporters: 12,
+			challengers: 0,
+			hours: 840
+		},
+		status: 'available'
+	},
+	{
+		tokenId: 'tok-consultation-001',
+		intentionId: 'int-solar-001',
+		submittedBy: 'user-sarah-001',
+		steward: 'user-sarah-001',
+		parent: null,
+		title: 'Quick Design Consultation',
+		description: 'Provided solar angle calculations for dehydrator',
+		timestamp: '2024-11-08T16:15:00Z',
+		computed: {
+			totalDurationMs: 1200000,
+			totalValueMs: 1200000,
+			supporters: 2,
+			challengers: 0,
+			hours: 0.333
+		},
+		status: 'available'
+	},
+	{
+		tokenId: 'tok-maintenance-001',
+		intentionId: 'int-garden-001',
+		submittedBy: 'user-truman-001',
+		steward: 'user-truman-001',
+		parent: null,
+		title: 'Ongoing Garden Coordination',
+		description: 'Season-long coordination and maintenance of garden infrastructure',
+		timestamp: '2024-08-20T09:00:00Z',
+		computed: {
+			totalDurationMs: 32400000,
+			totalValueMs: 32400000,
+			supporters: 18,
+			challengers: 0,
+			hours: 5840
+		},
+		status: 'available'
+	},
+	{
+		tokenId: 'tok-materials-001',
+		intentionId: 'int-solar-001',
+		submittedBy: 'user-marcus-001',
+		steward: 'user-marcus-001',
+		parent: null,
+		title: 'Material Sourcing',
+		description: 'Collected recycled glass and cedar for dehydrator builds',
+		timestamp: '2024-11-04T11:00:00Z',
+		computed: {
+			totalDurationMs: 21600000,
+			totalValueMs: 21600000,
+			supporters: 5,
+			challengers: 0,
+			hours: 42
+		},
+		status: 'available'
+	},
+	{
+		tokenId: 'tok-survey-001',
+		intentionId: 'int-eucalyptus-001',
+		submittedBy: 'user-elena-001',
+		steward: 'user-elena-001',
+		parent: null,
+		title: 'Ecological Survey',
+		description: 'Documented native species and created restoration plan',
+		timestamp: '2024-10-10T07:30:00Z',
+		computed: {
+			totalDurationMs: 86400000,
+			totalValueMs: 86400000,
+			supporters: 8,
+			challengers: 0,
+			hours: 156
+		},
+		status: 'available'
+	},
+	{
+		tokenId: 'tok-quickfix-001',
+		intentionId: 'int-garden-001',
+		submittedBy: 'user-james-001',
+		steward: 'user-james-001',
+		parent: null,
+		title: 'Irrigation Repair',
+		description: 'Fixed broken valve in irrigation system',
+		timestamp: '2024-11-07T15:45:00Z',
+		computed: {
+			totalDurationMs: 1800000,
+			totalValueMs: 1800000,
+			supporters: 3,
+			challengers: 0,
+			hours: 0.5
+		},
+		status: 'available'
+	},
+	{
+		tokenId: 'tok-documentation-001',
+		intentionId: 'int-mushroom-001',
+		submittedBy: 'user-truman-001',
+		steward: 'user-truman-001',
+		parent: null,
+		title: 'Cultivation Documentation',
+		description: 'Created detailed guides and video tutorials for mushroom growing',
+		timestamp: '2024-09-22T10:00:00Z',
+		computed: {
+			totalDurationMs: 75600000,
+			totalValueMs: 75600000,
+			supporters: 14,
+			challengers: 0,
+			hours: 285
+		},
+		status: 'available'
+	},
+	{
+		tokenId: 'tok-briefhelp-001',
+		intentionId: 'int-solar-001',
+		submittedBy: 'user-aisha-001',
+		steward: 'user-aisha-001',
+		parent: null,
+		title: 'Assembly Assistance',
+		description: 'Helped secure glass panels during workshop',
+		timestamp: '2024-11-09T14:20:00Z',
+		computed: {
+			totalDurationMs: 600000,
+			totalValueMs: 600000,
+			supporters: 1,
+			challengers: 0,
+			hours: 0.167
+		},
+		status: 'available'
+	},
+	{
+		tokenId: 'tok-yearlong-001',
+		intentionId: 'int-eucalyptus-001',
+		submittedBy: 'user-miguel-001',
+		steward: 'user-miguel-001',
+		parent: null,
+		title: 'Valley Restoration Project Lead',
+		description: 'Year-long leadership coordinating all eucalyptus removal and native restoration',
+		timestamp: '2024-01-15T08:00:00Z',
+		computed: {
+			totalDurationMs: 31536000000,
+			totalValueMs: 31536000000,
+			supporters: 45,
+			challengers: 0,
+			hours: 8760
 		},
 		status: 'available'
 	}
