@@ -159,7 +159,7 @@ function isSettledPositionValid(
 
 /**
  * Find position using horizontal-first scanning with gravity settling
- * Scans left-to-right, drops coin and simulates physics for each position
+ * Scans left-to-right at multiple Y levels, drops coin and simulates physics for each position
  */
 function findPosition(
 	radius: number,
@@ -169,29 +169,33 @@ function findPosition(
 	padding: number = 8
 ): { x: number; y: number } {
 	const horizontalStep = Math.max(5, radius / 4); // Small steps for better left-packing
+	const verticalStep = Math.max(50, radius * 2); // Try different Y starting positions
 
-	// Try X positions from left to right
-	for (let startX = radius + padding; startX <= containerWidth - radius - padding; startX += horizontalStep) {
-		// Drop coin from top at this X position
-		const physicsCircle: PhysicsCircle = {
-			id: '',
-			x: startX,
-			y: radius + padding,
-			radius: radius,
-			vx: 0,
-			vy: 0
-		};
+	// Try multiple Y starting levels from top to bottom
+	for (let startY = radius + padding; startY <= containerHeight - radius - padding; startY += verticalStep) {
+		// Try X positions from left to right at this Y level
+		for (let startX = radius + padding; startX <= containerWidth - radius - padding; startX += horizontalStep) {
+			// Drop coin from this position
+			const physicsCircle: PhysicsCircle = {
+				id: '',
+				x: startX,
+				y: startY,
+				radius: radius,
+				vx: 0,
+				vy: 0
+			};
 
-		// Simulate physics to let it fall and settle
-		const settled = simulatePhysics(physicsCircle, placedCircles, containerWidth, containerHeight, padding);
+			// Simulate physics to let it fall and settle
+			const settled = simulatePhysics(physicsCircle, placedCircles, containerWidth, containerHeight, padding);
 
-		// Check if settled position is valid
-		if (isSettledPositionValid(settled.x, settled.y, radius, placedCircles, containerWidth, containerHeight, padding)) {
-			return settled;
+			// Check if settled position is valid
+			if (isSettledPositionValid(settled.x, settled.y, radius, placedCircles, containerWidth, containerHeight, padding)) {
+				return settled;
+			}
 		}
 	}
 
-	// Fallback: force place at top-left (shouldn't normally reach here)
+	// Fallback: force place at top-left (should rarely reach here now)
 	return { x: radius + padding, y: radius + padding };
 }
 

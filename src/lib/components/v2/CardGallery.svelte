@@ -42,8 +42,8 @@
 		width: 100%;
 	}
 
-	/* Responsive grid - always maintain at least 2 columns */
-	@media (max-width: 1024px) {
+	/* Responsive grid - reduce columns on very small screens */
+	@media (max-width: 640px) {
 		.gallery-grid {
 			grid-template-columns: repeat(2, 1fr);
 		}
