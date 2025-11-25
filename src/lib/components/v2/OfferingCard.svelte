@@ -9,6 +9,7 @@
 	export let onClick: (() => void) | undefined = undefined;
 	export let onVisibilityChange: ((newVisibility: VisibilityLevel) => void) | undefined = undefined;
 
+	$: imageUrl = offering.media && offering.media.length > 0 ? offering.media[0] : '/OfferingDefault.png';
 	$: categoryIcon = getCategoryIcon(offering.category);
 	$: statusInfo = getStatusInfo(offering.status);
 
@@ -44,14 +45,15 @@
 <div>
 	<FlipCard {size} tapHintText="Tap for details" ariaLabelFront="View offering details" ariaLabelBack="Show offering preview">
 		<div slot="front" class="offering-front">
-			<div class="offering-icon-wrapper">
-				<span class="offering-icon">{categoryIcon}</span>
-			</div>
-			<div class="offering-title-front">{offering.title}</div>
-			<div class="offering-category">{offering.category}</div>
-			<div class="status-badge {statusInfo.color}">
-				<span>{statusInfo.icon}</span>
-				<span>{statusInfo.label}</span>
+			<img src={imageUrl} alt={offering.title} class="offering-image" />
+
+			<div class="front-overlay">
+				<div class="status-badge {statusInfo.color}">
+					<span>{statusInfo.icon}</span>
+					<span>{statusInfo.label}</span>
+				</div>
+				<div class="offering-title-front">{offering.title}</div>
+				<div class="offering-category">{offering.category}</div>
 			</div>
 		</div>
 
@@ -104,40 +106,50 @@
 	.offering-front {
 		width: 100%;
 		height: 100%;
-		background: linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(212, 175, 55, 0.05));
+		position: relative;
+		overflow: hidden;
 		border-radius: 16px;
+		background: linear-gradient(135deg, theme('colors.bg.mid') 0%, theme('colors.bg.front') 100%);
+	}
+
+	.offering-image {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		display: block;
+	}
+
+	.offering-placeholder {
+		width: 100%;
+		height: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(0, 0, 0, 0.4));
+	}
+
+	.placeholder-icon {
+		font-size: 5rem;
+		filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+		opacity: 0.5;
+	}
+
+	.front-overlay {
+		position: absolute;
+		inset: 0;
+		background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.4) 50%, transparent 100%);
+		padding: var(--spacing-3);
 		display: flex;
 		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		padding: var(--spacing-2);
-		text-align: center;
+		justify-content: flex-end;
 		gap: var(--spacing-3);
-		position: relative;
-	}
-
-	.offering-icon-wrapper {
-		width: 80px;
-		height: 80px;
-		border-radius: 50%;
-		background: rgba(212, 175, 55, 0.2);
-		border: 2px solid rgba(212, 175, 55, 0.4);
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		transition: all 0.3s ease;
-	}
-
-	.offering-icon {
-		font-size: 3rem;
-		filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
 	}
 
 	.offering-title-front {
 		color: theme('colors.gold.DEFAULT');
 		font-size: var(--font-size-2);
 		font-weight: 700;
-		text-shadow: 0 0 10px rgba(212, 175, 55, 0.6);
+		text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
 		line-height: 1.2;
 		display: -webkit-box;
 		-webkit-line-clamp: 2;
@@ -146,15 +158,17 @@
 	}
 
 	.offering-category {
-		background: rgba(0, 255, 209, 0.15);
-		border: 1px solid rgba(0, 255, 209, 0.4);
+		background: rgba(212, 175, 55, 0.2);
+		border: 1px solid rgba(212, 175, 55, 0.5);
 		border-radius: var(--spacing-4);
 		padding: 0.25rem 0.75rem;
-		font-size: 0.7rem;
-		color: theme('colors.cyan.DEFAULT');
+		font-size: 0.65rem;
+		color: theme('colors.cream.DEFAULT');
 		font-weight: 600;
 		text-transform: uppercase;
 		letter-spacing: 0.05em;
+		backdrop-filter: blur(8px);
+		align-self: flex-start;
 	}
 
 	.status-badge {

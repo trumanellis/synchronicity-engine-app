@@ -10,21 +10,7 @@
 	export let onClick: (() => void) | undefined = undefined;
 	export let onVisibilityChange: ((newVisibility: VisibilityLevel) => void) | undefined = undefined;
 
-	$: imageUrl = intention.media && intention.media.length > 0 ? intention.media[0] : null;
-	$: categoryIcon = getCategoryIcon(intention.category);
-
-	function getCategoryIcon(category: string): string {
-		const icons: Record<string, string> = {
-			'Off-Grid & Sustainable Living': '🌱',
-			'Health & Vitality': '💪',
-			'Organic Food & Nutrition': '🥗',
-			'Community Abundance': '🤝',
-			'Self & Spiritual Development': '✨',
-			'Land Stewardship': '🌳',
-			'Creative Expression': '🎨'
-		};
-		return icons[category] || '🎯';
-	}
+	$: imageUrl = intention.media && intention.media.length > 0 ? intention.media[0] : '/IntentionDefault.png';
 
 	function handleNavigate() {
 		if (onClick) {
@@ -36,13 +22,7 @@
 <div>
 	<FlipCard {size} tapHintText="Tap for details" ariaLabelFront="View intention details" ariaLabelBack="Show intention preview">
 		<div slot="front" class="intention-front">
-			{#if imageUrl}
-				<img src={imageUrl} alt={intention.title} class="intention-image" />
-			{:else}
-				<div class="intention-placeholder">
-					<span class="placeholder-icon">{categoryIcon}</span>
-				</div>
-			{/if}
+			<img src={imageUrl} alt={intention.title} class="intention-image" />
 
 			<div class="front-overlay">
 				<div class="category-badge">{intention.category}</div>

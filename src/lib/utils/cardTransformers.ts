@@ -31,7 +31,7 @@ export function intentionToCard(intention: Intention) {
 	const percentDone = calculatePercentDone(intention);
 
 	return {
-		imageUrl: intention.media && intention.media.length > 0 ? intention.media[0] : null,
+		imageUrl: intention.media && intention.media.length > 0 ? intention.media[0] : '/IntentionDefault.png',
 		imageAlt: intention.title,
 		imagePlaceholder: getCategoryEmoji(intention.category),
 		title: intention.title,
@@ -170,7 +170,7 @@ export function offeringToCard(offering: Offering) {
 		offering.status === 'completed' ? '✕' : '📦';
 
 	return {
-		imageUrl: offering.media && offering.media.length > 0 ? offering.media[0] : null,
+		imageUrl: offering.media && offering.media.length > 0 ? offering.media[0] : '/OfferingDefault.png',
 		imageAlt: offering.title,
 		imagePlaceholder: getCategoryEmoji(offering.category),
 		title: offering.title,

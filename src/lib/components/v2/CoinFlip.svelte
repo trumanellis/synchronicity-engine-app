@@ -3,7 +3,7 @@
 	import { formatTimeSignificant } from '$lib/utils/timeFormatting';
 
 	export let attentionHours: number;
-	export let imageUrl: string | undefined = undefined;
+	export let imageUrl: string = '/TokenDefault.png';
 	export let title: string;
 	export let description: string = '';
 	export let showTapHint: boolean = false;
@@ -39,13 +39,7 @@
 		<div class="coin">
 			<!-- Heads: Image with time overlay -->
 			<div class="coin-heads">
-				{#if imageUrl}
-					<img src={imageUrl} alt={title} class="coin-image" />
-				{:else}
-					<div class="coin-placeholder">
-						<span class="placeholder-icon">💎</span>
-					</div>
-				{/if}
+				<img src={imageUrl} alt={title} class="coin-image" />
 				<div class="heads-content">
 					<div class="heads-time">{formattedTime}</div>
 				</div>
@@ -53,13 +47,7 @@
 
 			<!-- Tails: Semi-transparent image with title -->
 			<div class="coin-tails">
-				{#if imageUrl}
-					<div class="tails-background" style="background-image: url({imageUrl})"></div>
-				{:else}
-					<div class="coin-placeholder">
-						<span class="placeholder-icon">💎</span>
-					</div>
-				{/if}
+				<div class="tails-background" style="background-image: url({imageUrl})"></div>
 				<div class="tails-content">
 					<div class="tails-title">{title}</div>
 				</div>
