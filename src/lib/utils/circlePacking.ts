@@ -1,6 +1,7 @@
 /**
- * Circle Packing Algorithm - Physics-Based
- * Simulates gravity and collisions to pack circles naturally like billiard balls
+ * Circle Packing Algorithm - Hybrid Horizontal-First + Physics
+ * Scans left-to-right to prioritize horizontal packing, then uses gravity simulation
+ * for natural settling. Combines space efficiency with realistic physics.
  */
 
 export interface Circle {
@@ -118,11 +119,47 @@ function simulatePhysics(
 		}
 	}
 
+	// Final bounds clamping to ensure coins never exceed container
+	circle.x = Math.max(padding + circle.radius, Math.min(containerWidth - padding - circle.radius, circle.x));
+	circle.y = Math.max(padding + circle.radius, Math.min(containerHeight - padding - circle.radius, circle.y));
+
 	return { x: circle.x, y: circle.y };
 }
 
 /**
- * Find position by dropping circle from top with physics simulation
+ * Check if a settled position is valid (within bounds and no overlaps)
+ */
+function isSettledPositionValid(
+	x: number,
+	y: number,
+	radius: number,
+	placedCircles: Circle[],
+	containerWidth: number,
+	containerHeight: number,
+	padding: number
+): boolean {
+	// Check if within container bounds
+	if (x - radius < padding || x + radius > containerWidth - padding) return false;
+	if (y - radius < padding || y + radius > containerHeight - padding) return false;
+
+	// Check overlap with existing circles
+	for (const circle of placedCircles) {
+		const dx = x - circle.x;
+		const dy = y - circle.y;
+		const distance = Math.sqrt(dx * dx + dy * dy);
+		const minDistance = radius + circle.radius + padding;
+
+		if (distance < minDistance) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
+/**
+ * Find position using horizontal-first scanning with gravity settling
+ * Scans left-to-right, drops coin and simulates physics for each position
  */
 function findPosition(
 	radius: number,
@@ -131,24 +168,37 @@ function findPosition(
 	containerHeight: number,
 	padding: number = 8
 ): { x: number; y: number } {
-	// Drop from left side, slightly randomized to avoid perfect stacking
-	const dropX = radius + padding + (placedCircles.length * 5) % (containerWidth * 0.2);
-	const physicsCircle: PhysicsCircle = {
-		id: '',
-		x: Math.min(dropX, containerWidth - radius - padding),
-		y: radius + padding,
-		radius: radius,
-		vx: 0,
-		vy: 0
-	};
+	const horizontalStep = Math.max(5, radius / 4); // Small steps for better left-packing
 
-	// All circles go through physics simulation (even the first one falls to floor)
-	return simulatePhysics(physicsCircle, placedCircles, containerWidth, containerHeight, padding);
+	// Try X positions from left to right
+	for (let startX = radius + padding; startX <= containerWidth - radius - padding; startX += horizontalStep) {
+		// Drop coin from top at this X position
+		const physicsCircle: PhysicsCircle = {
+			id: '',
+			x: startX,
+			y: radius + padding,
+			radius: radius,
+			vx: 0,
+			vy: 0
+		};
+
+		// Simulate physics to let it fall and settle
+		const settled = simulatePhysics(physicsCircle, placedCircles, containerWidth, containerHeight, padding);
+
+		// Check if settled position is valid
+		if (isSettledPositionValid(settled.x, settled.y, radius, placedCircles, containerWidth, containerHeight, padding)) {
+			return settled;
+		}
+	}
+
+	// Fallback: force place at top-left (shouldn't normally reach here)
+	return { x: radius + padding, y: radius + padding };
 }
 
 /**
- * Pack circles using a greedy algorithm
- * Larger circles are placed first and naturally float to the top
+ * Pack circles using hybrid horizontal-first + physics algorithm
+ * Scans left-to-right to find drop positions, then simulates gravity for natural settling
+ * Larger circles are placed first for better space efficiency
  */
 export function packCircles(
 	items: Array<{ id: string; radius: number; data: any }>,
@@ -173,14 +223,8 @@ export function packCircles(
 		});
 	}
 
-	// Normalize Y positions to remove empty space above
-	const minY = Math.min(...placed.map((c) => c.y - c.radius));
-	const offsetY = minY - padding;
-
-	return placed.map((circle) => ({
-		...circle,
-		y: circle.y - offsetY
-	}));
+	// Return coins where gravity settled them (at bottom)
+	return placed;
 }
 
 /**
